@@ -1,0 +1,22 @@
+{
+  "name": "@olx-clone/shared",
+  "version": "1.0.0",
+  "description": "Tipos, configurações Supabase e utilitários compartilhados entre Web e Mobile",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types/index.ts",
+    "./supabase": "./src/supabase/index.ts",
+    "./utils": "./src/utils/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

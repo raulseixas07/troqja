@@ -1,0 +1,30 @@
+{
+  "name": "olx-clone-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma de Classificados Estilo OLX - Monorepo (Next.js + React Native/Expo + Supabase)",
+  "workspaces": [
+    "packages/*",
+    "web",
+    "mobile"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=web",
+    "dev:mobile": "npm run start --workspace=mobile",
+    "build:web": "npm run build --workspace=web",
+    "build:shared": "npm run build --workspace=@olx-clone/shared",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "keywords": [
+    "nextjs",
+    "react-native",
+    "expo",
+    "supabase",
+    "tailwind",
+    "typescript",
+    "olx-clone"
+  ],
+  "author": "",
+  "license": "MIT"
+}

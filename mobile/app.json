@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "TroqJá",
+    "slug": "troqja-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6E0AD6"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.olxclone.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6E0AD6"
+      },
+      "package": "com.olxclone.app"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo precisa de acesso às suas fotos para você publicar seus anúncios com imagens em WebP."
+        }
+      ]
+    ]
+  }
+}
