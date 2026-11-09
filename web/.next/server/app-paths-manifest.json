@@ -1,8 +1,16 @@
 {
-  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
   "/anuncio/[id]/page": "app/anuncio/[id]/page.js",
+  "/anunciar/page": "app/anunciar/page.js",
+  "/categoria/[slug]/page": "app/categoria/[slug]/page.js",
   "/busca/page": "app/busca/page.js",
   "/chat/page": "app/chat/page.js",
-  "/anunciar/page": "app/anunciar/page.js",
-  "/conta/meus-anuncios/page": "app/conta/meus-anuncios/page.js"
+  "/sobre/page": "app/sobre/page.js",
+  "/conta/page": "app/conta/page.js",
+  "/desejos/page": "app/desejos/page.js",
+  "/page": "app/page.js",
+  "/conta/meus-anuncios/page": "app/conta/meus-anuncios/page.js",
+  "/como-funciona/page": "app/como-funciona/page.js"
 }

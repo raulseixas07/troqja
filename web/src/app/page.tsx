@@ -419,6 +419,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
+              href="/como-funciona"
+              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold px-5 py-3 rounded-full transition text-sm backdrop-blur-xs"
+            >
+              <span>Como funciona</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
               href="/desejos"
               className="inline-flex items-center gap-2 bg-emerald-600/25 hover:bg-emerald-600/40 border border-emerald-500/50 text-emerald-300 font-extrabold px-5 py-3 rounded-full transition text-sm backdrop-blur-xs"
             >

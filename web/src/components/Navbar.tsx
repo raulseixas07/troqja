@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Package, Sparkles } from 'lucide-react';
+import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Package, Sparkles, BarChart3, HelpCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function Navbar() {
@@ -101,6 +101,16 @@ export function Navbar() {
               <MapPin className="w-4 h-4 text-olx-orange" />
               <span>São Paulo e região</span>
             </button>
+
+            {/* Como Funciona */}
+            <Link
+              href="/como-funciona"
+              className="hidden xl:flex items-center gap-1.5 text-xs text-gray-600 hover:text-olx-orange font-semibold transition py-1.5 px-2.5 rounded-full hover:bg-gray-100"
+              title="Como funciona o TroqJá"
+            >
+              <HelpCircle className="w-4 h-4 text-olx-orange" />
+              <span>Como Funciona</span>
+            </Link>
 
             {/* Lista de Desejos & Radar de Matches */}
             <Link
@@ -200,6 +210,15 @@ export function Navbar() {
                     >
                       <Sparkles className="w-4 h-4 text-emerald-600" />
                       <span>Lista de Desejos</span>
+                    </Link>
+
+                    <Link
+                      href="/sobre?aba=lojistas"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition border-t border-gray-100"
+                    >
+                      <BarChart3 className="w-4 h-4 text-emerald-600" />
+                      <span>Painel Lojista CNPJ</span>
                     </Link>
 
                     <button

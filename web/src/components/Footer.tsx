@@ -97,7 +97,7 @@ export function Footer() {
                   Negocie do seu jeito: <strong>Venda Direta</strong> por preço fixo, <strong>Leilão em Tempo Real</strong> (Quem Dá Mais) com lances ao vivo, ou <strong>Troca-Troca / Permuta</strong> sem gastar dinheiro.
                 </p>
                 <Link
-                  href="/busca"
+                  href="/como-funciona"
                   className="text-xs font-bold text-[#FF6B00] hover:underline inline-block pt-1"
                 >
                   Explorar modalidades de negociação →
@@ -143,9 +143,12 @@ export function Footer() {
                 <p className="text-xs text-gray-600 leading-relaxed">
                   Perfis verificados, avaliações por estrelas com reputação transparente e bate-papo criptografado em tempo real com fotos WebP protegidas.
                 </p>
-                <span className="text-xs font-bold text-olx-purple inline-block pt-1">
-                  Transparência e confiança total
-                </span>
+                <Link
+                  href="/como-funciona#seguranca"
+                  className="text-xs font-bold text-olx-purple hover:underline inline-block pt-1"
+                >
+                  Transparência e confiança total →
+                </Link>
               </div>
             </div>
           </div>
@@ -398,20 +401,20 @@ export function Footer() {
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Sobre Nós</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/" className="hover:text-olx-purple hover:underline">Quem Somos</Link></li>
-                      <li><Link href="/anunciar" className="hover:text-olx-purple hover:underline">Como Anunciar</Link></li>
-                      <li><Link href="/desejos" className="hover:text-olx-purple hover:underline">Lista de Desejos</Link></li>
-                      <li><Link href="/busca" className="hover:text-olx-purple hover:underline">Mapa do Site</Link></li>
-                      <li><span className="text-gray-400">Trabalhe Conosco</span></li>
+                      <li><Link href="/sobre?aba=quem-somos" className="hover:text-olx-purple hover:underline">Quem Somos</Link></li>
+                      <li><Link href="/como-funciona" className="hover:text-olx-purple hover:underline">Como Funciona</Link></li>
+                      <li><Link href="/sobre?aba=novidades" className="hover:text-olx-purple hover:underline flex items-center gap-1 font-semibold text-orange-600"><span>🚀 Novidades & Roadmap</span></Link></li>
+                      <li><Link href="/sobre?aba=lojistas" className="hover:text-olx-purple hover:underline flex items-center gap-1 font-semibold text-emerald-700"><span>📊 Painel Lojista CNPJ</span></Link></li>
+                      <li><Link href="/desejos" className="hover:text-olx-purple hover:underline">Lista de Desejos (Radar VIP)</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Segurança</h5>
                     <ul className="space-y-1.5">
-                      <li><span className="hover:text-olx-purple cursor-pointer">Dicas de Segurança</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Como Evitar Golpes</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Compre com Tranquilidade</span></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Dicas de Segurança & Protocolo</Link></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Logística Blindada CNPJ</Link></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Código PIN & Vídeo Unboxing</Link></li>
                       <li><span className="hover:text-olx-purple cursor-pointer">Denunciar Anúncio</span></li>
                       <li><span className="hover:text-olx-purple cursor-pointer">Proteção de Dados (LGPD)</span></li>
                     </ul>
@@ -489,12 +492,12 @@ export function Footer() {
 
             {/* Links Horizontais Institucionais */}
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-xs text-gray-400">
-              <Link href="/" className="hover:text-white transition">Sobre nós</Link>
-              <Link href="/anunciar" className="hover:text-white transition">Como funciona</Link>
+              <Link href="/sobre" className="hover:text-white transition">Sobre nós</Link>
+              <Link href="/como-funciona" className="hover:text-white transition">Como funciona</Link>
               <Link href="/desejos" className="hover:text-white transition">Radar VIP</Link>
-              <span className="hover:text-white transition cursor-pointer">Termos de uso</span>
-              <span className="hover:text-white transition cursor-pointer">Privacidade</span>
-              <span className="hover:text-white transition cursor-pointer">Segurança</span>
+              <Link href="/como-funciona#seguranca" className="hover:text-white transition">Segurança</Link>
+              <Link href="/sobre?aba=novidades" className="hover:text-white transition text-orange-400 font-semibold">🚀 Novidades</Link>
+              <Link href="/sobre?aba=lojistas" className="hover:text-white transition text-emerald-400 font-bold bg-emerald-950/70 border border-emerald-600/40 px-2.5 py-1 rounded-full">📊 Painel Lojista CNPJ (R$ 9,90)</Link>
             </div>
 
             {/* Redes Sociais */}
