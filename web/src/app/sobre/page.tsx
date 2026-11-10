@@ -410,10 +410,10 @@ function SobreContent() {
                   <div className="p-3.5 bg-orange-50/60 rounded-xl border border-orange-100 space-y-1">
                     <strong className="text-gray-900 font-bold block flex items-center gap-1.5">
                       <Zap className="w-3.5 h-3.5 text-[#FF6B00]" />
-                      Checkout de Pagamento Integrado (5%)
+                      Checkout Integrado com Custódia (5% / 7%)
                     </strong>
                     <p className="text-gray-600">
-                      Pagamento seguro via Pix e Cartão para liquidação de leilões, venda direta e pagamento de volta de permuta.
+                      Taxa progressiva justa: apenas 5% para negociações até R$ 1.000 e 7% acima de R$ 1.000 (com Pix e Cartão 1x pelo preço anunciado e parcelamento em até 12x), para venda direta, liquidação de leilões e volta em permutas.
                     </p>
                   </div>
 

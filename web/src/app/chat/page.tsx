@@ -31,6 +31,7 @@ import {
   CheckCircle2,
   Handshake,
   Download,
+  ShieldCheck,
 } from 'lucide-react';
 import { convertImageToWebP, type ProcessedWebPImage } from '@/utils/imageWebP';
 import {
@@ -38,6 +39,8 @@ import {
   verificarAvaliacaoExistente,
   criarAvaliacao,
 } from '@olx-clone/shared';
+import CheckoutModal, { type CheckoutLiberadoPayload } from '@/components/CheckoutModal';
+import type { ModalidadeCheckout } from '@/lib/checkout';
 
 function ChatContent() {
   const router = useRouter();
@@ -63,6 +66,10 @@ function ChatContent() {
   const [modalFecharNegocioAberta, setModalFecharNegocioAberta] = useState(false);
   const [tipoFechamento, setTipoFechamento] = useState<'venda' | 'troca' | 'leilao'>('venda');
   const [fechandoNegocio, setFechandoNegocio] = useState(false);
+
+  // Estados de Checkout Integrado com Custódia (Escrow)
+  const [checkoutAberto, setCheckoutAberto] = useState(false);
+  const [checkoutModalidade, setCheckoutModalidade] = useState<ModalidadeCheckout>('venda_direta');
 
   // Estados de Avaliação Mútua (1 a 5 estrelas)
   const [modalAvaliacaoAberta, setModalAvaliacaoAberta] = useState(false);
@@ -621,24 +628,66 @@ function ChatContent() {
                       )}
                     </div>
                   ) : (
-                    user.id === conversaAtiva.anuncio.user_id && (
+                    user.id === conversaAtiva.anuncio.user_id ? (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {(conversaAtiva.anuncio.modalidade === 'troca' ||
+                          searchParams.get('troca') === '1') && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCheckoutModalidade('permuta_volta');
+                              setCheckoutAberto(true);
+                            }}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1.5 rounded-lg transition"
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>🔄 Pagar Volta com Custódia</span>
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTipoFechamento(
+                              conversaAtiva.anuncio.modalidade === 'troca' || searchParams.get('troca') === '1'
+                                ? 'troca'
+                                : conversaAtiva.anuncio.modalidade === 'leilao'
+                                ? 'leilao'
+                                : 'venda'
+                            );
+                            setModalFecharNegocioAberta(true);
+                          }}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3 py-1.5 rounded-lg shadow-2xs transition hover:scale-102"
+                          title="Marcar produto como vendido para este usuário e habilitar avaliação mútua"
+                        >
+                          <Handshake className="w-3.5 h-3.5" />
+                          <span>Fechar Negócio com este Usuário</span>
+                        </button>
+                      </div>
+                    ) : (
                       <button
                         type="button"
                         onClick={() => {
-                          setTipoFechamento(
-                            conversaAtiva.anuncio.modalidade === 'troca' || searchParams.get('troca') === '1'
-                              ? 'troca'
+                          const mod: ModalidadeCheckout =
+                            conversaAtiva.anuncio.modalidade === 'troca' ||
+                            searchParams.get('troca') === '1'
+                              ? 'permuta_volta'
                               : conversaAtiva.anuncio.modalidade === 'leilao'
                               ? 'leilao'
-                              : 'venda'
-                          );
-                          setModalFecharNegocioAberta(true);
+                              : 'venda_direta';
+                          setCheckoutModalidade(mod);
+                          setCheckoutAberto(true);
                         }}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3 py-1.5 rounded-lg shadow-2xs transition hover:scale-102"
-                        title="Marcar produto como vendido para este usuário e habilitar avaliação mútua"
+                        className="inline-flex items-center gap-1.5 text-xs font-black bg-gradient-to-r from-[#00C853] to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-3.5 py-1.5 rounded-lg shadow-2xs transition"
                       >
-                        <Handshake className="w-3.5 h-3.5" />
-                        <span>Fechar Negócio com este Usuário</span>
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>
+                          {conversaAtiva.anuncio.modalidade === 'troca' ||
+                          searchParams.get('troca') === '1'
+                            ? '🔄 Pagar Volta com Custódia'
+                            : conversaAtiva.anuncio.modalidade === 'leilao'
+                            ? '🏆 Pagar Lance na Plataforma'
+                            : '💳 Pagar com Garantia TroqJá'}
+                        </span>
                       </button>
                     )
                   )}
@@ -676,9 +725,23 @@ function ChatContent() {
 
               {/* Banner de Proposta de Troca se veio com parâmetro troca=1 */}
               {searchParams.get('troca') === '1' && (
-                <div className="px-4 py-2 bg-green-50 border-b border-green-200 flex items-center gap-2 text-xs text-green-900 font-semibold shadow-2xs">
-                  <ArrowLeftRight className="w-4 h-4 text-[#00C853] shrink-0" />
-                  <span>Negociação de Permuta / Troca: Proponha seu produto com fotos, detalhes e local de encontro.</span>
+                <div className="px-4 py-2 bg-green-50 border-b border-green-200 flex flex-wrap items-center justify-between gap-2 text-xs text-green-900 font-semibold shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <ArrowLeftRight className="w-4 h-4 text-[#00C853] shrink-0" />
+                    <span>Negociação de Permuta / Troca: Proponha seu produto com fotos, detalhes e local de encontro.</span>
+                  </div>
+                  {conversaAtiva.anuncio.status !== 'vendido' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCheckoutModalidade('permuta_volta');
+                        setCheckoutAberto(true);
+                      }}
+                      className="inline-flex items-center gap-1 bg-[#00C853] hover:bg-green-600 text-white font-bold px-3 py-1 rounded-md text-xs shadow-2xs transition shrink-0"
+                    >
+                      <span>🔄 Pagar Volta com Custódia</span>
+                    </button>
+                  )}
                 </div>
               )}
 
@@ -1137,6 +1200,40 @@ function ChatContent() {
             )}
           </div>
         </div>
+      )}
+      {/* MODAL 4: Checkout Integrado com Custódia & PIN */}
+      {conversaAtiva && (
+        <CheckoutModal
+          isOpen={checkoutAberto}
+          onClose={() => setCheckoutAberto(false)}
+          anuncio={{
+            id: conversaAtiva.anuncio.id,
+            titulo: conversaAtiva.anuncio.titulo,
+            preco: conversaAtiva.anuncio.preco,
+            user_id: conversaAtiva.anuncio.user_id || conversaAtiva.vendedor_id,
+            modalidade: conversaAtiva.anuncio.modalidade,
+          }}
+          modalidadeInicial={checkoutModalidade}
+          compradorId={user.id}
+          vendedorNome={conversaAtiva.outro_usuario.nome}
+          onEscrowLiberado={async (payload: CheckoutLiberadoPayload) => {
+            try {
+              await sendMessage(
+                `🔐 Pagamento em custódia liberado via Código PIN (${payload.codigoPin})! Valor líquido de ${formatCurrencyBRL(payload.liquidoVendedor)} desbloqueado ao vendedor.`
+              );
+            } catch {
+              // segue para avaliação mesmo se envio automático falhar
+            }
+            setTipoFechamento(
+              payload.modalidade === 'permuta_volta'
+                ? 'troca'
+                : payload.modalidade === 'leilao'
+                ? 'leilao'
+                : 'venda'
+            );
+            setModalAvaliacaoAberta(true);
+          }}
+        />
       )}
     </div>
   );

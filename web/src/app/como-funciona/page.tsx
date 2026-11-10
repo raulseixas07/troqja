@@ -135,7 +135,7 @@ export default function ComoFuncionaPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Comissão enxuta de 5%:</strong> cobrada apenas quando a intermediação financeira ocorre na plataforma.</span>
+                  <span><strong>Taxa progressiva justa:</strong> apenas 5% para negociações até R$ 1.000 e 7% acima de R$ 1.000 (com Pix e Cartão 1x pelo preço anunciado e parcelamento em até 12x).</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -247,7 +247,7 @@ export default function ComoFuncionaPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span><strong>Volta segura:</strong> pagamento de eventual diferença em dinheiro com custódia (taxa 5%).</span>
+                  <span><strong>Volta segura com custódia:</strong> Taxa progressiva justa: apenas 5% para negociações até R$ 1.000 e 7% acima de R$ 1.000 (com Pix e Cartão 1x pelo preço anunciado e parcelamento em até 12x).</span>
                 </li>
               </ul>
             </div>
@@ -618,7 +618,7 @@ export default function ComoFuncionaPage() {
             <div className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
               <KeyRound className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <strong className="text-white block font-bold">1. Código PIN de 4 dígitos gerado no app</strong>
+                <strong className="text-white block font-bold">1. Código PIN de 6 dígitos gerado no app</strong>
                 <p>
                   O comprador recebe um código único que só deve ser informado ao entregador no momento em que o pacote
                   estiver em suas mãos, confirmando fisicamente o recebimento.

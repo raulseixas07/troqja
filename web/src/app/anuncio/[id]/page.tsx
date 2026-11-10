@@ -28,6 +28,8 @@ import {
   Handshake,
   Zap,
 } from 'lucide-react';
+import CheckoutModal from '@/components/CheckoutModal';
+import type { ModalidadeCheckout } from '@/lib/checkout';
 import {
   formatCurrencyBRL,
   formatRelativeDate,
@@ -137,6 +139,18 @@ export default function AnuncioDetalhePage() {
   const [comentarioAvaliacao, setComentarioAvaliacao] = useState('');
   const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false);
   const [avaliacaoStatus, setAvaliacaoStatus] = useState<string | null>(null);
+
+  // Estados do Checkout com Custódia (Escrow)
+  const [checkoutAberto, setCheckoutAberto] = useState(false);
+  const [checkoutModalidade, setCheckoutModalidade] = useState<ModalidadeCheckout>('venda_direta');
+  const [checkoutValorInicial, setCheckoutValorInicial] = useState<number | undefined>(undefined);
+  const [valorVoltaInput, setValorVoltaInput] = useState('350');
+
+  const abrirCheckout = (modalidade: ModalidadeCheckout, valor?: number) => {
+    setCheckoutModalidade(modalidade);
+    setCheckoutValorInicial(valor);
+    setCheckoutAberto(true);
+  };
 
   // Timer para o cronômetro do Leilão
   useEffect(() => {
@@ -367,19 +381,25 @@ export default function AnuncioDetalhePage() {
 
   const handleEnviarAvaliacao = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !anuncio) return;
+    if (!anuncio) return;
 
-    const avaliadoId = user.id === anuncio.user_id ? anuncio.comprador_id : anuncio.user_id;
+    const avaliadoId =
+      user && user.id === anuncio.user_id ? anuncio.comprador_id : anuncio.user_id;
     if (!avaliadoId) {
       setAvaliacaoStatus('Erro: Identificador do usuário a ser avaliado não encontrado.');
+      return;
+    }
+
+    if (!user && isUuid(anuncio.id)) {
+      setAvaliacaoStatus('Erro: Faça login na sua conta para registrar sua avaliação.');
       return;
     }
 
     setEnviandoAvaliacao(true);
     setAvaliacaoStatus(null);
 
-    // BÔNUS DE POLIMENTO: Simulação local se avaliado ou anúncio for Mock (ID não-UUID)
-    const isMockAvaliado = !isUuid(avaliadoId) || !isUuid(anuncio.id);
+    // BÔNUS DE POLIMENTO: Simulação local se avaliado ou anúncio for Mock (ID não-UUID) ou visitante sandbox
+    const isMockAvaliado = !user || !isUuid(avaliadoId) || !isUuid(anuncio.id);
     if (isMockAvaliado) {
       setMinhaAvaliacaoFeita(true);
       setMinhaAvaliacaoNota(notaAvaliacao);
@@ -403,6 +423,7 @@ export default function AnuncioDetalhePage() {
       return;
     }
 
+    if (!user) return;
     const { error } = await criarAvaliacao(supabase, {
       anuncio_id: anuncio.id,
       avaliador_id: user.id,
@@ -838,17 +859,48 @@ export default function AnuncioDetalhePage() {
                 </p>
               </div>
 
-              {/* Botão de Proposta de Troca */}
+              {/* Botões de Proposta de Troca e Custódia de Volta */}
               {!isDono && (
-                <button
-                  type="button"
-                  onClick={() => handleAbrirChat(true)}
-                  disabled={iniciandoChat}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#00C853] hover:bg-green-600 text-white font-extrabold px-6 py-3 rounded-xl shadow-md transition transform active:scale-98"
-                >
-                  <ArrowLeftRight className="w-4 h-4" />
-                  <span>Propor Troca no Chat</span>
-                </button>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleAbrirChat(true)}
+                    disabled={iniciandoChat}
+                    className="inline-flex items-center justify-center gap-2 bg-[#00C853] hover:bg-green-600 text-white font-extrabold px-5 py-3 rounded-xl shadow-md transition transform active:scale-98"
+                  >
+                    <ArrowLeftRight className="w-4 h-4" />
+                    <span>Propor Troca no Chat</span>
+                  </button>
+
+                  {anuncio.status !== 'vendido' && (
+                    <div className="flex flex-1 items-center gap-2 bg-white/95 p-1.5 rounded-xl border border-emerald-300 shadow-2xs">
+                      <div className="relative w-28 shrink-0">
+                        <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center text-xs font-black text-emerald-700">
+                          R$
+                        </span>
+                        <input
+                          type="number"
+                          min="1"
+                          step="0.01"
+                          value={valorVoltaInput}
+                          onChange={(e) => setValorVoltaInput(e.target.value)}
+                          aria-label="Valor da volta em dinheiro"
+                          className="w-full pl-8 pr-2 py-2 rounded-lg border border-emerald-200 text-xs font-extrabold text-gray-900 outline-none focus:border-emerald-500"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const v = parseFloat(valorVoltaInput.replace(',', '.'));
+                          abrirCheckout('permuta_volta', Number.isFinite(v) && v > 0 ? v : 350);
+                        }}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white font-extrabold px-3 py-2.5 rounded-lg text-xs transition"
+                      >
+                        <span>🔄 Pagar Volta em Dinheiro com Custódia</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           )}
@@ -1081,8 +1133,45 @@ export default function AnuncioDetalhePage() {
               </div>
             )}
 
-            {/* Ações de Contato / Chat */}
+            {/* Ações de Pagamento Seguro (Custódia) & Contato / Chat */}
             <div className="space-y-3 pt-4 border-t border-gray-100">
+              {!isDono && anuncio.status !== 'vendido' && (
+                <div className="space-y-2.5">
+                  {anuncio.modalidade === 'venda' && (
+                    <button
+                      type="button"
+                      onClick={() => abrirCheckout('venda_direta', anuncio.preco)}
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#00C853] to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-black py-3.5 px-4 rounded-xl shadow-md transition transform active:scale-98 text-xs sm:text-sm"
+                    >
+                      <span>💳 Comprar com Garantia TroqJá (Pix ou até 12x)</span>
+                    </button>
+                  )}
+
+                  {isLeilao && (
+                    <button
+                      type="button"
+                      onClick={() => abrirCheckout('leilao', lanceAtualValor)}
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B00] to-amber-600 hover:from-[#E65A00] hover:to-amber-700 text-white font-black py-3.5 px-4 rounded-xl shadow-md transition transform active:scale-98 text-xs sm:text-sm"
+                    >
+                      <span>🏆 Pagar Lance Vencedor na Plataforma</span>
+                    </button>
+                  )}
+
+                  {(aceitaTroca || anuncio.modalidade === 'troca') && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const v = parseFloat(valorVoltaInput.replace(',', '.'));
+                        abrirCheckout('permuta_volta', Number.isFinite(v) && v > 0 ? v : 350);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-extrabold py-3 px-4 rounded-xl transition text-xs sm:text-sm"
+                    >
+                      <span>🔄 Pagar Volta em Dinheiro com Custódia</span>
+                    </button>
+                  )}
+                </div>
+              )}
+
               {chatError && (
                 <div className="p-3 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2 text-xs text-red-700">
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
@@ -1271,6 +1360,19 @@ export default function AnuncioDetalhePage() {
           </div>
         </div>
       )}
+      {/* MODAL DE CHECKOUT INTEGRADO COM CUSTÓDIA & PIN */}
+      <CheckoutModal
+        isOpen={checkoutAberto}
+        onClose={() => setCheckoutAberto(false)}
+        anuncio={anuncio}
+        modalidadeInicial={checkoutModalidade}
+        valorInicial={checkoutValorInicial}
+        compradorId={user?.id}
+        vendedorNome={anuncio.anunciante?.nome || 'Anunciante TroqJá'}
+        onEscrowLiberado={() => {
+          setModalAvaliacaoAberta(true);
+        }}
+      />
     </div>
   );
 }
