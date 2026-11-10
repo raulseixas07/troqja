@@ -481,50 +481,127 @@ export default function AnuncioDetalhePage() {
       if (!id) return;
       setCarregando(true);
 
+      const idEhUuidReal = isUuid(id);
+
       try {
-        const { data, error } = await supabase
+        // 1. Busca principal do anúncio usando a mesma estrutura segura da Home/Busca
+        // (sem join ambíguo com 'profiles', pois 'anuncios' possui user_id e comprador_id)
+        let adRow: Record<string, unknown> | null = null;
+
+        const { data: dataComRelacoes, error: errRelacoes } = await supabase
           .from(SUPABASE_TABLES.ANUNCIOS)
           .select(`
             *,
             categoria:categorias(id, nome, slug),
-            anunciante:profiles(id, nome, telefone, avatar_url, created_at),
             fotos:fotos_anuncio(*)
           `)
           .eq('id', id)
           .maybeSingle();
 
-        if (!error && data) {
-          const fotosOrdenadas = ((data.fotos as FotoItem[]) || []).sort((a, b) => {
+        if (!errRelacoes && dataComRelacoes) {
+          adRow = dataComRelacoes as unknown as Record<string, unknown>;
+        } else if (idEhUuidReal) {
+          // Fallback seguro: busca apenas a linha pura em 'anuncios' caso alguma relação falhe
+          const { data: dataSimples, error: errSimples } = await supabase
+            .from(SUPABASE_TABLES.ANUNCIOS)
+            .select('*')
+            .eq('id', id)
+            .maybeSingle();
+
+          if (!errSimples && dataSimples) {
+            adRow = dataSimples as unknown as Record<string, unknown>;
+          }
+        }
+
+        if (adRow) {
+          const anuncioUserId = String(adRow.user_id || '');
+          const categoriaId = adRow.categoria_id ? String(adRow.categoria_id) : null;
+
+          // 2. Fotos reais do anúncio (usa as já retornadas ou consulta separada segura)
+          let fotosRaw = Array.isArray(adRow.fotos) ? (adRow.fotos as FotoItem[]) : [];
+          if (fotosRaw.length === 0) {
+            try {
+              const { data: fotosDb } = await supabase
+                .from(SUPABASE_TABLES.FOTOS_ANUNCIO)
+                .select('id, url, is_principal')
+                .eq('anuncio_id', id)
+                .order('is_principal', { ascending: false })
+                .order('ordem', { ascending: true });
+              if (Array.isArray(fotosDb) && fotosDb.length > 0) {
+                fotosRaw = fotosDb as FotoItem[];
+              }
+            } catch {
+              // segue sem fotos se não houver registros
+            }
+          }
+
+          const fotosOrdenadas = [...fotosRaw].sort((a, b) => {
             if (a.is_principal) return -1;
             if (b.is_principal) return 1;
             return 0;
           });
 
+          // 3. Categoria (usa a retornada ou busca isolada)
+          let categoriaData: AnuncioCarregado['categoria'] =
+            (adRow.categoria as AnuncioCarregado['categoria'] | undefined) ?? null;
+          if (!categoriaData && categoriaId) {
+            try {
+              const { data: catDb } = await supabase
+                .from(SUPABASE_TABLES.CATEGORIAS)
+                .select('id, nome, slug')
+                .eq('id', categoriaId)
+                .maybeSingle();
+              if (catDb) {
+                categoriaData = catDb as NonNullable<AnuncioCarregado['categoria']>;
+              }
+            } catch {
+              // mantém null caso falhe
+            }
+          }
+
+          // 4. Perfil do vendedor em query separada e isolada (nunca descarta o anúncio real)
+          let anuncianteData: AnuncioCarregado['anunciante'] = null;
+          if (anuncioUserId) {
+            try {
+              const { data: profileDb } = await supabase
+                .from(SUPABASE_TABLES.PROFILES)
+                .select('id, nome, telefone, avatar_url, created_at')
+                .eq('id', anuncioUserId)
+                .maybeSingle();
+              if (profileDb) {
+                anuncianteData = profileDb as AnuncioCarregado['anunciante'];
+              }
+            } catch {
+              // vendedor sem perfil completo não impede exibição do anúncio
+            }
+          }
+
           const adData: AnuncioCarregado = {
-            id: data.id,
-            user_id: data.user_id,
-            titulo: data.titulo,
-            preco: Number(data.preco),
-            descricao: data.descricao,
-            cidade: data.cidade,
-            estado: data.estado,
-            bairro: data.bairro,
-            created_at: data.created_at,
-            visualizacoes: Number(data.visualizacoes || 0),
-            modalidade: (data as any).modalidade || 'venda',
-            aceita_troca: Boolean((data as any).aceita_troca),
-            itens_troca: (data as any).itens_troca || null,
-            lance_inicial: (data as any).lance_inicial != null ? Number((data as any).lance_inicial) : null,
-            lance_atual: (data as any).lance_atual != null ? Number((data as any).lance_atual) : null,
-            incremento_minimo: (data as any).incremento_minimo != null ? Number((data as any).incremento_minimo) : 10,
-            leilao_encerramento: (data as any).leilao_encerramento || null,
-            destacado_vitrine: Boolean((data as any).destacado_vitrine),
-            tipo_destaque: (data as any).tipo_destaque || null,
-            status: (data as any).status || 'ativo',
-            comprador_id: (data as any).comprador_id || null,
-            data_fechamento: (data as any).data_fechamento || null,
-            categoria: data.categoria as AnuncioCarregado['categoria'],
-            anunciante: data.anunciante as AnuncioCarregado['anunciante'],
+            id: String(adRow.id),
+            user_id: anuncioUserId,
+            titulo: String(adRow.titulo || ''),
+            preco: Number(adRow.preco ?? 0),
+            descricao: String(adRow.descricao || ''),
+            cidade: String(adRow.cidade || ''),
+            estado: String(adRow.estado || ''),
+            bairro: adRow.bairro ? String(adRow.bairro) : null,
+            created_at: String(adRow.created_at || new Date().toISOString()),
+            visualizacoes: Number(adRow.visualizacoes || 0),
+            modalidade: (adRow.modalidade as ModalidadeAnuncio) || 'venda',
+            aceita_troca: Boolean(adRow.aceita_troca),
+            itens_troca: adRow.itens_troca ? String(adRow.itens_troca) : null,
+            condicao_troca: (adRow.condicao_troca as CondicaoTroca | null) || null,
+            lance_inicial: adRow.lance_inicial != null ? Number(adRow.lance_inicial) : null,
+            lance_atual: adRow.lance_atual != null ? Number(adRow.lance_atual) : null,
+            incremento_minimo: adRow.incremento_minimo != null ? Number(adRow.incremento_minimo) : 10,
+            leilao_encerramento: adRow.leilao_encerramento ? String(adRow.leilao_encerramento) : null,
+            destacado_vitrine: Boolean(adRow.destacado_vitrine),
+            tipo_destaque: (adRow.tipo_destaque as 'global' | 'categoria' | null) || null,
+            status: (adRow.status as StatusAnuncio) || 'ativo',
+            comprador_id: adRow.comprador_id ? String(adRow.comprador_id) : null,
+            data_fechamento: adRow.data_fechamento ? String(adRow.data_fechamento) : null,
+            categoria: categoriaData,
+            anunciante: anuncianteData,
             fotos: fotosOrdenadas,
           };
 
@@ -539,8 +616,8 @@ export default function AnuncioDetalhePage() {
           }
 
           // Carrega reputação do anunciante
-          if (data.user_id) {
-            obterReputacaoUsuario(supabase, data.user_id).then(({ reputacao: rep }) => {
+          if (anuncioUserId) {
+            obterReputacaoUsuario(supabase, anuncioUserId).then(({ reputacao: rep }) => {
               if (rep) setReputacao(rep);
             });
           }
@@ -551,8 +628,8 @@ export default function AnuncioDetalhePage() {
               setLances(histLances);
             });
           }
-        } else {
-          // Fallback mock demonstrativo com modo leilão e permuta
+        } else if (!idEhUuidReal) {
+          // Fallback mock demonstrativo RESTRITO apenas a IDs de teste/demonstração (não-UUID)
           setAnuncio({
             id,
             user_id: 'mock_carlos',
@@ -621,9 +698,15 @@ export default function AnuncioDetalhePage() {
               usuario: { id: 'u3', nome: 'Juliana P.', avatar_url: null },
             },
           ]);
+        } else {
+          // UUID real do Supabase não encontrado (ou excluído) -> exibe estado "Anúncio não encontrado"
+          setAnuncio(null);
         }
       } catch (err) {
         console.error('Erro ao carregar detalhes do anúncio:', err);
+        if (idEhUuidReal) {
+          setAnuncio(null);
+        }
       } finally {
         setCarregando(false);
       }
@@ -937,7 +1020,23 @@ export default function AnuncioDetalhePage() {
 
             {/* PAINEL DE LEILÃO EM TEMPO REAL ESTILO EBAY */}
             {isLeilao ? (
-              <div className="rounded-2xl border-2 border-orange-300 bg-gradient-to-br from-orange-50/70 via-white to-orange-50/40 p-4 sm:p-5 space-y-4">
+              <div className="space-y-4">
+                <div>
+                  <h1 className="text-lg font-bold text-gray-900 leading-snug">
+                    {anuncio.titulo}
+                  </h1>
+                  <div className="flex items-center gap-3 text-xs text-gray-400 mt-1.5 flex-wrap">
+                    <span>Publicado {formatRelativeDate(anuncio.created_at)}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1 font-medium text-gray-600 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                      <Eye className="w-3.5 h-3.5 text-olx-purple" />
+                      <span>
+                        {anuncio.visualizacoes} {anuncio.visualizacoes === 1 ? 'visita' : 'visitas'}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div className="rounded-2xl border-2 border-orange-300 bg-gradient-to-br from-orange-50/70 via-white to-orange-50/40 p-4 sm:p-5 space-y-4">
                 {/* Header do Cronômetro Regressivo */}
                 <div className="flex items-center justify-between pb-3 border-b border-orange-200">
                   <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-orange-900">
@@ -1106,6 +1205,7 @@ export default function AnuncioDetalhePage() {
                     </div>
                   </div>
                 )}
+              </div>
               </div>
             ) : (
               <div>
