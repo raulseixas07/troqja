@@ -1219,7 +1219,7 @@ function ChatContent() {
           onEscrowLiberado={async (payload: CheckoutLiberadoPayload) => {
             try {
               await sendMessage(
-                `🔐 Pagamento em custódia liberado via Código PIN (${payload.codigoPin})! Valor líquido de ${formatCurrencyBRL(payload.liquidoVendedor)} desbloqueado ao vendedor.`
+                `🔐 Pagamento em custódia (${formatCurrencyBRL(payload.valorTotalComprador)}) confirmado e liberado via Código PIN (${payload.codigoPin})!`
               );
             } catch {
               // segue para avaliação mesmo se envio automático falhar

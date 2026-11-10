@@ -74,6 +74,38 @@ export function calcularSplitTroqJa(valorBase: number): SplitTroqJaResult {
 }
 
 /**
+ * Calcula o preço bruto que deve ser anunciado para que o vendedor receba
+ * exatamente `liquidoDesejado` após o desconto da taxa TroqJá (5% até R$ 1.000 / 7% acima).
+ */
+export function calcularPrecoBrutoParaLiquidoDesejado(liquidoDesejado: number): number {
+  if (!Number.isFinite(liquidoDesejado) || liquidoDesejado <= 0) {
+    return 0;
+  }
+
+  const alvo = roundCurrency(liquidoDesejado);
+  const cand5 = roundCurrency(alvo / (1 - TAXA_ATE_MIL_PERCENTUAL / 100));
+
+  if (cand5 <= LIMITE_FAIXA_TAXA_REDUZIDA) {
+    if (calcularSplitTroqJa(cand5).liquidoVendedor >= alvo) {
+      return cand5;
+    }
+    const cand5Ajustado = roundCurrency(cand5 + 0.01);
+    if (
+      cand5Ajustado <= LIMITE_FAIXA_TAXA_REDUZIDA &&
+      calcularSplitTroqJa(cand5Ajustado).liquidoVendedor >= alvo
+    ) {
+      return cand5Ajustado;
+    }
+  }
+
+  const cand7 = roundCurrency(alvo / (1 - TAXA_ACIMA_MIL_PERCENTUAL / 100));
+  if (calcularSplitTroqJa(cand7).liquidoVendedor >= alvo) {
+    return cand7;
+  }
+  return roundCurrency(cand7 + 0.01);
+}
+
+/**
  * Calcula o valor da parcela e total pago pelo comprador:
  * - Pix ou Cartão 1x: sem acréscimo (valorBase exato).
  * - Cartão 2x a 12x: repasse de 2,49% a.m. (Tabela Price / juros compostos da adquirente),

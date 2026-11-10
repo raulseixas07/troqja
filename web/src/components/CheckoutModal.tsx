@@ -13,7 +13,6 @@ import {
   QrCode,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Star,
   Unlock,
   X,
@@ -393,7 +392,6 @@ export default function CheckoutModal({
     }
   };
 
-  const splitExibido = splitConfirmado || splitAtual;
   const parcExibido = parcelamentoConfirmado || parcelamentoAtual;
 
   return (
@@ -486,8 +484,9 @@ export default function CheckoutModal({
                       {formatCurrencyBRL(valorBaseAtual)}
                     </span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-                    Taxa {splitAtual.percentualTaxa}% aplicada
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    Garantia TroqJá
                   </span>
                 </div>
               )}
@@ -622,67 +621,11 @@ export default function CheckoutModal({
 
                   {!parcExibido.semJuros && (
                     <p className="text-[11px] text-orange-900 leading-snug">
-                      💡 Os juros do parcelamento ({formatCurrencyBRL(parcExibido.jurosTotal)}) são repassados pela adquirente, garantindo que o vendedor receba o valor líquido intacto sem aumentar o preço do anúncio.
+                      💡 No Pix ou em 1x no cartão você paga o valor anunciado sem acréscimo. De 2x a 12x, os encargos do parcelamento ({formatCurrencyBRL(parcExibido.jurosTotal)}) são da adquirente.
                     </p>
                   )}
                 </div>
               )}
-
-              {/* Box de Transparência do Vendedor & Split Automático */}
-              <div className="p-4 rounded-2xl bg-slate-900 text-white space-y-2.5 border border-slate-800">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Transparência do Split Automático TroqJá
-                  </span>
-                  <span className="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded-full text-gray-200">
-                    Regra 5% ≤ R$ 1.000 • 7% &gt; R$ 1.000
-                  </span>
-                </div>
-
-                <p className="text-xs text-gray-200 leading-relaxed">
-                  Valor do Produto/Volta:{' '}
-                  <strong className="text-white">
-                    {formatCurrencyBRL(splitExibido.valorBase)}
-                  </strong>{' '}
-                  • Taxa de Intermediação TroqJá (5% até R$ 1.000 / 7% acima de R$ 1.000 —{' '}
-                  <strong className="text-orange-300">
-                    {splitExibido.percentualTaxa}% aplicada
-                  </strong>
-                  ):{' '}
-                  <strong className="text-orange-300">
-                    {formatCurrencyBRL(splitExibido.taxaPlataforma)}
-                  </strong>{' '}
-                  • Valor líquido protegido em custódia para o vendedor:{' '}
-                  <strong className="text-emerald-400">
-                    {formatCurrencyBRL(splitExibido.liquidoVendedor)}
-                  </strong>
-                  .
-                </p>
-
-                <div className="grid grid-cols-3 gap-2 pt-1 text-[11px]">
-                  <div className="bg-white/5 rounded-xl p-2 border border-white/10">
-                    <span className="text-gray-400 block">Valor Base</span>
-                    <strong className="text-white font-bold">
-                      {formatCurrencyBRL(splitExibido.valorBase)}
-                    </strong>
-                  </div>
-                  <div className="bg-white/5 rounded-xl p-2 border border-white/10">
-                    <span className="text-gray-400 block">
-                      Taxa TroqJá ({splitExibido.percentualTaxa}%)
-                    </span>
-                    <strong className="text-orange-300 font-bold">
-                      - {formatCurrencyBRL(splitExibido.taxaPlataforma)}
-                    </strong>
-                  </div>
-                  <div className="bg-emerald-500/15 rounded-xl p-2 border border-emerald-500/30">
-                    <span className="text-emerald-200 block">Líquido Vendedor</span>
-                    <strong className="text-emerald-300 font-black">
-                      {formatCurrencyBRL(splitExibido.liquidoVendedor)}
-                    </strong>
-                  </div>
-                </div>
-              </div>
 
               {erroCheckout && (
                 <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-bold flex items-center gap-2">
@@ -763,8 +706,7 @@ export default function CheckoutModal({
                       <p className="text-xs text-emerald-800">
                         Total pago: <strong>{formatCurrencyBRL(parcExibido.valorTotalComprador)}</strong>{' '}
                         ({metodoPagamento === 'pix' ? 'Pix' : `Cartão ${parcExibido.parcelas}x`}) •{' '}
-                        Líquido protegido do vendedor:{' '}
-                        <strong>{formatCurrencyBRL(splitExibido.liquidoVendedor)}</strong>.
+                        Valor 100% protegido em custódia até a confirmação da entrega.
                       </p>
                       <span className="inline-block text-[10px] font-bold uppercase tracking-wider bg-white/80 border border-emerald-200 text-emerald-800 px-2 py-0.5 rounded-md">
                         Gateway: {gatewayProvider === 'simulador_troqja' ? 'Simulador Oficial TroqJá (Sandbox)' : gatewayProvider}
@@ -824,8 +766,8 @@ export default function CheckoutModal({
                       Simulador de Liberação pelo Código PIN
                     </h3>
                     <p className="text-xs text-purple-900 leading-relaxed">
-                      Digite os 6 dígitos do Código PIN gerado (<strong>{formatarCodigoPin(codigoPin)}</strong>) para testar a liberação imediata do saldo líquido de{' '}
-                      <strong>{formatCurrencyBRL(splitExibido.liquidoVendedor)}</strong> ao vendedor e abrir a avaliação de 1 a 5 estrelas.
+                      Digite os 6 dígitos do Código PIN gerado (<strong>{formatarCodigoPin(codigoPin)}</strong>) para confirmar o recebimento do produto, liberar o pagamento de{' '}
+                      <strong>{formatCurrencyBRL(parcExibido.valorTotalComprador)}</strong> ao vendedor e abrir a avaliação de 1 a 5 estrelas.
                     </p>
                   </div>
 
@@ -873,7 +815,7 @@ export default function CheckoutModal({
                     ) : (
                       <>
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>Confirmar PIN e Liberar {formatCurrencyBRL(splitExibido.liquidoVendedor)}</span>
+                        <span>Confirmar PIN e Liberar Pagamento</span>
                       </>
                     )}
                   </button>
@@ -897,11 +839,7 @@ export default function CheckoutModal({
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
                   O Código PIN <strong>{formatarCodigoPin(codigoPin)}</strong> foi validado com sucesso.{' '}
-                  <strong className="text-emerald-700">
-                    {formatCurrencyBRL(splitExibido.liquidoVendedor)}
-                  </strong>{' '}
-                  já foi liberado na carteira de <strong>{vendedorNome}</strong> (taxa de{' '}
-                  {splitExibido.percentualTaxa}% = {formatCurrencyBRL(splitExibido.taxaPlataforma)} retida pelo TroqJá).
+                  O pagamento protegido da negociação com <strong>{vendedorNome}</strong> foi liberado com segurança.
                 </p>
               </div>
 

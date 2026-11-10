@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import {
   SUPABASE_TABLES,
   formatCEP,
+  formatCurrencyBRL,
   buscarEnderecoPorCEP,
   contarInteressadosDesejo,
   destacarAnuncioVitrine,
@@ -17,6 +18,10 @@ import {
   type ModalidadeAnuncio,
   type CondicaoTroca,
 } from '@olx-clone/shared';
+import {
+  calcularSplitTroqJa,
+  calcularPrecoBrutoParaLiquidoDesejado,
+} from '@/lib/checkout';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -44,6 +49,84 @@ const CATEGORIAS_FALLBACK = [
   { id: '8', nome: 'Vagas de emprego', slug: 'vagas-de-emprego' },
   { id: '9', nome: 'Serviços e outros', slug: 'servicos-e-outros' },
 ];
+
+function SimuladorRecebimentoVendedor({
+  valorTexto,
+  onAjustarPreco,
+  rotuloValor = 'Preço anunciado para o cliente',
+}: {
+  valorTexto: string;
+  onAjustarPreco: (novoValor: string) => void;
+  rotuloValor?: string;
+}) {
+  const valorNum = parseFloat(valorTexto.replace(',', '.'));
+  const valorValido = Number.isFinite(valorNum) && valorNum > 0 ? valorNum : 0;
+  const split = calcularSplitTroqJa(valorValido);
+  const precoAjustado =
+    valorValido > 0 ? calcularPrecoBrutoParaLiquidoDesejado(valorValido) : 0;
+
+  return (
+    <div className="mt-3 p-4 sm:p-5 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/70 via-white to-slate-50 shadow-2xs space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-emerald-100">
+        <span className="text-xs sm:text-sm font-black text-gray-900">
+          📊 Simulador de Recebimento do Vendedor (Pix e Cartão 1x à vista)
+        </span>
+        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+          Taxa {split.percentualTaxa}% ({valorValido <= 1000 ? 'até R$ 1.000' : 'acima de R$ 1.000'})
+        </span>
+      </div>
+
+      <div className="space-y-2 text-xs">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-gray-600">
+            {rotuloValor}:{' '}
+            <span className="text-[11px] text-gray-400">
+              (pelo Pix ou Cartão 1x, sem acréscimos)
+            </span>
+          </span>
+          <strong className="font-bold text-gray-900 shrink-0">
+            {formatCurrencyBRL(split.valorBase)}
+          </strong>
+        </div>
+
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-gray-600">
+            Taxa de intermediação e custódia TroqJá ({split.percentualTaxa}% — 5% até R$ 1.000 / 7% acima de R$ 1.000):
+          </span>
+          <strong className="font-bold text-orange-600 shrink-0">
+            - {formatCurrencyBRL(split.taxaPlataforma)}
+          </strong>
+        </div>
+
+        <div className="flex items-center justify-between gap-2 pt-2 border-t border-emerald-100">
+          <span className="font-extrabold text-gray-900">
+            Valor líquido que você recebe na sua carteira:
+          </span>
+          <strong className="text-base sm:text-lg font-black text-[#00C853] shrink-0">
+            {formatCurrencyBRL(split.liquidoVendedor)}
+          </strong>
+        </div>
+      </div>
+
+      {valorValido > 0 && (
+        <button
+          type="button"
+          onClick={() => onAjustarPreco(precoAjustado.toFixed(2))}
+          className="w-full py-2.5 px-3.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-300 text-emerald-900 font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-2xs"
+        >
+          <span>
+            ✨ Ajustar preço para eu receber {formatCurrencyBRL(valorValido)} limpos (anunciar por{' '}
+            {formatCurrencyBRL(precoAjustado)})
+          </span>
+        </button>
+      )}
+
+      <p className="text-[11px] text-gray-500 leading-snug">
+        No parcelamento de 2x a 12x no cartão, os juros são assumidos pelo comprador e você continua recebendo o mesmo valor líquido acima.
+      </p>
+    </div>
+  );
+}
 
 export default function AnunciarPage() {
   const router = useRouter();
@@ -636,6 +719,11 @@ export default function AnunciarPage() {
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-lg font-black text-gray-900 focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none"
                 />
               </div>
+
+              <SimuladorRecebimentoVendedor
+                valorTexto={preco}
+                onAjustarPreco={setPreco}
+              />
             </div>
           )}
 
@@ -693,6 +781,12 @@ export default function AnunciarPage() {
                   <p className="text-[11px] text-gray-500 mt-1">Valor somado a cada novo lance (padrão R$ 10).</p>
                 </div>
               </div>
+
+              <SimuladorRecebimentoVendedor
+                valorTexto={lanceInicial}
+                onAjustarPreco={setLanceInicial}
+                rotuloValor="Lance inicial anunciado para o cliente"
+              />
 
               {/* Duração do Leilão */}
               <div>
@@ -794,6 +888,14 @@ export default function AnunciarPage() {
                 <p className="text-[11px] text-gray-500 mt-1">
                   Serve de referência para nivelar os valores dos produtos envolvidos na negociação.
                 </p>
+
+                {modalidade === 'troca' && (
+                  <SimuladorRecebimentoVendedor
+                    valorTexto={preco}
+                    onAjustarPreco={setPreco}
+                    rotuloValor="Valor base/volta simulado na plataforma"
+                  />
+                )}
               </div>
 
               {/* Condição de Negociação (Chips) */}
