@@ -19,7 +19,9 @@ import {
   Package,
   Layers,
   Wallet,
+  ShoppingBag,
 } from 'lucide-react';
+import { checarSeUsuarioEVendedor } from '@/lib/checkout';
 
 export default function ContaPage() {
   const router = useRouter();
@@ -33,6 +35,20 @@ export default function ContaPage() {
 
   const [isSaving, setIsSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [isSeller, setIsSeller] = useState(false);
+
+  useEffect(() => {
+    const atualizar = () => {
+      setIsSeller(checarSeUsuarioEVendedor(user?.id));
+    };
+    atualizar();
+    window.addEventListener('troqja_perfil_updated', atualizar);
+    window.addEventListener('troqja_pedidos_updated', atualizar);
+    return () => {
+      window.removeEventListener('troqja_perfil_updated', atualizar);
+      window.removeEventListener('troqja_pedidos_updated', atualizar);
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     if (profile) {
@@ -191,28 +207,50 @@ export default function ContaPage() {
           </div>
 
           <div className="pt-4 border-t border-gray-100 space-y-2">
+            {/* Se for vendedor: exibe Painel de Receita em destaque */}
+            {isSeller && (
+              <Link
+                href="/conta/painel-receita"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
+              >
+                <Wallet className="w-4 h-4 text-emerald-400" />
+                <span>Painel de Receita do Vendedor</span>
+              </Link>
+            )}
+
+            {/* Minhas Compras: destaque para comprador ou item de acesso direto */}
             <Link
-              href="/conta/painel-receita"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
+              href="/conta/minhas-compras"
+              className={`w-full flex items-center justify-center gap-2 text-xs font-bold py-2.5 rounded-xl transition ${
+                !isSeller
+                  ? 'bg-olx-orange hover:bg-olx-orange-hover text-white shadow-xs'
+                  : 'bg-orange-50 hover:bg-orange-100 text-orange-900 border border-orange-200'
+              }`}
             >
-              <Wallet className="w-4 h-4 text-emerald-400" />
-              <span>Painel de Receita do Vendedor</span>
+              <ShoppingBag className="w-4 h-4 text-white" />
+              <span>Minhas Compras / Meus Pedidos</span>
             </Link>
 
-            <Link
-              href="/conta/meus-anuncios"
-              className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
-            >
-              <Layers className="w-4 h-4" />
-              <span>Gerenciar Meus Anúncios</span>
-            </Link>
+            {isSeller ? (
+              <Link
+                href="/conta/meus-anuncios"
+                className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+              >
+                <Layers className="w-4 h-4" />
+                <span>Gerenciar Meus Anúncios</span>
+              </Link>
+            ) : null}
 
             <Link
               href="/anunciar"
-              className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
+              className={`w-full flex items-center justify-center gap-2 text-xs font-bold py-2.5 rounded-xl transition ${
+                isSeller
+                  ? 'bg-olx-orange hover:bg-olx-orange-hover text-white shadow-xs'
+                  : 'bg-purple-50 hover:bg-purple-100 text-olx-purple border border-purple-200'
+              }`}
             >
               <Package className="w-4 h-4" />
-              <span>Criar Novo Anúncio</span>
+              <span>{isSeller ? 'Criar Novo Anúncio' : 'Começar a Vender (Criar Anúncio)'}</span>
             </Link>
           </div>
         </div>

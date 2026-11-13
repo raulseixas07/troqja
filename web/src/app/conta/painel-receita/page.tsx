@@ -315,7 +315,15 @@ export default function PainelReceitaVendedorPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link
+              href="/conta/minhas-compras"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-50 text-orange-900 hover:bg-orange-100 text-xs font-bold transition border border-orange-200"
+            >
+              <ShoppingBag className="w-4 h-4 text-[#FF6B00]" />
+              <span>Minhas Compras</span>
+            </Link>
+
             <button
               type="button"
               onClick={() => setModalRegrasAberto(true)}

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2,
   Copy,
@@ -33,6 +34,7 @@ import {
   gerarPixCopiaEColaSandbox,
   gerarTabelaParcelas,
   adicionarOuAtualizarPedidoVendedor,
+  adicionarOuAtualizarCompraComprador,
   type GatewayProvider,
   type MetodoPagamento,
   type ModalidadeCheckout,
@@ -182,6 +184,9 @@ export default function CheckoutModal({
   onEscrowLiberado,
 }: CheckoutModalProps) {
   const router = useRouter();
+  const { user } = useAuth();
+
+  const isVendedor = Boolean(user?.id && anuncio.user_id && user.id === anuncio.user_id);
 
   const valorPadrao = useMemo(() => {
     if (typeof valorInicial === 'number' && valorInicial > 0) {
@@ -367,6 +372,22 @@ export default function CheckoutModal({
         parcelas: parcFinal.parcelas,
       });
 
+      // Registra também nas compras do comprador
+      adicionarOuAtualizarCompraComprador({
+        id: txId,
+        anuncioId: anuncio.id,
+        tituloProduto: anuncio.titulo,
+        vendedorNome,
+        vendedorId: anuncio.user_id,
+        dataHoraCriacao: new Date().toISOString(),
+        dataHoraPagamento: new Date().toISOString(),
+        codigoPin: pinGerado,
+        valorTotal: parcFinal.valorTotalComprador,
+        metodoPagamento,
+        parcelas: parcFinal.parcelas,
+        status: 'aguardando_pin',
+      });
+
       setEtapa('custodia');
       setAbaCustodia('resumo_pin');
     } catch (err: unknown) {
@@ -439,8 +460,24 @@ export default function CheckoutModal({
         parcelas: parcFinal.parcelas,
       });
 
+      // Atualiza também o pedido nas compras do comprador
+      adicionarOuAtualizarCompraComprador({
+        id: transacaoId || `tx-${Date.now()}`,
+        anuncioId: anuncio.id,
+        tituloProduto: anuncio.titulo,
+        vendedorNome,
+        vendedorId: anuncio.user_id,
+        valorTotal: parcFinal.valorTotalComprador,
+        status: 'pin_verified_blocked_7d',
+        pinVerifiedAt: agoraIso,
+        releaseDate: releaseDateIso,
+        codigoPin,
+        metodoPagamento,
+        parcelas: parcFinal.parcelas,
+      });
+
       setDadosComprovanteD7({
-        valorBruto: splitFinal.valorBase,
+        valorBruto: parcFinal.valorTotalComprador,
         percentualTaxa: splitFinal.percentualTaxa,
         valorTaxa: splitFinal.taxaPlataforma,
         valorLiquido: splitFinal.liquidoVendedor,
@@ -456,7 +493,7 @@ export default function CheckoutModal({
     }
   };
 
-  const handleIrParaPainelReceita = () => {
+  const handleAcaoPrincipalModal = () => {
     const splitFinal = splitConfirmado || splitAtual;
     const parcFinal = parcelamentoConfirmado || parcelamentoAtual;
     onClose();
@@ -474,7 +511,12 @@ export default function CheckoutModal({
         parcelas: parcFinal.parcelas,
       });
     }
-    router.push('/conta/painel-receita');
+
+    if (isVendedor) {
+      router.push('/conta/painel-receita');
+    } else {
+      router.push(`/conta/minhas-compras?pedidoId=${encodeURIComponent(transacaoId)}`);
+    }
   };
 
   const parcExibido = parcelamentoConfirmado || parcelamentoAtual;
@@ -928,52 +970,40 @@ export default function CheckoutModal({
                 </div>
               </div>
 
-              {/* Box de Segurança para o Vendedor */}
+              {/* Box de Segurança no Encontro */}
               <div className="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 space-y-1.5 text-xs text-emerald-950 leading-relaxed">
                 <div className="flex items-center gap-1.5 font-black text-emerald-900 text-xs sm:text-sm">
                   <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-                  <span>Atenção Vendedor:</span>
+                  <span>Entrega Confirmada com Segurança:</span>
                 </div>
                 <p>
-                  O código PIN foi validado! Você já pode entregar o produto ao comprador com total segurança. O seu valor líquido já está garantido no seu Painel de Receita como Saldo Bloqueado e será liberado automaticamente para saque em 7 dias ({formatarDataBR(dadosComprovanteD7.releaseDate)}).
+                  O código PIN foi validado! O vendedor já pode entregar o produto com total segurança. O valor pago está registrado no sistema com liberação programada após o ciclo de garantia de 7 dias ({formatarDataBR(dadosComprovanteD7.releaseDate)}).
                 </p>
               </div>
 
-              {/* Resumo Financeiro Transparente do Recibo */}
+              {/* Resumo Financeiro Transparente do Recibo (Sem taxas do vendedor) */}
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-2.5">
                 <span className="text-[11px] font-black uppercase tracking-wider text-gray-500 block pb-1 border-b border-gray-200">
                   Resumo Financeiro do Recibo
                 </span>
-                <div className="space-y-1.5 text-xs">
-                  <div className="flex items-center justify-between text-gray-700">
-                    <span>Valor Pago pelo Comprador (Bruto):</span>
-                    <strong className="font-mono text-sm text-gray-900">
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-gray-800">
+                    <span className="font-bold">Valor Pago pelo Comprador (Bruto):</span>
+                    <strong className="font-mono text-sm text-gray-950 font-black">
                       {formatCurrencyBRL(dadosComprovanteD7.valorBruto)}
                     </strong>
                   </div>
-                  <div className="flex items-center justify-between text-orange-700">
-                    <span>Taxa de Proteção TroqJá ({dadosComprovanteD7.percentualTaxa}%):</span>
-                    <strong className="font-mono text-sm">
-                      - {formatCurrencyBRL(dadosComprovanteD7.valorTaxa)}
-                    </strong>
-                  </div>
-                  <div className="pt-2 border-t border-gray-200 flex items-center justify-between text-emerald-900">
-                    <span className="font-black text-sm">Valor Líquido Garantido ao Vendedor:</span>
-                    <strong className="font-mono text-base sm:text-lg font-black text-emerald-700">
-                      {formatCurrencyBRL(dadosComprovanteD7.valorLiquido)}
-                    </strong>
-                  </div>
-                  <div className="pt-1.5 flex items-center justify-between text-[11px] text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <KeyRound className="w-3.5 h-3.5 text-gray-500" />
+                  <div className="flex items-center justify-between text-gray-700">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
                       Registro do PIN Presencial:
                     </span>
                     <strong className="font-mono text-gray-900">
                       {formatarDataHoraBR(dadosComprovanteD7.pinVerifiedAt)}
                     </strong>
                   </div>
-                  <div className="pt-1 flex items-center justify-between text-[11px] text-gray-600">
-                    <span className="flex items-center gap-1">
+                  <div className="flex items-center justify-between text-gray-700">
+                    <span className="flex items-center gap-1.5 font-medium">
                       <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                       Liberação Programada (D+7):
                     </span>
@@ -1019,15 +1049,26 @@ export default function CheckoutModal({
                 )}
               </div>
 
-              {/* Ação Principal: Abrir Painel de Receita do Vendedor */}
-              <button
-                type="button"
-                onClick={handleIrParaPainelReceita}
-                className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white font-black text-sm shadow-xl transition flex items-center justify-center gap-2 group cursor-pointer"
-              >
-                <BarChart3 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition" />
-                <span>📊 Abrir Painel de Receita do Vendedor</span>
-              </button>
+              {/* Ação Principal no Rodapé: Visão Comprador vs Vendedor */}
+              {isVendedor ? (
+                <button
+                  type="button"
+                  onClick={handleAcaoPrincipalModal}
+                  className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white font-black text-sm shadow-xl transition flex items-center justify-center gap-2 group cursor-pointer"
+                >
+                  <BarChart3 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition" />
+                  <span>📊 Abrir Painel de Receita do Vendedor</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleAcaoPrincipalModal}
+                  className="w-full py-3.5 px-5 rounded-2xl bg-[#FF6B00] hover:bg-[#E65A00] text-white font-black text-sm shadow-xl transition flex items-center justify-center gap-2 group cursor-pointer"
+                >
+                  <ShoppingBag className="w-4 h-4 text-white group-hover:scale-110 transition" />
+                  <span>🛍️ Ver Detalhes do Meu Pedido</span>
+                </button>
+              )}
             </div>
           )}
         </div>

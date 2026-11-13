@@ -536,3 +536,243 @@ export function calcularTotaisCarteira(pedidos: PedidoVendedor[]): TotaisCarteir
     gmvTotalBruto: roundCurrency(gmvTotalBruto),
   };
 }
+
+/**
+ * ==============================================================================
+ * FLUXO DO COMPRADOR - MINHAS COMPRAS E DETALHES DO PEDIDO
+ * ==============================================================================
+ */
+
+export interface PedidoComprador {
+  id: string;
+  anuncioId: string;
+  tituloProduto: string;
+  fotoUrl?: string;
+  categoria?: string;
+  condicao?: string;
+  vendedorNome: string;
+  vendedorId?: string;
+  dataHoraCriacao: string; // ISO
+  dataHoraPagamento: string; // ISO
+  pinVerifiedAt?: string | null;
+  releaseDate?: string | null; // D+7 ISO
+  codigoPin: string;
+  valorTotal: number;
+  metodoPagamento: MetodoPagamento;
+  parcelas: number;
+  status: 'aguardando_pin' | 'pin_verified_blocked_7d' | 'liberado_vendedor';
+  reembolsoSolicitado?: boolean;
+}
+
+export const STORAGE_KEY_COMPRAS_COMPRADOR = 'troqja_minhas_compras_v1';
+
+export function obterComprasCompradorMockIniciais(): PedidoComprador[] {
+  const agora = Date.now();
+  const umDia = 24 * 60 * 60 * 1000;
+
+  return [
+    {
+      id: 'ped-comp-001',
+      anuncioId: 'anuncio-iphone-13',
+      tituloProduto: 'iPhone 13 128GB Estelar Impecável na Caixa com NF',
+      fotoUrl: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&auto=format&fit=crop&q=80',
+      categoria: 'Smartphones e Celulares',
+      condicao: 'Usado - Excelente',
+      vendedorNome: 'raulseixas.teste',
+      vendedorId: 'usr-vendedor-raul',
+      dataHoraCriacao: new Date(agora - 2 * umDia).toISOString(),
+      dataHoraPagamento: new Date(agora - 2 * umDia + 5 * 60 * 1000).toISOString(),
+      pinVerifiedAt: new Date(agora - 2 * umDia + 45 * 60 * 1000).toISOString(),
+      releaseDate: new Date(agora + 5 * umDia).toISOString(),
+      codigoPin: '748291',
+      valorTotal: 2450.0,
+      metodoPagamento: 'pix',
+      parcelas: 1,
+      status: 'pin_verified_blocked_7d',
+    },
+    {
+      id: 'ped-comp-002',
+      anuncioId: 'anuncio-ps5-slim',
+      tituloProduto: 'PlayStation 5 Slim 1TB com 2 Controles DualSense',
+      fotoUrl: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=400&auto=format&fit=crop&q=80',
+      categoria: 'Videogames e Consoles',
+      condicao: 'Semi-novo',
+      vendedorNome: 'carlos.games',
+      vendedorId: 'usr-carlos-02',
+      dataHoraCriacao: new Date(agora - 4 * 60 * 60 * 1000).toISOString(),
+      dataHoraPagamento: new Date(agora - 4 * 60 * 60 * 1000 + 3 * 60 * 1000).toISOString(),
+      pinVerifiedAt: null,
+      releaseDate: null,
+      codigoPin: '819432',
+      valorTotal: 3200.0,
+      metodoPagamento: 'cartao_credito',
+      parcelas: 6,
+      status: 'aguardando_pin',
+    },
+    {
+      id: 'ped-comp-003',
+      anuncioId: 'anuncio-bike-caloi',
+      tituloProduto: 'Bicicleta Caloi Vulcan Aro 29 Freio a Disco 21V',
+      fotoUrl: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400&auto=format&fit=crop&q=80',
+      categoria: 'Esportes e Ciclismo',
+      condicao: 'Usado',
+      vendedorNome: 'mariana.bikes',
+      vendedorId: 'usr-mari-03',
+      dataHoraCriacao: new Date(agora - 14 * umDia).toISOString(),
+      dataHoraPagamento: new Date(agora - 14 * umDia + 2 * 60 * 1000).toISOString(),
+      pinVerifiedAt: new Date(agora - 13 * umDia).toISOString(),
+      releaseDate: new Date(agora - 6 * umDia).toISOString(),
+      codigoPin: '302914',
+      valorTotal: 980.0,
+      metodoPagamento: 'pix',
+      parcelas: 1,
+      status: 'liberado_vendedor',
+    },
+  ];
+}
+
+export function carregarComprasComprador(): PedidoComprador[] {
+  if (typeof window === 'undefined') {
+    return obterComprasCompradorMockIniciais();
+  }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_COMPRAS_COMPRADOR);
+    if (!raw) {
+      const iniciais = obterComprasCompradorMockIniciais();
+      localStorage.setItem(STORAGE_KEY_COMPRAS_COMPRADOR, JSON.stringify(iniciais));
+      return iniciais;
+    }
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+    const fallback = obterComprasCompradorMockIniciais();
+    localStorage.setItem(STORAGE_KEY_COMPRAS_COMPRADOR, JSON.stringify(fallback));
+    return fallback;
+  } catch {
+    return obterComprasCompradorMockIniciais();
+  }
+}
+
+export function salvarComprasComprador(compras: PedidoComprador[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY_COMPRAS_COMPRADOR, JSON.stringify(compras));
+    window.dispatchEvent(new CustomEvent('troqja_compras_updated'));
+  } catch {
+    // ignore
+  }
+}
+
+export function adicionarOuAtualizarCompraComprador(
+  compra: Partial<PedidoComprador> & { id: string }
+): PedidoComprador[] {
+  const compras = carregarComprasComprador();
+  const index = compras.findIndex((c) => c.id === compra.id);
+  let atualizados: PedidoComprador[];
+
+  if (index >= 0) {
+    const anterior = compras[index]!;
+    const merge: PedidoComprador = {
+      id: anterior.id,
+      anuncioId: compra.anuncioId || anterior.anuncioId,
+      tituloProduto: compra.tituloProduto || anterior.tituloProduto,
+      fotoUrl: compra.fotoUrl || anterior.fotoUrl,
+      categoria: compra.categoria || anterior.categoria,
+      condicao: compra.condicao || anterior.condicao,
+      vendedorNome: compra.vendedorNome || anterior.vendedorNome,
+      vendedorId: compra.vendedorId || anterior.vendedorId,
+      dataHoraCriacao: compra.dataHoraCriacao || anterior.dataHoraCriacao,
+      dataHoraPagamento: compra.dataHoraPagamento || anterior.dataHoraPagamento,
+      pinVerifiedAt: compra.pinVerifiedAt !== undefined ? compra.pinVerifiedAt : anterior.pinVerifiedAt,
+      releaseDate: compra.releaseDate !== undefined ? compra.releaseDate : anterior.releaseDate,
+      codigoPin: compra.codigoPin || anterior.codigoPin,
+      valorTotal: compra.valorTotal ?? anterior.valorTotal,
+      metodoPagamento: compra.metodoPagamento || anterior.metodoPagamento,
+      parcelas: compra.parcelas || anterior.parcelas,
+      status: compra.status || anterior.status,
+      reembolsoSolicitado: compra.reembolsoSolicitado ?? anterior.reembolsoSolicitado,
+    };
+    atualizados = [...compras];
+    atualizados[index] = merge;
+  } else {
+    const nova: PedidoComprador = {
+      id: compra.id,
+      anuncioId: compra.anuncioId || 'anuncio-demo',
+      tituloProduto: compra.tituloProduto || 'Produto TroqJá',
+      fotoUrl: compra.fotoUrl,
+      categoria: compra.categoria || 'Geral',
+      condicao: compra.condicao || 'Usado',
+      vendedorNome: compra.vendedorNome || 'Vendedor TroqJá',
+      vendedorId: compra.vendedorId,
+      dataHoraCriacao: compra.dataHoraCriacao || new Date().toISOString(),
+      dataHoraPagamento: compra.dataHoraPagamento || new Date().toISOString(),
+      pinVerifiedAt: compra.pinVerifiedAt || null,
+      releaseDate: compra.releaseDate || null,
+      codigoPin: compra.codigoPin || '123456',
+      valorTotal: compra.valorTotal || 100,
+      metodoPagamento: compra.metodoPagamento || 'pix',
+      parcelas: compra.parcelas || 1,
+      status: compra.status || 'aguardando_pin',
+      reembolsoSolicitado: false,
+    };
+    atualizados = [nova, ...compras];
+  }
+
+  salvarComprasComprador(atualizados);
+  return atualizados;
+}
+
+export function solicitarReembolsoCompra(pedidoId: string): PedidoComprador[] {
+  const compras = carregarComprasComprador();
+  const atualizados = compras.map((c) => {
+    if (c.id === pedidoId) {
+      return { ...c, reembolsoSolicitado: true };
+    }
+    return c;
+  });
+  salvarComprasComprador(atualizados);
+  return atualizados;
+}
+
+/**
+ * Checa se o usuário atual é vendedor (possui anúncios publicados ou vendas vinculadas)
+ */
+export function checarSeUsuarioEVendedor(userId?: string | null): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const flag = localStorage.getItem('troqja_perfil_vendedor_ativo');
+    if (flag === 'true') return true;
+    if (flag === 'false') return false;
+
+    // Se tiver anúncios cadastrados no storage de meus-anúncios
+    const rawMeusAnuncios = localStorage.getItem('olx_clone_meus_anuncios');
+    if (rawMeusAnuncios) {
+      const arr = JSON.parse(rawMeusAnuncios);
+      if (Array.isArray(arr) && arr.length > 0) return true;
+    }
+
+    // Se tiver pedidos no store de vendas do vendedor
+    const pedidos = carregarPedidosVendedor();
+    if (pedidos.length > 0 && userId) {
+      const hasVendas = pedidos.some(
+        (p) => p.vendedorId === userId || p.vendedorId === 'meu-usuario'
+      );
+      if (hasVendas) return true;
+    }
+  } catch {
+    // fallback
+  }
+
+  return false;
+}
+
+export function alternarPerfilVendedorStorage(ativo: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('troqja_perfil_vendedor_ativo', ativo ? 'true' : 'false');
+    window.dispatchEvent(new CustomEvent('troqja_perfil_updated'));
+  } catch {
+    // ignore
+  }
+}
