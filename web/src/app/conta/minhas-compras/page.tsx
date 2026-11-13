@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -20,7 +21,6 @@ import {
   ShieldCheck,
   ShoppingBag,
   User,
-  Wallet,
   X,
 } from 'lucide-react';
 import { formatCurrencyBRL } from '@olx-clone/shared';
@@ -32,13 +32,23 @@ import {
   formatarDataHoraBR,
   formatarCodigoPin,
   adicionarOuAtualizarCompraComprador,
+  checarSeContaECNPJ,
   type PedidoComprador,
 } from '@/lib/checkout';
 type TabFiltro = 'todos' | 'aguardando' | 'entregue_7d' | 'concluido';
 
 function MinhasComprasContent() {
+  const router = useRouter();
+  const { user, profile } = useAuth();
   const searchParams = useSearchParams();
   const pedidoIdParam = searchParams.get('pedidoId');
+
+  // Regra de Negócio: Contas CNPJ atuam exclusivamente como vendedoras
+  useEffect(() => {
+    if (checarSeContaECNPJ(user, profile)) {
+      router.replace('/conta/painel-receita');
+    }
+  }, [user, profile, router]);
 
   const [compras, setCompras] = useState<PedidoComprador[]>([]);
   const [tabAtiva, setTabAtiva] = useState<TabFiltro>('todos');
@@ -199,17 +209,6 @@ function MinhasComprasContent() {
                 Minhas Compras
               </h1>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/conta/painel-receita"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-bold text-gray-700 transition"
-              title="Alternar para Painel do Vendedor"
-            >
-              <Wallet className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden sm:inline">Visão Vendedor</span>
-            </Link>
           </div>
         </div>
 

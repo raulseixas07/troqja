@@ -3,30 +3,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Package, Sparkles, BarChart3, HelpCircle, Wallet, ShoppingBag } from 'lucide-react';
+import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Sparkles, BarChart3, HelpCircle, Wallet, ShoppingBag } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { checarSeUsuarioEVendedor } from '@/lib/checkout';
+import { checarSeContaECNPJ } from '@/lib/checkout';
 
 export function Navbar() {
   const router = useRouter();
   const { user, profile, signOut, unreadCount, unreadWishlistCount } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isSeller, setIsSeller] = useState(false);
+  const [isCnpj, setIsCnpj] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const atualizarPerfil = () => {
-      setIsSeller(checarSeUsuarioEVendedor(user?.id));
+      setIsCnpj(checarSeContaECNPJ(user, profile));
     };
     atualizarPerfil();
-    window.addEventListener('troqja_perfil_updated', atualizarPerfil);
-    window.addEventListener('troqja_pedidos_updated', atualizarPerfil);
+    window.addEventListener('troqja_tipo_conta_updated', atualizarPerfil);
+    window.addEventListener('storage', atualizarPerfil);
     return () => {
-      window.removeEventListener('troqja_perfil_updated', atualizarPerfil);
-      window.removeEventListener('troqja_pedidos_updated', atualizarPerfil);
+      window.removeEventListener('troqja_tipo_conta_updated', atualizarPerfil);
+      window.removeEventListener('storage', atualizarPerfil);
     };
-  }, [user?.id]);
+  }, [user, profile]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,85 +194,114 @@ export function Navbar() {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-1.5 z-50 animate-fadeIn">
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-200 py-1.5 z-50 animate-fadeIn">
                     <div className="px-3.5 py-2 border-b border-gray-100">
-                      <p className="text-xs font-bold text-gray-900 truncate">{profile?.nome || 'Minha Conta'}</p>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs font-bold text-gray-900 truncate">{profile?.nome || 'Minha Conta'}</p>
+                        <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${isCnpj ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'}`}>
+                          {isCnpj ? 'CNPJ' : 'CPF'}
+                        </span>
+                      </div>
                       <p className="text-[11px] text-gray-500 truncate">{user.email}</p>
                     </div>
 
-                    {/* Se for Vendedor: exibe Painel de Receita em destaque */}
-                    {isSeller && (
-                      <Link
-                        href="/conta/painel-receita"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-700 bg-emerald-50/70 hover:bg-emerald-100 hover:text-emerald-800 transition"
-                      >
-                        <Wallet className="w-4 h-4 text-emerald-600" />
-                        <span>Painel de Receita</span>
-                      </Link>
+                    {isCnpj ? (
+                      /* MENU EXCLUSIVO PARA CONTAS CADASTRADAS COMO CNPJ (LOJISTA) */
+                      <>
+                        {/* 1. Painel de Receita */}
+                        <Link
+                          href="/conta/painel-receita"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition"
+                        >
+                          <Wallet className="w-4 h-4 text-emerald-600" />
+                          <span>💰 Painel de Receita</span>
+                        </Link>
+
+                        {/* 2. Painel Lojista CNPJ */}
+                        <Link
+                          href="/sobre?aba=lojistas"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-50 transition"
+                        >
+                          <BarChart3 className="w-4 h-4 text-blue-600" />
+                          <span>📊 Painel Lojista CNPJ</span>
+                        </Link>
+
+                        {/* 3. Meu Perfil */}
+                        <Link
+                          href="/conta"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
+                        >
+                          <UserCheck className="w-4 h-4 text-gray-400" />
+                          <span>👤 Meu Perfil</span>
+                        </Link>
+
+                        {/* 4. Sair da conta */}
+                        <button
+                          type="button"
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition border-t border-gray-100"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>🚪 Sair da conta</span>
+                        </button>
+                      </>
+                    ) : (
+                      /* MENU PARA CONTAS CPF (PESSOA FÍSICA) */
+                      <>
+                        {/* 1. Minhas Compras */}
+                        <Link
+                          href="/conta/minhas-compras"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-[#FF6B00] hover:bg-orange-50 transition"
+                        >
+                          <ShoppingBag className="w-4 h-4 text-[#FF6B00]" />
+                          <span>🛍️ Minhas Compras</span>
+                        </Link>
+
+                        {/* 2. Painel de Receita */}
+                        <Link
+                          href="/conta/painel-receita"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition"
+                        >
+                          <Wallet className="w-4 h-4 text-emerald-600" />
+                          <span>💰 Painel de Receita</span>
+                        </Link>
+
+                        {/* 3. Meu Perfil */}
+                        <Link
+                          href="/conta"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
+                        >
+                          <UserCheck className="w-4 h-4 text-gray-400" />
+                          <span>👤 Meu Perfil</span>
+                        </Link>
+
+                        {/* 4. Lista de Desejos */}
+                        <Link
+                          href="/desejos"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                        >
+                          <Sparkles className="w-4 h-4 text-emerald-600" />
+                          <span>✨ Lista de Desejos</span>
+                        </Link>
+
+                        {/* 5. Sair da conta */}
+                        <button
+                          type="button"
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition border-t border-gray-100"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>🚪 Sair da conta</span>
+                        </button>
+                      </>
                     )}
-
-                    {/* Minhas Compras: destaque para comprador ou item essencial */}
-                    <Link
-                      href="/conta/minhas-compras"
-                      onClick={() => setDropdownOpen(false)}
-                      className={`flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold transition ${
-                        !isSeller
-                          ? 'text-[#FF6B00] bg-orange-50/70 hover:bg-orange-100 hover:text-orange-800'
-                          : 'text-gray-700 hover:bg-purple-50 hover:text-olx-purple'
-                      }`}
-                    >
-                      <ShoppingBag className={`w-4 h-4 ${!isSeller ? 'text-[#FF6B00]' : 'text-gray-400'}`} />
-                      <span>Minhas Compras</span>
-                    </Link>
-
-                    <Link
-                      href="/conta"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
-                    >
-                      <UserCheck className="w-4 h-4 text-gray-400" />
-                      <span>Meu Perfil</span>
-                    </Link>
-
-                    {/* Meus Anúncios exibido com destaque se for vendedor */}
-                    {isSeller && (
-                      <Link
-                        href="/conta/meus-anuncios"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
-                      >
-                        <Package className="w-4 h-4 text-gray-400" />
-                        <span>Meus Anúncios</span>
-                      </Link>
-                    )}
-
-                    <Link
-                      href="/desejos"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
-                    >
-                      <Sparkles className="w-4 h-4 text-emerald-600" />
-                      <span>Lista de Desejos</span>
-                    </Link>
-
-                    <Link
-                      href="/sobre?aba=lojistas"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 transition border-t border-gray-100"
-                    >
-                      <BarChart3 className="w-4 h-4 text-emerald-600" />
-                      <span>Painel Lojista CNPJ</span>
-                    </Link>
-
-                    <button
-                      type="button"
-                      onClick={handleSignOut}
-                      className="w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition border-t border-gray-100"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Sair da conta</span>
-                    </button>
                   </div>
                 )}
               </div>

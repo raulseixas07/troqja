@@ -20,8 +20,9 @@ import {
   Layers,
   Wallet,
   ShoppingBag,
+  BarChart3,
 } from 'lucide-react';
-import { checarSeUsuarioEVendedor } from '@/lib/checkout';
+import { checarSeContaECNPJ } from '@/lib/checkout';
 
 export default function ContaPage() {
   const router = useRouter();
@@ -35,20 +36,20 @@ export default function ContaPage() {
 
   const [isSaving, setIsSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [isSeller, setIsSeller] = useState(false);
+  const [isCnpj, setIsCnpj] = useState(false);
 
   useEffect(() => {
     const atualizar = () => {
-      setIsSeller(checarSeUsuarioEVendedor(user?.id));
+      setIsCnpj(checarSeContaECNPJ(user, profile));
     };
     atualizar();
-    window.addEventListener('troqja_perfil_updated', atualizar);
-    window.addEventListener('troqja_pedidos_updated', atualizar);
+    window.addEventListener('troqja_tipo_conta_updated', atualizar);
+    window.addEventListener('storage', atualizar);
     return () => {
-      window.removeEventListener('troqja_perfil_updated', atualizar);
-      window.removeEventListener('troqja_pedidos_updated', atualizar);
+      window.removeEventListener('troqja_tipo_conta_updated', atualizar);
+      window.removeEventListener('storage', atualizar);
     };
-  }, [user?.id]);
+  }, [user, profile]);
 
   useEffect(() => {
     if (profile) {
@@ -183,6 +184,9 @@ export default function ContaPage() {
             </div>
             <h2 className="text-lg font-bold text-gray-900">{profile?.nome || 'Usuário TroqJá'}</h2>
             <p className="text-xs text-gray-500">{user.email}</p>
+            <span className={`inline-block mt-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isCnpj ? 'bg-blue-100 text-blue-900 border border-blue-200' : 'bg-orange-100 text-orange-950 border border-orange-200'}`}>
+              {isCnpj ? 'Conta Lojista CNPJ' : 'Conta Pessoa Física (CPF)'}
+            </span>
           </div>
 
           <div className="pt-4 border-t border-gray-100 space-y-2 text-xs text-gray-600">
@@ -207,51 +211,77 @@ export default function ContaPage() {
           </div>
 
           <div className="pt-4 border-t border-gray-100 space-y-2">
-            {/* Se for vendedor: exibe Painel de Receita em destaque */}
-            {isSeller && (
-              <Link
-                href="/conta/painel-receita"
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
-              >
-                <Wallet className="w-4 h-4 text-emerald-400" />
-                <span>Painel de Receita do Vendedor</span>
-              </Link>
+            {isCnpj ? (
+              /* AÇÕES PARA CONTAS CNPJ (LOJISTA) - SEM MINHAS COMPRAS */
+              <>
+                <Link
+                  href="/conta/painel-receita"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
+                >
+                  <Wallet className="w-4 h-4 text-emerald-400" />
+                  <span>💰 Painel de Receita do Vendedor</span>
+                </Link>
+
+                <Link
+                  href="/sobre?aba=lojistas"
+                  className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-900 text-xs font-bold py-2.5 rounded-xl border border-blue-200 transition"
+                >
+                  <BarChart3 className="w-4 h-4 text-blue-600" />
+                  <span>📊 Painel Lojista CNPJ</span>
+                </Link>
+
+                <Link
+                  href="/conta/meus-anuncios"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>Gerenciar Meus Anúncios</span>
+                </Link>
+
+                <Link
+                  href="/anunciar"
+                  className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
+                >
+                  <Package className="w-4 h-4" />
+                  <span>Criar Novo Anúncio</span>
+                </Link>
+              </>
+            ) : (
+              /* AÇÕES PARA CONTAS CPF (PESSOA FÍSICA) - COMPRADOR E VENDEDOR */
+              <>
+                <Link
+                  href="/conta/minhas-compras"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs font-black py-2.5 rounded-xl shadow-sm transition"
+                >
+                  <ShoppingBag className="w-4 h-4 text-white" />
+                  <span>🛍️ Minhas Compras</span>
+                </Link>
+
+                <Link
+                  href="/conta/painel-receita"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
+                >
+                  <Wallet className="w-4 h-4 text-emerald-400" />
+                  <span>💰 Painel de Receita do Vendedor</span>
+                </Link>
+
+                <Link
+                  href="/conta/meus-anuncios"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>Gerenciar Meus Anúncios</span>
+                </Link>
+
+                <Link
+                  href="/anunciar"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                >
+                  <Package className="w-4 h-4" />
+                  <span>Criar Novo Anúncio</span>
+                </Link>
+              </>
             )}
-
-            {/* Minhas Compras: destaque para comprador ou item de acesso direto */}
-            <Link
-              href="/conta/minhas-compras"
-              className={`w-full flex items-center justify-center gap-2 text-xs font-bold py-2.5 rounded-xl transition ${
-                !isSeller
-                  ? 'bg-olx-orange hover:bg-olx-orange-hover text-white shadow-xs'
-                  : 'bg-orange-50 hover:bg-orange-100 text-orange-900 border border-orange-200'
-              }`}
-            >
-              <ShoppingBag className="w-4 h-4 text-white" />
-              <span>Minhas Compras / Meus Pedidos</span>
-            </Link>
-
-            {isSeller ? (
-              <Link
-                href="/conta/meus-anuncios"
-                className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
-              >
-                <Layers className="w-4 h-4" />
-                <span>Gerenciar Meus Anúncios</span>
-              </Link>
-            ) : null}
-
-            <Link
-              href="/anunciar"
-              className={`w-full flex items-center justify-center gap-2 text-xs font-bold py-2.5 rounded-xl transition ${
-                isSeller
-                  ? 'bg-olx-orange hover:bg-olx-orange-hover text-white shadow-xs'
-                  : 'bg-purple-50 hover:bg-purple-100 text-olx-purple border border-purple-200'
-              }`}
-            >
-              <Package className="w-4 h-4" />
-              <span>{isSeller ? 'Criar Novo Anúncio' : 'Começar a Vender (Criar Anúncio)'}</span>
-            </Link>
           </div>
         </div>
 

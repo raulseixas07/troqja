@@ -736,42 +736,64 @@ export function solicitarReembolsoCompra(pedidoId: string): PedidoComprador[] {
 }
 
 /**
- * Checa se o usuário atual é vendedor (possui anúncios publicados ou vendas vinculadas)
+ * Checa se o usuário atual é uma conta cadastrada como CNPJ / Lojista.
+ * Contas CNPJ atuam exclusivamente como vendedoras/lojistas e não compram.
+ * Contas CPF atuam tanto como compradoras quanto como vendedoras.
  */
-export function checarSeUsuarioEVendedor(userId?: string | null): boolean {
-  if (typeof window === 'undefined') return true;
-  try {
-    const flag = localStorage.getItem('troqja_perfil_vendedor_ativo');
-    if (flag === 'true') return true;
-    if (flag === 'false') return false;
+export function checarSeContaECNPJ(
+  user?: { id?: string; email?: string; user_metadata?: Record<string, unknown> } | null,
+  profile?: Record<string, unknown> | null
+): boolean {
+  if (typeof window === 'undefined') return false;
 
-    // Se tiver anúncios cadastrados no storage de meus-anúncios
-    const rawMeusAnuncios = localStorage.getItem('olx_clone_meus_anuncios');
-    if (rawMeusAnuncios) {
-      const arr = JSON.parse(rawMeusAnuncios);
-      if (Array.isArray(arr) && arr.length > 0) return true;
+  try {
+    // 1. Verificação explícita no localStorage (troca de modo de conta)
+    const tipoStorage = localStorage.getItem('troqja_tipo_conta');
+    if (tipoStorage === 'cnpj') return true;
+    if (tipoStorage === 'cpf') return false;
+
+    // 2. Verificação se possui pré-cadastro CNPJ aprovado ou ativo
+    const preCadastro = localStorage.getItem('troqja_pre_cadastro_cnpj');
+    if (preCadastro) {
+      try {
+        const dados = JSON.parse(preCadastro);
+        if (dados?.cnpj && dados?.ativo !== false) {
+          // Se o e-mail ou sessão indicar que o usuário está no modo lojista CNPJ
+          if (dados?.modoLojistaAtivo === true) return true;
+        }
+      } catch {
+        // ignore
+      }
     }
 
-    // Se tiver pedidos no store de vendas do vendedor
-    const pedidos = carregarPedidosVendedor();
-    if (pedidos.length > 0 && userId) {
-      const hasVendas = pedidos.some(
-        (p) => p.vendedorId === userId || p.vendedorId === 'meu-usuario'
-      );
-      if (hasVendas) return true;
+    // 3. Verificação no metadata do usuário Supabase ou Profile
+    if (profile && (profile.tipo_conta === 'cnpj' || Boolean(profile.cnpj))) {
+      return true;
+    }
+
+    if (user?.user_metadata && user.user_metadata.tipo_conta === 'cnpj') {
+      return true;
+    }
+
+    // 4. Verificação por convenção de e-mail de teste (ex: cnpj@..., lojista@...)
+    if (user?.email) {
+      const emailLower = user.email.toLowerCase();
+      if (emailLower.startsWith('cnpj') || emailLower.startsWith('lojista') || emailLower.includes('+cnpj@') || emailLower.includes('+lojista@')) {
+        return true;
+      }
     }
   } catch {
-    // fallback
+    // fallback seguro: CPF
   }
 
   return false;
 }
 
-export function alternarPerfilVendedorStorage(ativo: boolean): void {
+export function alternarTipoContaStorage(tipo: 'cpf' | 'cnpj'): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem('troqja_perfil_vendedor_ativo', ativo ? 'true' : 'false');
-    window.dispatchEvent(new CustomEvent('troqja_perfil_updated'));
+    localStorage.setItem('troqja_tipo_conta', tipo);
+    window.dispatchEvent(new CustomEvent('troqja_tipo_conta_updated'));
   } catch {
     // ignore
   }
