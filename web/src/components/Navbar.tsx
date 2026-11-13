@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Package, Sparkles, BarChart3, HelpCircle } from 'lucide-react';
+import { Search, MapPin, MessageSquare, PlusCircle, User as UserIcon, LogOut, ChevronDown, UserCheck, Package, Sparkles, BarChart3, HelpCircle, Wallet } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function Navbar() {
@@ -184,6 +184,15 @@ export function Navbar() {
                       <p className="text-xs font-bold text-gray-900 truncate">{profile?.nome || 'Minha Conta'}</p>
                       <p className="text-[11px] text-gray-500 truncate">{user.email}</p>
                     </div>
+
+                    <Link
+                      href="/conta/painel-receita"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-emerald-700 bg-emerald-50/50 hover:bg-emerald-100 hover:text-emerald-800 transition"
+                    >
+                      <Wallet className="w-4 h-4 text-emerald-600" />
+                      <span>Painel de Receita</span>
+                    </Link>
 
                     <Link
                       href="/conta"

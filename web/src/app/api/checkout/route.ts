@@ -335,7 +335,7 @@ export async function PATCH(req: NextRequest) {
       });
     }
 
-    // Validação do Código PIN de 6 dígitos para liberação ao vendedor
+    // Validação do Código PIN de 6 dígitos para registrar entrega e reter saldo em garantia 7D
     const pinLimpo = (body.pinDigitado || '').replace(/\D/g, '');
     if (pinLimpo.length !== 6) {
       return NextResponse.json(
@@ -347,42 +347,53 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    if (supabaseAdmin) {
-      const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc(
-        'liberar_escrow_por_pin',
-        {
-          p_transacao_id: transacaoId,
-          p_codigo_pin: pinLimpo,
-        }
-      );
+    const agora = new Date();
+    const pinVerifiedAt = agora.toISOString();
+    const releaseDate = new Date(agora.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
-      if (!rpcError && rpcData && typeof rpcData === 'object') {
-        const result = rpcData as {
-          success?: boolean;
-          status?: StatusEscrow;
-          liquido_vendedor?: number;
-          liberado_em?: string;
-          message?: string;
-        };
-        if (result.success) {
-          return NextResponse.json({
-            success: true,
-            transacaoId,
-            status: result.status || 'liberado_vendedor',
-            liquidoVendedor: result.liquido_vendedor,
-            liberadoEm: result.liberado_em || new Date().toISOString(),
-            message:
-              result.message ||
-              'PIN validado com sucesso! Saldo líquido liberado ao vendedor.',
-          });
+    if (supabaseAdmin) {
+      try {
+        const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc(
+          'liberar_escrow_por_pin',
+          {
+            p_transacao_id: transacaoId,
+            p_codigo_pin: pinLimpo,
+          }
+        );
+
+        if (!rpcError && rpcData && typeof rpcData === 'object') {
+          const result = rpcData as {
+            success?: boolean;
+            status?: StatusEscrow;
+            liquido_vendedor?: number;
+            liberado_em?: string;
+            pin_verified_at?: string;
+            release_date?: string;
+            message?: string;
+          };
+          if (result.success) {
+            return NextResponse.json({
+              success: true,
+              transacaoId,
+              status: (result.status || 'pin_verified_blocked_7d') as StatusEscrow,
+              liquidoVendedor: result.liquido_vendedor,
+              pinVerifiedAt: result.pin_verified_at || pinVerifiedAt,
+              releaseDate: result.release_date || releaseDate,
+              message:
+                result.message ||
+                'PIN validado com sucesso! Entrega registrada e saldo transferido para o Saldo Bloqueado (Garantia 7 Dias).',
+            });
+          }
+          // Se a transação existe no DB e o PIN não bateu
+          if (result.message && !result.message.includes('não encontrada')) {
+            return NextResponse.json(
+              { success: false, error: result.message },
+              { status: 400 }
+            );
+          }
         }
-        // Se a transação existe no DB e o PIN não bateu
-        if (result.message && !result.message.includes('não encontrada')) {
-          return NextResponse.json(
-            { success: false, error: result.message },
-            { status: 400 }
-          );
-        }
+      } catch {
+        // segue para validação sandbox
       }
     }
 
@@ -401,9 +412,11 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({
       success: true,
       transacaoId,
-      status: 'liberado_vendedor' as StatusEscrow,
-      liberadoEm: new Date().toISOString(),
-      message: 'Código PIN validado! Saldo líquido desbloqueado imediatamente ao vendedor.',
+      status: 'pin_verified_blocked_7d' as StatusEscrow,
+      pinVerifiedAt,
+      releaseDate,
+      message:
+        'Código PIN validado com sucesso! Entrega confirmada. Saldo garantido como Bloqueado (Garantia 7 Dias) até a liberação automática.',
     });
   } catch (error) {
     const message =

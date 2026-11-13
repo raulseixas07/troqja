@@ -18,6 +18,7 @@ import {
   Loader2,
   Package,
   Layers,
+  Wallet,
 } from 'lucide-react';
 
 export default function ContaPage() {
@@ -190,6 +191,14 @@ export default function ContaPage() {
           </div>
 
           <div className="pt-4 border-t border-gray-100 space-y-2">
+            <Link
+              href="/conta/painel-receita"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white text-xs font-black py-2.5 rounded-xl shadow-xs transition"
+            >
+              <Wallet className="w-4 h-4 text-emerald-400" />
+              <span>Painel de Receita do Vendedor</span>
+            </Link>
+
             <Link
               href="/conta/meus-anuncios"
               className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   CheckCircle2,
   Copy,
@@ -18,14 +19,20 @@ import {
   X,
   ArrowLeftRight,
   AlertCircle,
+  BarChart3,
+  Calendar,
+  Sparkles,
 } from 'lucide-react';
 import { formatCurrencyBRL } from '@olx-clone/shared';
 import {
   calcularParcelamentoTroqJa,
   calcularSplitTroqJa,
   formatarCodigoPin,
+  formatarDataBR,
+  formatarDataHoraBR,
   gerarPixCopiaEColaSandbox,
   gerarTabelaParcelas,
+  adicionarOuAtualizarPedidoVendedor,
   type GatewayProvider,
   type MetodoPagamento,
   type ModalidadeCheckout,
@@ -174,6 +181,8 @@ export default function CheckoutModal({
   vendedorNome = 'Vendedor TroqJá',
   onEscrowLiberado,
 }: CheckoutModalProps) {
+  const router = useRouter();
+
   const valorPadrao = useMemo(() => {
     if (typeof valorInicial === 'number' && valorInicial > 0) {
       return valorInicial;
@@ -200,6 +209,8 @@ export default function CheckoutModal({
   const [erroPin, setErroPin] = useState<string | null>(null);
   const [copiadoPix, setCopiadoPix] = useState(false);
   const [copiadoPin, setCopiadoPin] = useState(false);
+  const [avaliacaoEstrelas, setAvaliacaoEstrelas] = useState<number>(5);
+  const [avaliacaoEnviada, setAvaliacaoEnviada] = useState(false);
 
   // Dados da transação criada em custódia
   const [transacaoId, setTransacaoId] = useState<string>('');
@@ -210,6 +221,14 @@ export default function CheckoutModal({
   const [splitConfirmado, setSplitConfirmado] = useState<SplitTroqJaResult | null>(null);
   const [parcelamentoConfirmado, setParcelamentoConfirmado] =
     useState<ParcelamentoOption | null>(null);
+  const [dadosComprovanteD7, setDadosComprovanteD7] = useState<{
+    valorBruto: number;
+    percentualTaxa: 5 | 7;
+    valorTaxa: number;
+    valorLiquido: number;
+    releaseDate: string;
+    pinVerifiedAt: string;
+  } | null>(null);
 
   // Sincroniza quando modal abre com novos props
   useEffect(() => {
@@ -224,12 +243,15 @@ export default function CheckoutModal({
     setErroPin(null);
     setCopiadoPix(false);
     setCopiadoPin(false);
+    setAvaliacaoEstrelas(5);
+    setAvaliacaoEnviada(false);
     setTransacaoId('');
     setPixCopiaEColaApi('');
     setCodigoPin('');
     setPinDigitado('');
     setSplitConfirmado(null);
     setParcelamentoConfirmado(null);
+    setDadosComprovanteD7(null);
   }, [isOpen, modalidadeInicial, valorPadrao]);
 
   const valorBaseAtual = useMemo(() => {
@@ -314,12 +336,37 @@ export default function CheckoutModal({
         return;
       }
 
-      setTransacaoId(data.transacaoId || `tx-${Date.now()}`);
+      const txId = data.transacaoId || `tx-${Date.now()}`;
+      const pinGerado = data.codigoPin || '482915';
+      const splitFinal = data.split || splitAtual;
+      const parcFinal = data.parcelamento || parcelamentoAtual;
+
+      setTransacaoId(txId);
       setGatewayProvider(data.gatewayProvider || 'simulador_troqja');
       if (data.pixCopiaECola) setPixCopiaEColaApi(data.pixCopiaECola);
-      setCodigoPin(data.codigoPin || '482915');
-      setSplitConfirmado(data.split || splitAtual);
-      setParcelamentoConfirmado(data.parcelamento || parcelamentoAtual);
+      setCodigoPin(pinGerado);
+      setSplitConfirmado(splitFinal);
+      setParcelamentoConfirmado(parcFinal);
+
+      // Registra no histórico do vendedor como aguardando PIN presencial
+      adicionarOuAtualizarPedidoVendedor({
+        id: txId,
+        anuncioId: anuncio.id,
+        tituloProduto: anuncio.titulo,
+        compradorNome: 'Comprador TroqJá',
+        compradorId: compradorId || 'comprador-sandbox',
+        vendedorId: anuncio.user_id,
+        dataHora: new Date().toISOString(),
+        valorBruto: splitFinal.valorBase,
+        taxaPercentual: splitFinal.percentualTaxa,
+        valorTaxa: splitFinal.taxaPlataforma,
+        valorLiquido: splitFinal.liquidoVendedor,
+        status: 'aguardando_pin',
+        codigoPin: pinGerado,
+        metodoPagamento,
+        parcelas: parcFinal.parcelas,
+      });
+
       setEtapa('custodia');
       setAbaCustodia('resumo_pin');
     } catch (err: unknown) {
@@ -357,12 +404,49 @@ export default function CheckoutModal({
       const data = (await response.json()) as {
         success?: boolean;
         error?: string;
+        releaseDate?: string;
+        pinVerifiedAt?: string;
       };
 
       if (!response.ok || !data.success) {
         setErroPin(data.error || 'Código PIN inválido. Verifique os 6 dígitos.');
         return;
       }
+
+      const splitFinal = splitConfirmado || splitAtual;
+      const parcFinal = parcelamentoConfirmado || parcelamentoAtual;
+      const agoraIso = data.pinVerifiedAt || new Date().toISOString();
+      const releaseDateIso =
+        data.releaseDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+      // Regra D+7: Registra e move para Saldo Bloqueado (Garantia 7D)
+      adicionarOuAtualizarPedidoVendedor({
+        id: transacaoId || `tx-${Date.now()}`,
+        anuncioId: anuncio.id,
+        tituloProduto: anuncio.titulo,
+        compradorNome: 'Comprador Verificado',
+        compradorId: compradorId || 'comprador-sandbox',
+        vendedorId: anuncio.user_id,
+        valorBruto: splitFinal.valorBase,
+        taxaPercentual: splitFinal.percentualTaxa,
+        valorTaxa: splitFinal.taxaPlataforma,
+        valorLiquido: splitFinal.liquidoVendedor,
+        status: 'pin_verified_blocked_7d',
+        pinVerifiedAt: agoraIso,
+        releaseDate: releaseDateIso,
+        codigoPin,
+        metodoPagamento,
+        parcelas: parcFinal.parcelas,
+      });
+
+      setDadosComprovanteD7({
+        valorBruto: splitFinal.valorBase,
+        percentualTaxa: splitFinal.percentualTaxa,
+        valorTaxa: splitFinal.taxaPlataforma,
+        valorLiquido: splitFinal.liquidoVendedor,
+        releaseDate: releaseDateIso,
+        pinVerifiedAt: agoraIso,
+      });
 
       setEtapa('liberado');
     } catch (err: unknown) {
@@ -372,7 +456,7 @@ export default function CheckoutModal({
     }
   };
 
-  const handleIrParaAvaliacao = () => {
+  const handleIrParaPainelReceita = () => {
     const splitFinal = splitConfirmado || splitAtual;
     const parcFinal = parcelamentoConfirmado || parcelamentoAtual;
     onClose();
@@ -390,6 +474,7 @@ export default function CheckoutModal({
         parcelas: parcFinal.parcelas,
       });
     }
+    router.push('/conta/painel-receita');
   };
 
   const parcExibido = parcelamentoConfirmado || parcelamentoAtual;
@@ -743,7 +828,7 @@ export default function CheckoutModal({
                   <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 flex items-start gap-3 text-xs text-amber-950 leading-relaxed">
                     <FileVideo className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <p>
-                      🔐 <strong>Guarde seu Código PIN!</strong> Só informe este código ao vendedor/entregador após receber e conferir o produto. Lembre-se de filmar a abertura do pacote (<strong>Unboxing Seguro</strong>). O pagamento fica 100% retido no TroqJá e só é liberado imediatamente após você validar o PIN e avaliar o negócio (ou automaticamente após 7 dias da entrega confirmada).
+                      🔒 Guarde seu Código PIN! Só informe este código ao vendedor/entregador após receber e conferir o produto. Lembre-se de filmar a abertura do pacote (Unboxing Seguro). O pagamento fica 100% retido no TroqJá e só é liberado automaticamente após 7 dias da entrega registrada no ato da entrega e confirmada com Código PIN!
                     </p>
                   </div>
 
@@ -754,20 +839,19 @@ export default function CheckoutModal({
                     className="w-full py-3.5 px-5 rounded-2xl bg-[#FF6B00] hover:bg-[#E65A00] text-white font-black text-sm shadow-md transition flex items-center justify-center gap-2"
                   >
                     <Unlock className="w-4 h-4" />
-                    <span>🔓 Validar PIN de Entrega e Liberar Saldo ao Vendedor</span>
+                    <span>🔒 Validar PIN de Entrega</span>
                   </button>
                 </div>
               ) : (
-                /* Simulador de Liberação pelo Código PIN */
+                /* Formulário de Validação do Código PIN Presencial */
                 <form onSubmit={handleValidarPinELiberar} className="space-y-4">
                   <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-2">
                     <h3 className="text-sm font-black text-purple-950 flex items-center gap-2">
                       <Unlock className="w-4 h-4 text-olx-purple" />
-                      Simulador de Liberação pelo Código PIN
+                      Validação de Entrega Presencial por PIN
                     </h3>
                     <p className="text-xs text-purple-900 leading-relaxed">
-                      Digite os 6 dígitos do Código PIN gerado (<strong>{formatarCodigoPin(codigoPin)}</strong>) para confirmar o recebimento do produto, liberar o pagamento de{' '}
-                      <strong>{formatCurrencyBRL(parcExibido.valorTotalComprador)}</strong> ao vendedor e abrir a avaliação de 1 a 5 estrelas.
+                      Digite os 6 dígitos do Código PIN gerado para registrar a entrega presencial do produto, notificar o vendedor em tempo real e iniciar o prazo de 7 dias para liberação automática do pagamento.
                     </p>
                   </div>
 
@@ -810,12 +894,12 @@ export default function CheckoutModal({
                     {validandoPin ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Validando PIN e Liberando Saldo...</span>
+                        <span>Validando PIN e Registrando Entrega...</span>
                       </>
                     ) : (
                       <>
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>Confirmar PIN e Liberar Pagamento</span>
+                        <span>Confirmar PIN</span>
                       </>
                     )}
                   </button>
@@ -825,31 +909,124 @@ export default function CheckoutModal({
           )}
 
           {/* =============================================================== */}
-          {/* ETAPA 3: SALDO LIBERADO -> ABRIR AVALIAÇÃO DE 1 A 5 ESTRELAS    */}
+          {/* ETAPA 3: CONFIRMAÇÃO DE ENTREGA SEGURA (D+7 & COMPROVANTE)      */}
           {/* =============================================================== */}
-          {etapa === 'liberado' && (
-            <div className="py-4 text-center space-y-5">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
-                <CheckCircle2 className="w-9 h-9" />
+          {etapa === 'liberado' && dadosComprovanteD7 && (
+            <div className="py-2 space-y-5 animate-in fade-in duration-200">
+              {/* Cabeçalho Verde com Selo */}
+              <div className="p-4 rounded-2xl bg-emerald-500 text-white shadow-md flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black tracking-widest uppercase bg-white/20 px-2 py-0.5 rounded-full inline-block mb-0.5">
+                    Comprovante Digital Verificado
+                  </span>
+                  <h3 className="text-sm sm:text-base font-black leading-tight">
+                    ✅ PIN CONFIRMADO COM SUCESSO! ENTREGA REGISTRADA
+                  </h3>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <h3 className="text-xl font-black text-gray-900">
-                  Saldo Desbloqueado ao Vendedor!
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-                  O Código PIN <strong>{formatarCodigoPin(codigoPin)}</strong> foi validado com sucesso.{' '}
-                  O pagamento protegido da negociação com <strong>{vendedorNome}</strong> foi liberado com segurança.
+              {/* Box de Segurança para o Vendedor */}
+              <div className="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 space-y-1.5 text-xs text-emerald-950 leading-relaxed">
+                <div className="flex items-center gap-1.5 font-black text-emerald-900 text-xs sm:text-sm">
+                  <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span>Atenção Vendedor:</span>
+                </div>
+                <p>
+                  O código PIN foi validado! Você já pode entregar o produto ao comprador com total segurança. O seu valor líquido já está garantido no seu Painel de Receita como Saldo Bloqueado e será liberado automaticamente para saque em 7 dias ({formatarDataBR(dadosComprovanteD7.releaseDate)}).
                 </p>
               </div>
 
+              {/* Resumo Financeiro Transparente do Recibo */}
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-2.5">
+                <span className="text-[11px] font-black uppercase tracking-wider text-gray-500 block pb-1 border-b border-gray-200">
+                  Resumo Financeiro do Recibo
+                </span>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between text-gray-700">
+                    <span>Valor Pago pelo Comprador (Bruto):</span>
+                    <strong className="font-mono text-sm text-gray-900">
+                      {formatCurrencyBRL(dadosComprovanteD7.valorBruto)}
+                    </strong>
+                  </div>
+                  <div className="flex items-center justify-between text-orange-700">
+                    <span>Taxa de Proteção TroqJá ({dadosComprovanteD7.percentualTaxa}%):</span>
+                    <strong className="font-mono text-sm">
+                      - {formatCurrencyBRL(dadosComprovanteD7.valorTaxa)}
+                    </strong>
+                  </div>
+                  <div className="pt-2 border-t border-gray-200 flex items-center justify-between text-emerald-900">
+                    <span className="font-black text-sm">Valor Líquido Garantido ao Vendedor:</span>
+                    <strong className="font-mono text-base sm:text-lg font-black text-emerald-700">
+                      {formatCurrencyBRL(dadosComprovanteD7.valorLiquido)}
+                    </strong>
+                  </div>
+                  <div className="pt-1.5 flex items-center justify-between text-[11px] text-gray-600">
+                    <span className="flex items-center gap-1">
+                      <KeyRound className="w-3.5 h-3.5 text-gray-500" />
+                      Registro do PIN Presencial:
+                    </span>
+                    <strong className="font-mono text-gray-900">
+                      {formatarDataHoraBR(dadosComprovanteD7.pinVerifiedAt)}
+                    </strong>
+                  </div>
+                  <div className="pt-1 flex items-center justify-between text-[11px] text-gray-600">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                      Liberação Programada (D+7):
+                    </span>
+                    <strong className="font-mono text-emerald-700 font-bold">
+                      {formatarDataBR(dadosComprovanteD7.releaseDate)}
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Avaliação Rápida (1 a 5 Estrelas) */}
+              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 text-center space-y-2">
+                <span className="text-xs font-black text-amber-950 uppercase tracking-wider block">
+                  Como foi a experiência desta negociação?
+                </span>
+                <div className="flex items-center justify-center gap-1.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => {
+                        setAvaliacaoEstrelas(star);
+                        setAvaliacaoEnviada(true);
+                      }}
+                      className="p-1 hover:scale-115 transition"
+                      title={`${star} estrela${star > 1 ? 's' : ''}`}
+                    >
+                      <Star
+                        className={`w-7 h-7 ${
+                          star <= avaliacaoEstrelas
+                            ? 'fill-amber-400 text-amber-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+                {avaliacaoEnviada && (
+                  <p className="text-[11px] text-amber-800 font-bold flex items-center justify-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                    Avaliação registrada com sucesso!
+                  </p>
+                )}
+              </div>
+
+              {/* Ação Principal: Abrir Painel de Receita do Vendedor */}
               <button
                 type="button"
-                onClick={handleIrParaAvaliacao}
-                className="w-full py-3.5 px-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-black text-sm shadow-lg transition flex items-center justify-center gap-2"
+                onClick={handleIrParaPainelReceita}
+                className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-gray-900 via-slate-800 to-gray-950 hover:from-black hover:to-slate-900 text-white font-black text-sm shadow-xl transition flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <Star className="w-4 h-4 fill-white text-white" />
-                <span>Avaliar Negócio (1 a 5 Estrelas)</span>
+                <BarChart3 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition" />
+                <span>📊 Abrir Painel de Receita do Vendedor</span>
               </button>
             </div>
           )}
