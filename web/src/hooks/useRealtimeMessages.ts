@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { SUPABASE_TABLES, type Mensagem, enviarMensagem } from '@olx-clone/shared';
+import { SUPABASE_TABLES, type Mensagem, enviarMensagem } from '@troqja/shared';
 
 export function useRealtimeMessages(conversaId: string | null, userId?: string) {
   const [messages, setMessages] = useState<Mensagem[]>([]);

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,7 @@ import {
   Calendar,
   Sparkles,
 } from 'lucide-react';
-import { formatCurrencyBRL } from '@olx-clone/shared';
+import { formatCurrencyBRL } from '@troqja/shared';
 import {
   calcularParcelamentoTroqJa,
   calcularSplitTroqJa,
@@ -889,7 +889,7 @@ export default function CheckoutModal({
                 <form onSubmit={handleValidarPinELiberar} className="space-y-4">
                   <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-2">
                     <h3 className="text-sm font-black text-purple-950 flex items-center gap-2">
-                      <Unlock className="w-4 h-4 text-olx-purple" />
+                      <Unlock className="w-4 h-4 text-troqja-purple" />
                       Validação de Entrega Presencial por PIN
                     </h3>
                     <p className="text-xs text-purple-900 leading-relaxed">
@@ -905,7 +905,7 @@ export default function CheckoutModal({
                       <button
                         type="button"
                         onClick={() => setPinDigitado(codigoPin)}
-                        className="text-[11px] font-bold text-olx-purple hover:underline"
+                        className="text-[11px] font-bold text-troqja-purple hover:underline"
                       >
                         Preencher PIN ({formatarCodigoPin(codigoPin)})
                       </button>
@@ -917,7 +917,7 @@ export default function CheckoutModal({
                       value={pinDigitado}
                       onChange={(e) => setPinDigitado(e.target.value)}
                       placeholder="Ex: 482915"
-                      className="w-full px-4 py-3 rounded-2xl border-2 border-gray-300 text-center text-2xl font-black font-mono tracking-[0.25em] focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none"
+                      className="w-full px-4 py-3 rounded-2xl border-2 border-gray-300 text-center text-2xl font-black font-mono tracking-[0.25em] focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none"
                     />
                   </div>
 

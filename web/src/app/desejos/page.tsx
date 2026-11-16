@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ import {
   type ListaDesejo,
   type NotificacaoDesejoComAnuncio,
   type Categoria,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import {
   Sparkles,
   Lock,
@@ -435,7 +435,7 @@ export default function DesejosPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BellRing className="w-5 h-5 text-olx-orange" />
+            <BellRing className="w-5 h-5 text-troqja-orange" />
             <h2 className="text-lg font-bold text-gray-900">
               Matches Encontrados pelo Radar ({notificacoes.length})
             </h2>
@@ -597,7 +597,7 @@ export default function DesejosPage() {
                       <Link
                         href={`/anuncio/${ad.id}`}
                         onClick={() => handleMarcarComoLida(notif.id)}
-                        className="inline-flex items-center gap-1 text-xs font-black text-olx-purple hover:text-purple-800 transition"
+                        className="inline-flex items-center gap-1 text-xs font-black text-troqja-purple hover:text-purple-800 transition"
                       >
                         <span>Ver Anúncio</span>
                         <ArrowRight className="w-3.5 h-3.5" />

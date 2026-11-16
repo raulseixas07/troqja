@@ -1,11 +1,11 @@
-import {
+﻿import {
   calculateAspectRatioFit,
   generateStoragePath,
   DEFAULT_WEBP_CONFIG,
   STORAGE_BUCKETS,
   type ImageResizeConfig,
-} from '@olx-clone/shared';
-import type { TypedSupabaseClient } from '@olx-clone/shared';
+} from '@troqja/shared';
+import type { TypedSupabaseClient } from '@troqja/shared';
 
 export interface ProcessedWebPImage {
   blob: Blob;

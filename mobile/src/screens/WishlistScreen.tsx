@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -24,7 +24,7 @@ import {
   formatRelativeDate,
   type ListaDesejo,
   type NotificacaoDesejoComAnuncio,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import {
   Sparkles,
   Lock,

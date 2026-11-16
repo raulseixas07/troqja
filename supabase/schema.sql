@@ -1,5 +1,5 @@
 -- ==============================================================================
--- PROJETO CLONE OLX - SCRIPT DE ESTRUTURA DO BANCO DE DADOS (SUPABASE / POSTGRESQL)
+-- PROJETO CLONE troqja - SCRIPT DE ESTRUTURA DO BANCO DE DADOS (SUPABASE / POSTGRESQL)
 -- ==============================================================================
 -- Este script configura o schema completo: tabelas, constraints, índices de alta performance,
 -- triggers automáticos, Row Level Security (RLS), buckets de storage e seed inicial.
@@ -613,7 +613,7 @@ CREATE POLICY "Dono pode deletar suas imagens de anúncios"
     );
 
 -- ==============================================================================
--- 13. SEED INICIAL: Categorias Estilo OLX
+-- 13. SEED INICIAL: Categorias Estilo troqja
 -- ==============================================================================
 INSERT INTO public.categorias (nome, slug, icone, ordem) VALUES
     ('Autos e peças', 'autos-e-pecas', 'Car', 1),

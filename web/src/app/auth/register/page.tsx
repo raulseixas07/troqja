@@ -1,10 +1,10 @@
-'use client';
+﻿'use client';
 
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { getAuthErrorMessage, formatPhoneNumber } from '@olx-clone/shared';
+import { getAuthErrorMessage, formatPhoneNumber } from '@troqja/shared';
 import { User, Mail, Lock, Phone, Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 function RegisterForm() {
@@ -90,9 +90,9 @@ function RegisterForm() {
       <div className="text-center">
         <Link href="/" className="inline-flex items-center gap-1 group" title="TroqJá - Anunciou, trocou, fechou!">
           <span className="text-4xl font-black tracking-tight text-gray-900">
-            Troq<span className="text-olx-orange">Já</span>
+            Troq<span className="text-troqja-orange">Já</span>
           </span>
-          <span className="w-3 h-3 rounded-full bg-olx-orange self-baseline mt-5 -ml-0.5" />
+          <span className="w-3 h-3 rounded-full bg-troqja-orange self-baseline mt-5 -ml-0.5" />
         </Link>
         <h1 className="mt-3 text-2xl font-bold tracking-tight text-gray-900">
           Crie sua conta no TroqJá
@@ -136,7 +136,7 @@ function RegisterForm() {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               placeholder="Ex: João da Silva"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ function RegisterForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seuemail@exemplo.com"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
           </div>
         </div>
@@ -177,7 +177,7 @@ function RegisterForm() {
               onChange={handlePhoneChange}
               maxLength={15}
               placeholder="(11) 98765-4321"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
           </div>
           <p className="text-[11px] text-gray-400 mt-1">Usado para compradores entrarem em contato com você</p>
@@ -199,7 +199,7 @@ function RegisterForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
             <button
               type="button"
@@ -228,7 +228,7 @@ function RegisterForm() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
           </div>
         </div>
@@ -237,7 +237,7 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading || isSuccess}
-          className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-3"
+          className="w-full flex items-center justify-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-3"
         >
           {isLoading ? (
             <>
@@ -256,7 +256,7 @@ function RegisterForm() {
           Já possui uma conta?{' '}
           <Link
             href={redirectPath !== '/' ? `/auth/login?redirect=${encodeURIComponent(redirectPath)}` : '/auth/login'}
-            className="font-bold text-olx-purple hover:underline"
+            className="font-bold text-troqja-purple hover:underline"
           >
             Fazer Login
           </Link>
@@ -269,7 +269,7 @@ function RegisterForm() {
 export default function RegisterPage() {
   return (
     <div className="min-h-[calc(100vh-140px)] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-      <Suspense fallback={<Loader2 className="w-8 h-8 text-olx-purple animate-spin" />}>
+      <Suspense fallback={<Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />}>
         <RegisterForm />
       </Suspense>
     </div>

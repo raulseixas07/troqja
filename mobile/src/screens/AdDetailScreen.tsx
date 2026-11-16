@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -39,7 +39,7 @@ import {
   type LanceComUsuario,
   type ReputacaoUsuario,
   type ModalidadeAnuncio,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 

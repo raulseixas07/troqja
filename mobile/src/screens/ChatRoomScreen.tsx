@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -38,7 +38,7 @@ import {
   criarAvaliacao,
   type Mensagem,
   type ReputacaoUsuario,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import {
   convertAndResizeMobileImageToWebP,
   uploadMobileChatWebPToSupabase,

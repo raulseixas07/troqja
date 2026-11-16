@@ -153,8 +153,8 @@ export function ImageUploaderWebP({
           onClick={() => fileInputRef.current?.click()}
           className={`relative border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 ${
             dragActive
-              ? 'border-olx-orange bg-orange-50'
-              : 'border-gray-300 hover:border-olx-orange bg-gray-50/50 hover:bg-orange-50/30'
+              ? 'border-troqja-orange bg-orange-50'
+              : 'border-gray-300 hover:border-troqja-orange bg-gray-50/50 hover:bg-orange-50/30'
           }`}
         >
           <input
@@ -169,17 +169,17 @@ export function ImageUploaderWebP({
           <div className="flex flex-col items-center justify-center space-y-2">
             {isProcessing ? (
               <>
-                <Loader2 className="w-8 h-8 text-olx-orange animate-spin" />
+                <Loader2 className="w-8 h-8 text-troqja-orange animate-spin" />
                 <p className="text-sm font-medium text-gray-700">Convertendo e otimizando imagens em WebP...</p>
               </>
             ) : (
               <>
-                <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-olx-orange">
+                <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-troqja-orange">
                   <Upload className="w-6 h-6" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-700">
-                    <span className="text-olx-orange underline font-semibold">Clique para escolher</span> ou arraste as fotos aqui
+                    <span className="text-troqja-orange underline font-semibold">Clique para escolher</span> ou arraste as fotos aqui
                   </p>
                   <p className="text-xs text-gray-400 mt-1">PNG, JPG, HEIC ou WebP (compressão inteligente sem perda perceptível)</p>
                 </div>
@@ -196,7 +196,7 @@ export function ImageUploaderWebP({
             <div
               key={item.id}
               className={`group relative rounded-xl overflow-hidden border bg-white shadow-xs flex flex-col ${
-                item.isPrincipal ? 'ring-2 ring-olx-orange border-olx-orange' : 'border-gray-200'
+                item.isPrincipal ? 'ring-2 ring-troqja-orange border-troqja-orange' : 'border-gray-200'
               }`}
             >
               {/* Thumbnail */}
@@ -209,7 +209,7 @@ export function ImageUploaderWebP({
 
                 {/* Badge Foto Principal */}
                 {item.isPrincipal ? (
-                  <span className="absolute top-2 left-2 bg-olx-orange text-white text-[10px] font-black px-2 py-0.5 rounded shadow">
+                  <span className="absolute top-2 left-2 bg-troqja-orange text-white text-[10px] font-black px-2 py-0.5 rounded shadow">
                     FOTO PRINCIPAL
                   </span>
                 ) : (
@@ -225,7 +225,7 @@ export function ImageUploaderWebP({
                       <button
                         type="button"
                         onClick={() => handleMove(idx, 'left')}
-                        className="p-1.5 bg-white text-gray-800 rounded-full hover:bg-olx-purple hover:text-white transition shadow text-xs"
+                        className="p-1.5 bg-white text-gray-800 rounded-full hover:bg-troqja-purple hover:text-white transition shadow text-xs"
                         title="Mover para esquerda"
                       >
                         <ArrowLeft className="w-3.5 h-3.5" />
@@ -235,7 +235,7 @@ export function ImageUploaderWebP({
                       <button
                         type="button"
                         onClick={() => handleMove(idx, 'right')}
-                        className="p-1.5 bg-white text-gray-800 rounded-full hover:bg-olx-purple hover:text-white transition shadow text-xs"
+                        className="p-1.5 bg-white text-gray-800 rounded-full hover:bg-troqja-purple hover:text-white transition shadow text-xs"
                         title="Mover para direita"
                       >
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -245,7 +245,7 @@ export function ImageUploaderWebP({
                       <button
                         type="button"
                         onClick={() => handleSetPrincipal(item.id)}
-                        className="p-1.5 bg-white text-gray-700 rounded-full hover:bg-olx-orange hover:text-white transition shadow"
+                        className="p-1.5 bg-white text-gray-700 rounded-full hover:bg-troqja-orange hover:text-white transition shadow"
                         title="Tornar foto de capa"
                       >
                         <Star className="w-3.5 h-3.5" />
@@ -264,7 +264,7 @@ export function ImageUploaderWebP({
                     <button
                       type="button"
                       onClick={() => handleSetPrincipal(item.id)}
-                      className="text-[10px] font-bold text-white bg-olx-orange/90 hover:bg-olx-orange px-2 py-0.5 rounded transition"
+                      className="text-[10px] font-bold text-white bg-troqja-orange/90 hover:bg-troqja-orange px-2 py-0.5 rounded transition"
                     >
                       Definir como capa
                     </button>

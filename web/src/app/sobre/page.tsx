@@ -157,7 +157,7 @@ function SobreContent() {
                 onClick={() => handleTabChange('quem-somos')}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition whitespace-nowrap ${
                   activeTab === 'quem-somos'
-                    ? 'bg-olx-purple text-white shadow-md'
+                    ? 'bg-troqja-purple text-white shadow-md'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -242,7 +242,7 @@ function SobreContent() {
                   <span className="text-xs text-gray-600 font-medium">Microtransações Acessíveis</span>
                 </div>
                 <div className="p-4 bg-purple-50/70 rounded-2xl border border-purple-100">
-                  <span className="text-2xl font-black text-olx-purple block">100% Realtime</span>
+                  <span className="text-2xl font-black text-troqja-purple block">100% Realtime</span>
                   <span className="text-xs text-gray-600 font-medium">WebSockets e WebP Eco-Friendly</span>
                 </div>
               </div>
@@ -251,7 +251,7 @@ function SobreContent() {
             {/* Bloco 2: Pilares Tecnológicos */}
             <div className="space-y-6">
               <div className="text-center max-w-xl mx-auto space-y-1">
-                <span className="text-xs font-black uppercase tracking-wider text-olx-purple">
+                <span className="text-xs font-black uppercase tracking-wider text-troqja-purple">
                   Engenharia e Experiência
                 </span>
                 <h2 className="text-2xl font-black text-gray-900 tracking-tight">
@@ -288,7 +288,7 @@ function SobreContent() {
                 </div>
 
                 <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-3 shadow-sm">
-                  <div className="w-12 h-12 rounded-xl bg-purple-100 text-olx-purple flex items-center justify-center font-black">
+                  <div className="w-12 h-12 rounded-xl bg-purple-100 text-troqja-purple flex items-center justify-center font-black">
                     <Users className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-black text-gray-900">
@@ -451,12 +451,12 @@ function SobreContent() {
               <div className="bg-white rounded-3xl border-2 border-purple-300 p-6 space-y-5 shadow-sm">
                 <div className="flex items-center justify-between pb-3 border-b border-purple-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-olx-purple" />
+                    <span className="w-3 h-3 rounded-full bg-troqja-purple" />
                     <h3 className="text-base font-black text-purple-950 uppercase tracking-wider">
                       🟣 Em Desenvolvimento
                     </h3>
                   </div>
-                  <span className="bg-purple-100 text-olx-purple text-[10px] font-black px-2 py-0.5 rounded-full">
+                  <span className="bg-purple-100 text-troqja-purple text-[10px] font-black px-2 py-0.5 rounded-full">
                     Escala
                   </span>
                 </div>
@@ -464,7 +464,7 @@ function SobreContent() {
                 <div className="space-y-3.5 text-xs">
                   <div className="p-3.5 bg-purple-50/60 rounded-xl border border-purple-100 space-y-1">
                     <strong className="text-gray-900 font-bold block flex items-center gap-1.5">
-                      <BarChart3 className="w-3.5 h-3.5 text-olx-purple" />
+                      <BarChart3 className="w-3.5 h-3.5 text-troqja-purple" />
                       Dashboard Analítico CNPJ (R$ 9,90/mês)
                     </strong>
                     <p className="text-gray-600">
@@ -474,7 +474,7 @@ function SobreContent() {
 
                   <div className="p-3.5 bg-purple-50/60 rounded-xl border border-purple-100 space-y-1">
                     <strong className="text-gray-900 font-bold block flex items-center gap-1.5">
-                      <Truck className="w-3.5 h-3.5 text-olx-purple" />
+                      <Truck className="w-3.5 h-3.5 text-troqja-purple" />
                       Logística com Código PIN e Vídeo Unboxing
                     </strong>
                     <p className="text-gray-600">
@@ -484,7 +484,7 @@ function SobreContent() {
 
                   <div className="p-3.5 bg-purple-50/60 rounded-xl border border-purple-100 space-y-1">
                     <strong className="text-gray-900 font-bold block flex items-center gap-1.5">
-                      <ArrowLeftRight className="w-3.5 h-3.5 text-olx-purple" />
+                      <ArrowLeftRight className="w-3.5 h-3.5 text-troqja-purple" />
                       Match Duplo Automático (&ldquo;Tinder de Trocas&rdquo;)
                     </strong>
                     <p className="text-gray-600">
@@ -494,7 +494,7 @@ function SobreContent() {
 
                   <div className="p-3.5 bg-purple-50/60 rounded-xl border border-purple-100 space-y-1">
                     <strong className="text-gray-900 font-bold block flex items-center gap-1.5">
-                      <FileVideo className="w-3.5 h-3.5 text-olx-purple" />
+                      <FileVideo className="w-3.5 h-3.5 text-troqja-purple" />
                       Micro-Vídeos de 7 Segundos
                     </strong>
                     <p className="text-gray-600">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -23,7 +23,7 @@ import {
   type Categoria,
   type ModalidadeAnuncio,
   type CondicaoTroca,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import { ArrowLeft, Check, MapPin, Gavel, Tag, Repeat, Clock, Flame, Sparkles } from 'lucide-react-native';
 
 const CATEGORIAS_FALLBACK = [

@@ -1,5 +1,5 @@
 -- ==============================================================================
--- MIGRATION: Contador de Visitas e Mensagens Não Lidas (Clone OLX)
+-- MIGRATION: Contador de Visitas e Mensagens Não Lidas (Clone troqja)
 -- Data: 2026-11-03
 -- ==============================================================================
 

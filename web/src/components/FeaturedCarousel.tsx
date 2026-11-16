@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import type { AnuncioCard } from '@olx-clone/shared';
+import type { AnuncioCard } from '@troqja/shared';
 import { AdCard } from './AdCard';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 

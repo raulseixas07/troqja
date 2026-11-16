@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import {
   formatCurrencyBRL,
   formatRelativeDate,
   formatCountdown,
   type AnuncioCard,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import { MapPin, ImageOff, Gavel, ArrowLeftRight, Clock } from 'lucide-react';
 
 interface AdCardProps {
@@ -108,7 +108,7 @@ export function AdCard({ anuncio }: AdCardProps) {
       {/* Conteúdo do Card */}
       <div className="p-3.5 flex flex-col flex-1 justify-between">
         <div>
-          <h3 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-olx-purple transition mb-1">
+          <h3 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-troqja-purple transition mb-1">
             {anuncio.titulo}
           </h3>
 

@@ -133,7 +133,7 @@ export function Footer() {
 
             {/* Coluna 3: Segurança, do início ao fim */}
             <div className="flex items-start gap-4 p-4 sm:p-6 text-left">
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-olx-purple flex items-center justify-center shrink-0 shadow-2xs">
+              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-troqja-purple flex items-center justify-center shrink-0 shadow-2xs">
                 <ShieldCheck className="w-7 h-7" />
               </div>
               <div className="space-y-1">
@@ -145,7 +145,7 @@ export function Footer() {
                 </p>
                 <Link
                   href="/como-funciona#seguranca"
-                  className="text-xs font-bold text-olx-purple hover:underline inline-block pt-1"
+                  className="text-xs font-bold text-troqja-purple hover:underline inline-block pt-1"
                 >
                   Transparência e confiança total →
                 </Link>
@@ -155,7 +155,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* 2. SEÇÃO ESTILO OLX: GRADE DE CATEGORIAS ILUSTRADAS EM CÍRCULOS (2 LINHAS DE 8 CÍRCULOS = 16) */}
+      {/* 2. SEÇÃO ESTILO troqja: GRADE DE CATEGORIAS ILUSTRADAS EM CÍRCULOS (2 LINHAS DE 8 CÍRCULOS = 16) */}
       <div className="border-b border-gray-200 py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
@@ -180,7 +180,7 @@ export function Footer() {
                   <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 shadow-2xs mb-2 ${item.cor}`}>
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
-                  <span className="text-[11px] sm:text-xs font-semibold text-gray-700 group-hover:text-olx-purple transition line-clamp-2">
+                  <span className="text-[11px] sm:text-xs font-semibold text-gray-700 group-hover:text-troqja-purple transition line-clamp-2">
                     {item.nome}
                   </span>
                 </Link>
@@ -203,7 +203,7 @@ export function Footer() {
                 <React.Fragment key={termo}>
                   <Link
                     href={`/busca?q=${encodeURIComponent(termo)}`}
-                    className="hover:text-olx-purple hover:underline transition font-medium"
+                    className="hover:text-troqja-purple hover:underline transition font-medium"
                   >
                     {termo}
                   </Link>
@@ -225,7 +225,7 @@ export function Footer() {
                 <Link
                   key={letra}
                   href={`/busca?q=${letra}`}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white border border-gray-200 hover:border-olx-purple hover:bg-purple-50 text-gray-700 hover:text-olx-purple font-black flex items-center justify-center transition shadow-2xs"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white border border-gray-200 hover:border-troqja-purple hover:bg-purple-50 text-gray-700 hover:text-troqja-purple font-black flex items-center justify-center transition shadow-2xs"
                 >
                   {letra}
                 </Link>
@@ -235,7 +235,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* 4. SEÇÃO ESTILO OLX: SISTEMA DE 3 ABAS CLICÁVEIS COM GRADE DE 5 COLUNAS E BOTÃO RETRÁTIL */}
+      {/* 4. SEÇÃO ESTILO troqja: SISTEMA DE 3 ABAS CLICÁVEIS COM GRADE DE 5 COLUNAS E BOTÃO RETRÁTIL */}
       <div className="py-8 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Cabeçalho das 3 Abas */}
@@ -245,7 +245,7 @@ export function Footer() {
               onClick={() => setActiveTab('categorias')}
               className={`text-sm font-black pb-1.5 transition border-b-2 ${
                 activeTab === 'categorias'
-                  ? 'border-olx-purple text-olx-purple'
+                  ? 'border-troqja-purple text-troqja-purple'
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
@@ -256,7 +256,7 @@ export function Footer() {
               onClick={() => setActiveTab('pesquisas')}
               className={`text-sm font-black pb-1.5 transition border-b-2 ${
                 activeTab === 'pesquisas'
-                  ? 'border-olx-purple text-olx-purple'
+                  ? 'border-troqja-purple text-troqja-purple'
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
@@ -267,7 +267,7 @@ export function Footer() {
               onClick={() => setActiveTab('links')}
               className={`text-sm font-black pb-1.5 transition border-b-2 ${
                 activeTab === 'links'
-                  ? 'border-olx-purple text-olx-purple'
+                  ? 'border-troqja-purple text-troqja-purple'
                   : 'border-transparent text-gray-500 hover:text-gray-800'
               }`}
             >
@@ -283,55 +283,55 @@ export function Footer() {
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Veículos</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?categoria=autos-e-pecas" className="hover:text-olx-purple hover:underline">Carros Usados</Link></li>
-                      <li><Link href="/busca?q=motos" className="hover:text-olx-purple hover:underline">Motos</Link></li>
-                      <li><Link href="/busca?q=caminhoes" className="hover:text-olx-purple hover:underline">Caminhões</Link></li>
-                      <li><Link href="/busca?q=pecas" className="hover:text-olx-purple hover:underline">Peças e Acessórios</Link></li>
-                      <li><Link href="/busca?q=pneus" className="hover:text-olx-purple hover:underline">Pneus e Rodas</Link></li>
+                      <li><Link href="/busca?categoria=autos-e-pecas" className="hover:text-troqja-purple hover:underline">Carros Usados</Link></li>
+                      <li><Link href="/busca?q=motos" className="hover:text-troqja-purple hover:underline">Motos</Link></li>
+                      <li><Link href="/busca?q=caminhoes" className="hover:text-troqja-purple hover:underline">Caminhões</Link></li>
+                      <li><Link href="/busca?q=pecas" className="hover:text-troqja-purple hover:underline">Peças e Acessórios</Link></li>
+                      <li><Link href="/busca?q=pneus" className="hover:text-troqja-purple hover:underline">Pneus e Rodas</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Imóveis</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?categoria=imoveis" className="hover:text-olx-purple hover:underline">Apartamentos</Link></li>
-                      <li><Link href="/busca?categoria=imoveis" className="hover:text-olx-purple hover:underline">Casas à Venda</Link></li>
-                      <li><Link href="/busca?q=aluguel" className="hover:text-olx-purple hover:underline">Aluguel de Temporada</Link></li>
-                      <li><Link href="/busca?q=terrenos" className="hover:text-olx-purple hover:underline">Terrenos e Lotes</Link></li>
-                      <li><Link href="/busca?q=comercial" className="hover:text-olx-purple hover:underline">Salas Comerciais</Link></li>
+                      <li><Link href="/busca?categoria=imoveis" className="hover:text-troqja-purple hover:underline">Apartamentos</Link></li>
+                      <li><Link href="/busca?categoria=imoveis" className="hover:text-troqja-purple hover:underline">Casas à Venda</Link></li>
+                      <li><Link href="/busca?q=aluguel" className="hover:text-troqja-purple hover:underline">Aluguel de Temporada</Link></li>
+                      <li><Link href="/busca?q=terrenos" className="hover:text-troqja-purple hover:underline">Terrenos e Lotes</Link></li>
+                      <li><Link href="/busca?q=comercial" className="hover:text-troqja-purple hover:underline">Salas Comerciais</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Eletrônicos</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?categoria=eletronicos-e-celulares" className="hover:text-olx-purple hover:underline">Smartphones</Link></li>
-                      <li><Link href="/busca?q=notebook" className="hover:text-olx-purple hover:underline">Notebooks</Link></li>
-                      <li><Link href="/busca?q=tv" className="hover:text-olx-purple hover:underline">Smart TVs</Link></li>
-                      <li><Link href="/busca?q=tablets" className="hover:text-olx-purple hover:underline">Tablets</Link></li>
-                      <li><Link href="/busca?q=smartwatch" className="hover:text-olx-purple hover:underline">Smartwatches</Link></li>
+                      <li><Link href="/busca?categoria=eletronicos-e-celulares" className="hover:text-troqja-purple hover:underline">Smartphones</Link></li>
+                      <li><Link href="/busca?q=notebook" className="hover:text-troqja-purple hover:underline">Notebooks</Link></li>
+                      <li><Link href="/busca?q=tv" className="hover:text-troqja-purple hover:underline">Smart TVs</Link></li>
+                      <li><Link href="/busca?q=tablets" className="hover:text-troqja-purple hover:underline">Tablets</Link></li>
+                      <li><Link href="/busca?q=smartwatch" className="hover:text-troqja-purple hover:underline">Smartwatches</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Casa & Móveis</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?categoria=para-a-sua-casa" className="hover:text-olx-purple hover:underline">Sofás e Poltronas</Link></li>
-                      <li><Link href="/busca?categoria=para-a-sua-casa" className="hover:text-olx-purple hover:underline">Eletrodomésticos</Link></li>
-                      <li><Link href="/busca?q=geladeira" className="hover:text-olx-purple hover:underline">Geladeiras</Link></li>
-                      <li><Link href="/busca?q=cama" className="hover:text-olx-purple hover:underline">Camas e Colchões</Link></li>
-                      <li><Link href="/busca?q=armarios" className="hover:text-olx-purple hover:underline">Armários e Guarda-Roupas</Link></li>
+                      <li><Link href="/busca?categoria=para-a-sua-casa" className="hover:text-troqja-purple hover:underline">Sofás e Poltronas</Link></li>
+                      <li><Link href="/busca?categoria=para-a-sua-casa" className="hover:text-troqja-purple hover:underline">Eletrodomésticos</Link></li>
+                      <li><Link href="/busca?q=geladeira" className="hover:text-troqja-purple hover:underline">Geladeiras</Link></li>
+                      <li><Link href="/busca?q=cama" className="hover:text-troqja-purple hover:underline">Camas e Colchões</Link></li>
+                      <li><Link href="/busca?q=armarios" className="hover:text-troqja-purple hover:underline">Armários e Guarda-Roupas</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Lazer & Games</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?q=playstation" className="hover:text-olx-purple hover:underline">PlayStation 5</Link></li>
-                      <li><Link href="/busca?q=xbox" className="hover:text-olx-purple hover:underline">Xbox Series X</Link></li>
-                      <li><Link href="/busca?q=nintendo" className="hover:text-olx-purple hover:underline">Nintendo Switch</Link></li>
-                      <li><Link href="/busca?categoria=esportes-e-lazer" className="hover:text-olx-purple hover:underline">Bicicletas e Acessórios</Link></li>
-                      <li><Link href="/busca?categoria=musica-e-hobbies" className="hover:text-olx-purple hover:underline">Instrumentos Musicais</Link></li>
+                      <li><Link href="/busca?q=playstation" className="hover:text-troqja-purple hover:underline">PlayStation 5</Link></li>
+                      <li><Link href="/busca?q=xbox" className="hover:text-troqja-purple hover:underline">Xbox Series X</Link></li>
+                      <li><Link href="/busca?q=nintendo" className="hover:text-troqja-purple hover:underline">Nintendo Switch</Link></li>
+                      <li><Link href="/busca?categoria=esportes-e-lazer" className="hover:text-troqja-purple hover:underline">Bicicletas e Acessórios</Link></li>
+                      <li><Link href="/busca?categoria=musica-e-hobbies" className="hover:text-troqja-purple hover:underline">Instrumentos Musicais</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -342,55 +342,55 @@ export function Footer() {
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Mais Buscados Tech</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?q=iPhone+15" className="hover:text-olx-purple hover:underline">iPhone 15 Pro</Link></li>
-                      <li><Link href="/busca?q=MacBook+Air" className="hover:text-olx-purple hover:underline">MacBook Air M2</Link></li>
-                      <li><Link href="/busca?q=Samsung+S24" className="hover:text-olx-purple hover:underline">Samsung Galaxy S24</Link></li>
-                      <li><Link href="/busca?q=iPad+Air" className="hover:text-olx-purple hover:underline">iPad Air 5</Link></li>
-                      <li><Link href="/busca?q=AirPods" className="hover:text-olx-purple hover:underline">AirPods Pro</Link></li>
+                      <li><Link href="/busca?q=iPhone+15" className="hover:text-troqja-purple hover:underline">iPhone 15 Pro</Link></li>
+                      <li><Link href="/busca?q=MacBook+Air" className="hover:text-troqja-purple hover:underline">MacBook Air M2</Link></li>
+                      <li><Link href="/busca?q=Samsung+S24" className="hover:text-troqja-purple hover:underline">Samsung Galaxy S24</Link></li>
+                      <li><Link href="/busca?q=iPad+Air" className="hover:text-troqja-purple hover:underline">iPad Air 5</Link></li>
+                      <li><Link href="/busca?q=AirPods" className="hover:text-troqja-purple hover:underline">AirPods Pro</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Carros Mais Desejados</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?q=Civic" className="hover:text-olx-purple hover:underline">Honda Civic</Link></li>
-                      <li><Link href="/busca?q=Corolla" className="hover:text-olx-purple hover:underline">Toyota Corolla</Link></li>
-                      <li><Link href="/busca?q=Onix" className="hover:text-olx-purple hover:underline">Chevrolet Onix</Link></li>
-                      <li><Link href="/busca?q=HB20" className="hover:text-olx-purple hover:underline">Hyundai HB20</Link></li>
-                      <li><Link href="/busca?q=Renegade" className="hover:text-olx-purple hover:underline">Jeep Renegade</Link></li>
+                      <li><Link href="/busca?q=Civic" className="hover:text-troqja-purple hover:underline">Honda Civic</Link></li>
+                      <li><Link href="/busca?q=Corolla" className="hover:text-troqja-purple hover:underline">Toyota Corolla</Link></li>
+                      <li><Link href="/busca?q=Onix" className="hover:text-troqja-purple hover:underline">Chevrolet Onix</Link></li>
+                      <li><Link href="/busca?q=HB20" className="hover:text-troqja-purple hover:underline">Hyundai HB20</Link></li>
+                      <li><Link href="/busca?q=Renegade" className="hover:text-troqja-purple hover:underline">Jeep Renegade</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Consoles & Jogos</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?q=PS5" className="hover:text-olx-purple hover:underline">PS5 Slim</Link></li>
-                      <li><Link href="/busca?q=Nintendo+Switch+OLED" className="hover:text-olx-purple hover:underline">Switch OLED</Link></li>
-                      <li><Link href="/busca?q=Xbox+Series+S" className="hover:text-olx-purple hover:underline">Xbox Series S</Link></li>
-                      <li><Link href="/busca?q=PC+Gamer" className="hover:text-olx-purple hover:underline">PC Gamer Completo</Link></li>
-                      <li><Link href="/busca?q=Steam+Deck" className="hover:text-olx-purple hover:underline">Steam Deck</Link></li>
+                      <li><Link href="/busca?q=PS5" className="hover:text-troqja-purple hover:underline">PS5 Slim</Link></li>
+                      <li><Link href="/busca?q=Nintendo+Switch+OLED" className="hover:text-troqja-purple hover:underline">Switch OLED</Link></li>
+                      <li><Link href="/busca?q=Xbox+Series+S" className="hover:text-troqja-purple hover:underline">Xbox Series S</Link></li>
+                      <li><Link href="/busca?q=PC+Gamer" className="hover:text-troqja-purple hover:underline">PC Gamer Completo</Link></li>
+                      <li><Link href="/busca?q=Steam+Deck" className="hover:text-troqja-purple hover:underline">Steam Deck</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Permutas Populares</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?tipo=troca&q=iphone" className="hover:text-olx-purple hover:underline">Troca de iPhone</Link></li>
-                      <li><Link href="/busca?tipo=troca&q=moto" className="hover:text-olx-purple hover:underline">Moto na Troca</Link></li>
-                      <li><Link href="/busca?tipo=troca&q=notebook" className="hover:text-olx-purple hover:underline">Troca por Notebook</Link></li>
-                      <li><Link href="/busca?tipo=troca&q=carro" className="hover:text-olx-purple hover:underline">Aceita Carro</Link></li>
-                      <li><Link href="/busca?tipo=troca&q=ps5" className="hover:text-olx-purple hover:underline">Troco PS5</Link></li>
+                      <li><Link href="/busca?tipo=troca&q=iphone" className="hover:text-troqja-purple hover:underline">Troca de iPhone</Link></li>
+                      <li><Link href="/busca?tipo=troca&q=moto" className="hover:text-troqja-purple hover:underline">Moto na Troca</Link></li>
+                      <li><Link href="/busca?tipo=troca&q=notebook" className="hover:text-troqja-purple hover:underline">Troca por Notebook</Link></li>
+                      <li><Link href="/busca?tipo=troca&q=carro" className="hover:text-troqja-purple hover:underline">Aceita Carro</Link></li>
+                      <li><Link href="/busca?tipo=troca&q=ps5" className="hover:text-troqja-purple hover:underline">Troco PS5</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Leilões Quentes</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/busca?tipo=leilao" className="hover:text-olx-purple hover:underline">Leilões de Eletrônicos</Link></li>
-                      <li><Link href="/busca?tipo=leilao" className="hover:text-olx-purple hover:underline">Leilões de Veículos</Link></li>
-                      <li><Link href="/busca?tipo=leilao" className="hover:text-olx-purple hover:underline">Leilões de Games</Link></li>
-                      <li><Link href="/busca?tipo=leilao" className="hover:text-olx-purple hover:underline">Lances a partir de R$ 10</Link></li>
-                      <li><Link href="/busca?tipo=leilao" className="hover:text-olx-purple hover:underline">Terminando Hoje</Link></li>
+                      <li><Link href="/busca?tipo=leilao" className="hover:text-troqja-purple hover:underline">Leilões de Eletrônicos</Link></li>
+                      <li><Link href="/busca?tipo=leilao" className="hover:text-troqja-purple hover:underline">Leilões de Veículos</Link></li>
+                      <li><Link href="/busca?tipo=leilao" className="hover:text-troqja-purple hover:underline">Leilões de Games</Link></li>
+                      <li><Link href="/busca?tipo=leilao" className="hover:text-troqja-purple hover:underline">Lances a partir de R$ 10</Link></li>
+                      <li><Link href="/busca?tipo=leilao" className="hover:text-troqja-purple hover:underline">Terminando Hoje</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -401,55 +401,55 @@ export function Footer() {
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Sobre Nós</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/sobre?aba=quem-somos" className="hover:text-olx-purple hover:underline">Quem Somos</Link></li>
-                      <li><Link href="/como-funciona" className="hover:text-olx-purple hover:underline">Como Funciona</Link></li>
-                      <li><Link href="/sobre?aba=novidades" className="hover:text-olx-purple hover:underline flex items-center gap-1 font-semibold text-orange-600"><span>🚀 Novidades & Roadmap</span></Link></li>
-                      <li><Link href="/sobre?aba=lojistas" className="hover:text-olx-purple hover:underline flex items-center gap-1 font-semibold text-emerald-700"><span>📊 Painel Lojista CNPJ</span></Link></li>
-                      <li><Link href="/desejos" className="hover:text-olx-purple hover:underline">Lista de Desejos (Radar VIP)</Link></li>
+                      <li><Link href="/sobre?aba=quem-somos" className="hover:text-troqja-purple hover:underline">Quem Somos</Link></li>
+                      <li><Link href="/como-funciona" className="hover:text-troqja-purple hover:underline">Como Funciona</Link></li>
+                      <li><Link href="/sobre?aba=novidades" className="hover:text-troqja-purple hover:underline flex items-center gap-1 font-semibold text-orange-600"><span>🚀 Novidades & Roadmap</span></Link></li>
+                      <li><Link href="/sobre?aba=lojistas" className="hover:text-troqja-purple hover:underline flex items-center gap-1 font-semibold text-emerald-700"><span>📊 Painel Lojista CNPJ</span></Link></li>
+                      <li><Link href="/desejos" className="hover:text-troqja-purple hover:underline">Lista de Desejos (Radar VIP)</Link></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Segurança</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Dicas de Segurança & Protocolo</Link></li>
-                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Logística Blindada CNPJ</Link></li>
-                      <li><Link href="/como-funciona#seguranca" className="hover:text-olx-purple hover:underline">Código PIN & Vídeo Unboxing</Link></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Denunciar Anúncio</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Proteção de Dados (LGPD)</span></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-troqja-purple hover:underline">Dicas de Segurança & Protocolo</Link></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-troqja-purple hover:underline">Logística Blindada CNPJ</Link></li>
+                      <li><Link href="/como-funciona#seguranca" className="hover:text-troqja-purple hover:underline">Código PIN & Vídeo Unboxing</Link></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Denunciar Anúncio</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Proteção de Dados (LGPD)</span></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Para Anunciantes</h5>
                     <ul className="space-y-1.5">
-                      <li><Link href="/anunciar" className="hover:text-olx-purple hover:underline">Inserir Anúncio Grátis</Link></li>
-                      <li><Link href="/conta/meus-anuncios" className="hover:text-olx-purple hover:underline">Meus Anúncios</Link></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Planos de Destaque</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Regras de Publicação</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Central do Vendedor</span></li>
+                      <li><Link href="/anunciar" className="hover:text-troqja-purple hover:underline">Inserir Anúncio Grátis</Link></li>
+                      <li><Link href="/conta/meus-anuncios" className="hover:text-troqja-purple hover:underline">Meus Anúncios</Link></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Planos de Destaque</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Regras de Publicação</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Central do Vendedor</span></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Termos Legais</h5>
                     <ul className="space-y-1.5">
-                      <li><span className="hover:text-olx-purple cursor-pointer">Termos de Uso</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Políticas de Privacidade</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Políticas de Cookies</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Regras da Comunidade</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Código de Defesa do Consumidor</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Termos de Uso</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Políticas de Privacidade</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Políticas de Cookies</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Regras da Comunidade</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Código de Defesa do Consumidor</span></li>
                     </ul>
                   </div>
 
                   <div className="space-y-2">
                     <h5 className="font-bold text-gray-900 uppercase tracking-wider text-[11px]">Atendimento</h5>
                     <ul className="space-y-1.5">
-                      <li><span className="hover:text-olx-purple cursor-pointer">Central de Ajuda</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Fale Conosco</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Perguntas Frequentes</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Ouvidoria</span></li>
-                      <li><span className="hover:text-olx-purple cursor-pointer">Status do Sistema</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Central de Ajuda</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Fale Conosco</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Perguntas Frequentes</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Ouvidoria</span></li>
+                      <li><span className="hover:text-troqja-purple cursor-pointer">Status do Sistema</span></li>
                     </ul>
                   </div>
                 </div>
@@ -462,7 +462,7 @@ export function Footer() {
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-olx-purple bg-gray-100 hover:bg-gray-200 px-4 py-1.5 rounded-full transition"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-troqja-purple bg-gray-100 hover:bg-gray-200 px-4 py-1.5 rounded-full transition"
             >
               <span>{isExpanded ? 'Menos informações' : 'Mais informações'}</span>
               {isExpanded ? (
@@ -482,7 +482,7 @@ export function Footer() {
             {/* Logo TroqJá e Slogan */}
             <div className="flex items-center gap-3 text-white">
               <span className="text-2xl font-black tracking-tight">
-                Troq<span className="text-olx-orange">Já</span>
+                Troq<span className="text-troqja-orange">Já</span>
               </span>
               <span className="text-gray-600 font-light text-xl">|</span>
               <span className="italic font-medium text-gray-300 text-sm">
@@ -502,7 +502,7 @@ export function Footer() {
 
             {/* Redes Sociais */}
             <div className="flex items-center gap-3 text-gray-400">
-              <span className="w-8 h-8 rounded-full bg-gray-800 hover:bg-olx-purple hover:text-white flex items-center justify-center transition cursor-pointer">
+              <span className="w-8 h-8 rounded-full bg-gray-800 hover:bg-troqja-purple hover:text-white flex items-center justify-center transition cursor-pointer">
                 <Instagram className="w-4 h-4" />
               </span>
               <span className="w-8 h-8 rounded-full bg-gray-800 hover:bg-blue-600 hover:text-white flex items-center justify-center transition cursor-pointer">

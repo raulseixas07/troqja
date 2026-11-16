@@ -81,14 +81,14 @@ export function Navbar() {
           {/* Logo Oficial TroqJá */}
           <Link href="/" className="flex items-center gap-1 shrink-0 group" title="TroqJá - Anunciou, trocou, fechou!">
             <span className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 transition">
-              Troq<span className="text-olx-orange">Já</span>
+              Troq<span className="text-troqja-orange">Já</span>
             </span>
-            <span className="w-2.5 h-2.5 rounded-full bg-olx-orange self-baseline mt-4 -ml-0.5 animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-troqja-orange self-baseline mt-4 -ml-0.5 animate-pulse" />
           </Link>
 
           {/* Barra de Pesquisa */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl items-center relative">
-            <div className="w-full flex items-center bg-gray-100 rounded-lg border border-transparent focus-within:border-olx-purple focus-within:bg-white transition">
+            <div className="w-full flex items-center bg-gray-100 rounded-lg border border-transparent focus-within:border-troqja-purple focus-within:bg-white transition">
               <input
                 type="text"
                 value={searchTerm}
@@ -98,7 +98,7 @@ export function Navbar() {
               />
               <button
                 type="submit"
-                className="p-2 text-gray-500 hover:text-olx-purple transition"
+                className="p-2 text-gray-500 hover:text-troqja-purple transition"
                 aria-label="Buscar"
               >
                 <Search className="w-5 h-5" />
@@ -111,19 +111,19 @@ export function Navbar() {
             {/* Seletor de Região */}
             <button
               type="button"
-              className="hidden lg:flex items-center gap-1.5 text-xs text-gray-600 hover:text-olx-purple font-medium transition"
+              className="hidden lg:flex items-center gap-1.5 text-xs text-gray-600 hover:text-troqja-purple font-medium transition"
             >
-              <MapPin className="w-4 h-4 text-olx-orange" />
+              <MapPin className="w-4 h-4 text-troqja-orange" />
               <span>São Paulo e região</span>
             </button>
 
             {/* Como Funciona */}
             <Link
               href="/como-funciona"
-              className="hidden xl:flex items-center gap-1.5 text-xs text-gray-600 hover:text-olx-orange font-semibold transition py-1.5 px-2.5 rounded-full hover:bg-gray-100"
+              className="hidden xl:flex items-center gap-1.5 text-xs text-gray-600 hover:text-troqja-orange font-semibold transition py-1.5 px-2.5 rounded-full hover:bg-gray-100"
               title="Como funciona o TroqJá"
             >
-              <HelpCircle className="w-4 h-4 text-olx-orange" />
+              <HelpCircle className="w-4 h-4 text-troqja-orange" />
               <span>Como Funciona</span>
             </Link>
 
@@ -154,7 +154,7 @@ export function Navbar() {
             {/* Chat com Indicador de Mensagens Não Lidas */}
             <Link
               href="/chat"
-              className="relative flex items-center gap-1.5 text-gray-600 hover:text-olx-purple transition p-2 rounded-full hover:bg-gray-100"
+              className="relative flex items-center gap-1.5 text-gray-600 hover:text-troqja-purple transition p-2 rounded-full hover:bg-gray-100"
               title={
                 unreadCount > 0
                   ? `Minhas conversas (${unreadCount} ${unreadCount === 1 ? 'não lida' : 'não lidas'})`
@@ -165,7 +165,7 @@ export function Navbar() {
                 <MessageSquare className="w-5 h-5" />
                 {unreadCount > 0 && (
                   <span
-                    className="absolute -top-1.5 -right-2 bg-olx-orange text-white text-[10px] font-black min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs leading-none"
+                    className="absolute -top-1.5 -right-2 bg-troqja-orange text-white text-[10px] font-black min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs leading-none"
                     aria-label={`${unreadCount} mensagens não lidas`}
                   >
                     {unreadCount > 99 ? '99+' : unreadCount}
@@ -183,7 +183,7 @@ export function Navbar() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2 p-1.5 pr-2.5 rounded-full hover:bg-gray-100 transition border border-gray-200"
                 >
-                  <div className="w-7 h-7 rounded-full bg-olx-purple text-white text-xs font-bold flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-full bg-troqja-purple text-white text-xs font-bold flex items-center justify-center">
                     {getInitial()}
                   </div>
                   <span className="hidden sm:inline text-xs font-bold text-gray-800 max-w-[100px] truncate">
@@ -232,7 +232,7 @@ export function Navbar() {
                         <Link
                           href="/conta"
                           onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-troqja-purple transition"
                         >
                           <UserCheck className="w-4 h-4 text-gray-400" />
                           <span>👤 Meu Perfil</span>
@@ -275,7 +275,7 @@ export function Navbar() {
                         <Link
                           href="/conta"
                           onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-olx-purple transition"
+                          className="flex items-center gap-2.5 px-3.5 py-2 text-xs font-medium text-gray-700 hover:bg-purple-50 hover:text-troqja-purple transition"
                         >
                           <UserCheck className="w-4 h-4 text-gray-400" />
                           <span>👤 Meu Perfil</span>
@@ -308,7 +308,7 @@ export function Navbar() {
             ) : (
               <Link
                 href="/auth/login"
-                className="flex items-center gap-1.5 text-gray-700 hover:text-olx-purple transition py-2 px-3 rounded-full hover:bg-gray-100 font-semibold text-xs"
+                className="flex items-center gap-1.5 text-gray-700 hover:text-troqja-purple transition py-2 px-3 rounded-full hover:bg-gray-100 font-semibold text-xs"
                 title="Entrar na sua conta"
               >
                 <UserIcon className="w-4 h-4" />
@@ -319,7 +319,7 @@ export function Navbar() {
             {/* Botão Anunciar (Destaque Laranja) */}
             <Link
               href="/anunciar"
-              className="flex items-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full shadow-sm hover:shadow transition transform active:scale-95"
+              className="flex items-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full shadow-sm hover:shadow transition transform active:scale-95"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Anunciar</span>

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@olx-clone/shared'],
+  transpilePackages: ['@troqja/shared'],
   images: {
     remotePatterns: [
       {

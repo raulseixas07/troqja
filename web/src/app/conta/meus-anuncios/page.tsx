@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -16,8 +16,8 @@ import {
   formatBRL,
   formatRelativeDate,
   SUPABASE_TABLES,
-} from '@olx-clone/shared';
-import type { MeuAnuncioItem, StatusAnuncio } from '@olx-clone/shared';
+} from '@troqja/shared';
+import type { MeuAnuncioItem, StatusAnuncio } from '@troqja/shared';
 import {
   Package,
   PlusCircle,
@@ -296,7 +296,7 @@ export default function MeusAnunciosPage() {
   if (authLoading || (loading && !anuncios.length && user)) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+        <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
         <p className="text-sm text-gray-500">Carregando seus anúncios...</p>
       </div>
     );
@@ -305,7 +305,7 @@ export default function MeusAnunciosPage() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto my-16 px-4 text-center space-y-4">
-        <div className="w-16 h-16 bg-purple-100 text-olx-purple rounded-full flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 bg-purple-100 text-troqja-purple rounded-full flex items-center justify-center mx-auto">
           <Package className="w-8 h-8" />
         </div>
         <h1 className="text-xl font-bold text-gray-900">Acesse seus anúncios</h1>
@@ -315,13 +315,13 @@ export default function MeusAnunciosPage() {
         <div className="pt-2 flex justify-center gap-3">
           <Link
             href="/auth/login?redirect=/conta/meus-anuncios"
-            className="bg-olx-orange hover:bg-olx-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
+            className="bg-troqja-orange hover:bg-troqja-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
           >
             Entrar
           </Link>
           <Link
             href="/auth/register?redirect=/conta/meus-anuncios"
-            className="border border-olx-purple text-olx-purple hover:bg-purple-50 text-sm font-bold px-6 py-2.5 rounded-full transition"
+            className="border border-troqja-purple text-troqja-purple hover:bg-purple-50 text-sm font-bold px-6 py-2.5 rounded-full transition"
           >
             Criar conta
           </Link>
@@ -337,7 +337,7 @@ export default function MeusAnunciosPage() {
         <div>
           <Link
             href="/conta"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-olx-purple transition mb-1"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-troqja-purple transition mb-1"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Voltar ao Meu Perfil</span>
@@ -350,7 +350,7 @@ export default function MeusAnunciosPage() {
 
         <Link
           href="/anunciar"
-          className="inline-flex items-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-sm hover:shadow transition self-start sm:self-auto"
+          className="inline-flex items-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-sm hover:shadow transition self-start sm:self-auto"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Inserir novo anúncio</span>
@@ -391,7 +391,7 @@ export default function MeusAnunciosPage() {
           onClick={() => setActiveTab('todos')}
           className={`px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap ${
             activeTab === 'todos'
-              ? 'bg-olx-purple text-white shadow-xs'
+              ? 'bg-troqja-purple text-white shadow-xs'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >
@@ -438,7 +438,7 @@ export default function MeusAnunciosPage() {
       {/* Lista de Anúncios */}
       {anunciosFiltrados.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center space-y-4">
-          <div className="w-16 h-16 bg-purple-50 text-olx-purple rounded-full flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 bg-purple-50 text-troqja-purple rounded-full flex items-center justify-center mx-auto">
             <Package className="w-8 h-8" />
           </div>
           <div className="max-w-md mx-auto">
@@ -453,7 +453,7 @@ export default function MeusAnunciosPage() {
           </div>
           <Link
             href="/anunciar"
-            className="inline-flex items-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-xs font-bold px-6 py-2.5 rounded-full shadow-xs transition"
+            className="inline-flex items-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white text-xs font-bold px-6 py-2.5 rounded-full shadow-xs transition"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Criar meu primeiro anúncio</span>
@@ -531,7 +531,7 @@ export default function MeusAnunciosPage() {
 
                     <Link
                       href={`/anuncio/${anuncio.id}`}
-                      className="block text-base font-bold text-gray-900 hover:text-olx-purple transition truncate"
+                      className="block text-base font-bold text-gray-900 hover:text-troqja-purple transition truncate"
                     >
                       {anuncio.titulo}
                     </Link>
@@ -584,7 +584,7 @@ export default function MeusAnunciosPage() {
                     <Link
                       href={`/anuncio/${anuncio.id}`}
                       target="_blank"
-                      className="p-2 text-gray-500 hover:text-olx-purple hover:bg-purple-50 rounded-lg transition"
+                      className="p-2 text-gray-500 hover:text-troqja-purple hover:bg-purple-50 rounded-lg transition"
                       title="Ver anúncio publicado"
                     >
                       <ExternalLink className="w-4 h-4" />
@@ -656,7 +656,7 @@ export default function MeusAnunciosPage() {
                           <button
                             type="button"
                             onClick={() => handleMudarStatus(anuncio.id, 'ativo')}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-50 text-olx-purple hover:bg-purple-100 transition border border-purple-200"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-50 text-troqja-purple hover:bg-purple-100 transition border border-purple-200"
                           >
                             <PlayCircle className="w-3.5 h-3.5" />
                             <span>Reativar Anúncio</span>
@@ -910,7 +910,7 @@ export default function MeusAnunciosPage() {
                 </label>
                 {loadingInteressados ? (
                   <div className="p-4 text-center">
-                    <Loader2 className="w-5 h-5 animate-spin text-olx-purple mx-auto" />
+                    <Loader2 className="w-5 h-5 animate-spin text-troqja-purple mx-auto" />
                     <p className="text-xs text-gray-400 mt-1">Buscando pessoas do chat...</p>
                   </div>
                 ) : (
@@ -928,7 +928,7 @@ export default function MeusAnunciosPage() {
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="w-8 h-8 rounded-full bg-purple-100 text-olx-purple font-bold text-xs flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-full bg-purple-100 text-troqja-purple font-bold text-xs flex items-center justify-center shrink-0">
                               {item.nome.charAt(0).toUpperCase()}
                             </div>
                             <span className="text-xs font-bold text-gray-900 truncate">

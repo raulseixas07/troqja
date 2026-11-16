@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import {
   formatRelativeDate,
   type ConversaListItem,
   buscarConversasDoUsuario,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 
 interface ChatListScreenProps {
   onSelectConversa: (conversaId: string) => void;

@@ -113,12 +113,12 @@ export function CategoryGrid({ activeTipo = 'todos' }: CategoryGridProps) {
             <Link
               key={cat.id}
               href={`/categoria/${cat.slug}`}
-              className="flex flex-col items-center p-3 rounded-xl bg-white border border-gray-100 shadow-2xs hover:shadow-md hover:border-olx-purple/30 transition text-center group"
+              className="flex flex-col items-center p-3 rounded-xl bg-white border border-gray-100 shadow-2xs hover:shadow-md hover:border-troqja-purple/30 transition text-center group"
             >
-              <div className="w-12 h-12 rounded-full bg-purple-50 group-hover:bg-purple-100 flex items-center justify-center text-olx-purple transition mb-2">
+              <div className="w-12 h-12 rounded-full bg-purple-50 group-hover:bg-purple-100 flex items-center justify-center text-troqja-purple transition mb-2">
                 <Icon className="w-6 h-6" />
               </div>
-              <span className="text-xs font-medium text-gray-700 group-hover:text-olx-purple line-clamp-2">
+              <span className="text-xs font-medium text-gray-700 group-hover:text-troqja-purple line-clamp-2">
                 {cat.nome}
               </span>
             </Link>

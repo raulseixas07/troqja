@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import {
   marcarMensagensComoLidas,
   obterReputacaoUsuario,
   type ReputacaoUsuario,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import {
   MessageSquare,
   Send,
@@ -38,7 +38,7 @@ import {
   fecharNegocioAnuncio,
   verificarAvaliacaoExistente,
   criarAvaliacao,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import CheckoutModal, { type CheckoutLiberadoPayload } from '@/components/CheckoutModal';
 import type { ModalidadeCheckout } from '@/lib/checkout';
 
@@ -387,7 +387,7 @@ function ChatContent() {
   if (authLoading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+        <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
         <p className="text-sm text-gray-500 font-medium">Carregando suas mensagens...</p>
       </div>
     );
@@ -396,7 +396,7 @@ function ChatContent() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto my-16 px-4 text-center space-y-4">
-        <div className="w-16 h-16 bg-purple-100 text-olx-purple rounded-full flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 bg-purple-100 text-troqja-purple rounded-full flex items-center justify-center mx-auto">
           <MessageSquare className="w-8 h-8" />
         </div>
         <h1 className="text-xl font-bold text-gray-900">Acesse suas mensagens</h1>
@@ -405,7 +405,7 @@ function ChatContent() {
         </p>
         <Link
           href="/auth/login?redirect=/chat"
-          className="inline-block bg-olx-orange hover:bg-olx-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
+          className="inline-block bg-troqja-orange hover:bg-troqja-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
         >
           Entrar na Conta
         </Link>
@@ -424,16 +424,16 @@ function ChatContent() {
         >
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <h1 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-olx-purple" />
+              <MessageSquare className="w-5 h-5 text-troqja-purple" />
               <span>Minhas Conversas</span>
             </h1>
             <div className="flex items-center gap-1.5">
               {totalNaoLidas > 0 && (
-                <span className="text-[11px] bg-olx-orange text-white font-bold px-2 py-0.5 rounded-full shadow-2xs">
+                <span className="text-[11px] bg-troqja-orange text-white font-bold px-2 py-0.5 rounded-full shadow-2xs">
                   {totalNaoLidas} {totalNaoLidas === 1 ? 'não lida' : 'não lidas'}
                 </span>
               )}
-              <span className="text-xs bg-purple-50 text-olx-purple font-bold px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-purple-50 text-troqja-purple font-bold px-2 py-0.5 rounded-full">
                 {conversas.length}
               </span>
             </div>
@@ -443,7 +443,7 @@ function ChatContent() {
           <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
             {loadingConversas ? (
               <div className="p-8 text-center space-y-2">
-                <Loader2 className="w-6 h-6 animate-spin text-olx-purple mx-auto" />
+                <Loader2 className="w-6 h-6 animate-spin text-troqja-purple mx-auto" />
                 <p className="text-xs text-gray-400">Carregando conversas...</p>
               </div>
             ) : conversas.length === 0 ? (
@@ -457,7 +457,7 @@ function ChatContent() {
                 </p>
                 <Link
                   href="/"
-                  className="inline-block text-xs font-bold text-olx-purple hover:underline"
+                  className="inline-block text-xs font-bold text-troqja-purple hover:underline"
                 >
                   Explorar anúncios
                 </Link>
@@ -473,11 +473,11 @@ function ChatContent() {
                     type="button"
                     onClick={() => handleSelectConversa(item.id)}
                     className={`w-full text-left p-3.5 flex gap-3 transition hover:bg-gray-50 ${
-                      isSelected ? 'bg-purple-50/70 border-l-4 border-olx-purple' : ''
+                      isSelected ? 'bg-purple-50/70 border-l-4 border-troqja-purple' : ''
                     }`}
                   >
                     {/* Avatar do Outro Usuário */}
-                    <div className="w-11 h-11 rounded-full bg-purple-100 text-olx-purple flex items-center justify-center font-bold text-sm shrink-0 border border-purple-200">
+                    <div className="w-11 h-11 rounded-full bg-purple-100 text-troqja-purple flex items-center justify-center font-bold text-sm shrink-0 border border-purple-200">
                       {initial}
                     </div>
 
@@ -496,7 +496,7 @@ function ChatContent() {
                           <span
                             className={`text-[10px] shrink-0 ${
                               item.mensagens_nao_lidas > 0
-                                ? 'text-olx-orange font-bold'
+                                ? 'text-troqja-orange font-bold'
                                 : 'text-gray-400'
                             }`}
                           >
@@ -506,7 +506,7 @@ function ChatContent() {
                       </div>
 
                       {/* Título do Anúncio */}
-                      <p className="text-[11px] font-semibold text-olx-purple truncate mb-0.5">
+                      <p className="text-[11px] font-semibold text-troqja-purple truncate mb-0.5">
                         {item.anuncio.titulo}
                       </p>
 
@@ -536,7 +536,7 @@ function ChatContent() {
                         </div>
                         {item.mensagens_nao_lidas > 0 && (
                           <span
-                            className="bg-olx-orange text-white text-[10px] font-black min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center shrink-0 shadow-xs"
+                            className="bg-troqja-orange text-white text-[10px] font-black min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center shrink-0 shadow-xs"
                             title={`${item.mensagens_nao_lidas} mensagens não lidas`}
                           >
                             {item.mensagens_nao_lidas > 99 ? '99+' : item.mensagens_nao_lidas}
@@ -566,13 +566,13 @@ function ChatContent() {
                   <button
                     type="button"
                     onClick={() => setSelectedConversaId(null)}
-                    className="md:hidden p-1.5 text-gray-600 hover:text-olx-purple transition rounded-full hover:bg-gray-100"
+                    className="md:hidden p-1.5 text-gray-600 hover:text-troqja-purple transition rounded-full hover:bg-gray-100"
                     title="Voltar para a lista"
                   >
                     <ArrowLeft className="w-5 h-5" />
                   </button>
 
-                  <div className="w-10 h-10 rounded-full bg-olx-purple text-white font-black text-sm flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-troqja-purple text-white font-black text-sm flex items-center justify-center shrink-0">
                     {conversaAtiva.outro_usuario.nome.charAt(0).toUpperCase()}
                   </div>
 
@@ -592,7 +592,7 @@ function ChatContent() {
                     </div>
                     <Link
                       href={`/anuncio/${conversaAtiva.anuncio.id}`}
-                      className="text-xs text-gray-500 hover:text-olx-purple truncate flex items-center gap-1 font-medium"
+                      className="text-xs text-gray-500 hover:text-troqja-purple truncate flex items-center gap-1 font-medium"
                     >
                       <span>{conversaAtiva.anuncio.titulo}</span>
                       <span className="font-bold text-gray-900">
@@ -695,7 +695,7 @@ function ChatContent() {
                   {/* Link direto para o anúncio */}
                   <Link
                     href={`/anuncio/${conversaAtiva.anuncio.id}`}
-                    className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-olx-orange hover:underline shrink-0 bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-200"
+                    className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-troqja-orange hover:underline shrink-0 bg-orange-50 px-3 py-1.5 rounded-lg border border-orange-200"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
                     <span>Ver Anúncio</span>
@@ -750,14 +750,14 @@ function ChatContent() {
                 {/* Banner de negociação segura */}
                 <div className="text-center my-2">
                   <span className="inline-flex items-center gap-1 bg-white border border-gray-200 px-3 py-1 rounded-full text-[11px] text-gray-500 shadow-2xs">
-                    <Sparkles className="w-3 h-3 text-olx-orange" />
+                    <Sparkles className="w-3 h-3 text-troqja-orange" />
                     Chat em tempo real protegido • TroqJá
                   </span>
                 </div>
 
                 {messagesLoading && messages.length === 0 ? (
                   <div className="p-8 text-center space-y-2">
-                    <Loader2 className="w-6 h-6 animate-spin text-olx-purple mx-auto" />
+                    <Loader2 className="w-6 h-6 animate-spin text-troqja-purple mx-auto" />
                     <p className="text-xs text-gray-400">Carregando mensagens...</p>
                   </div>
                 ) : messages.length === 0 ? (
@@ -783,7 +783,7 @@ function ChatContent() {
                         <div
                           className={`max-w-[85%] sm:max-w-md p-2.5 sm:p-3 rounded-2xl text-sm leading-relaxed shadow-xs ${
                             isMinha
-                              ? 'bg-olx-purple text-white rounded-br-xs'
+                              ? 'bg-troqja-purple text-white rounded-br-xs'
                               : 'bg-white text-gray-800 border border-gray-200 rounded-bl-xs'
                           }`}
                         >
@@ -873,11 +873,11 @@ function ChatContent() {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={convertingPhoto || sending}
-                  className="p-3 rounded-xl border border-gray-200 text-gray-600 hover:text-olx-purple hover:bg-purple-50 transition flex items-center justify-center shrink-0 disabled:opacity-50"
+                  className="p-3 rounded-xl border border-gray-200 text-gray-600 hover:text-troqja-purple hover:bg-purple-50 transition flex items-center justify-center shrink-0 disabled:opacity-50"
                   title="Enviar foto ou imagem (comprimida automaticamente em WebP)"
                 >
                   {convertingPhoto ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-olx-purple" />
+                    <Loader2 className="w-5 h-5 animate-spin text-troqja-purple" />
                   ) : (
                     <Camera className="w-5 h-5" />
                   )}
@@ -893,14 +893,14 @@ function ChatContent() {
                       ? 'Adicione uma legenda opcional... (ou pressione Enviar)'
                       : 'Digite sua mensagem aqui... (Pressione Enter para enviar)'
                   }
-                  className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+                  className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
                 />
 
                 {/* Botão Enviar */}
                 <button
                   type="submit"
                   disabled={(!inputMessage.trim() && !selectedPhoto) || sending}
-                  className="bg-olx-orange hover:bg-olx-orange-hover text-white px-5 py-3 rounded-xl font-bold transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-xs shrink-0"
+                  className="bg-troqja-orange hover:bg-troqja-orange-hover text-white px-5 py-3 rounded-xl font-bold transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-xs shrink-0"
                 >
                   {sending ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -913,7 +913,7 @@ function ChatContent() {
           ) : (
             /* Estado Vazio Quando Nenhuma Conversa Está Selecionada */
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-purple-50 text-olx-purple flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-purple-50 text-troqja-purple flex items-center justify-center">
                 <MessageSquare className="w-8 h-8" />
               </div>
               <h2 className="text-lg font-bold text-gray-800">Selecione uma conversa</h2>
@@ -1151,7 +1151,7 @@ function ChatContent() {
                             prev ? `${prev}, ${tag.toLowerCase()}` : tag
                           );
                         }}
-                        className="text-[11px] font-medium bg-gray-100 hover:bg-purple-100 hover:text-olx-purple text-gray-700 px-2.5 py-1 rounded-full transition border border-gray-200"
+                        className="text-[11px] font-medium bg-gray-100 hover:bg-purple-100 hover:text-troqja-purple text-gray-700 px-2.5 py-1 rounded-full transition border border-gray-200"
                       >
                         +{tag}
                       </button>
@@ -1169,7 +1169,7 @@ function ChatContent() {
                     value={comentarioAvaliacao}
                     onChange={(e) => setComentarioAvaliacao(e.target.value)}
                     placeholder="Conte como foi negociar com este usuário..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none resize-none transition"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none resize-none transition"
                   />
                 </div>
 
@@ -1184,7 +1184,7 @@ function ChatContent() {
                   <button
                     type="submit"
                     disabled={enviandoAvaliacao}
-                    className="flex-1 py-2.5 rounded-xl bg-olx-purple hover:bg-purple-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow"
+                    className="flex-1 py-2.5 rounded-xl bg-troqja-purple hover:bg-purple-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow"
                   >
                     {enviandoAvaliacao ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -1244,7 +1244,7 @@ export default function ChatPage() {
     <Suspense
       fallback={
         <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+          <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
           <p className="text-sm text-gray-500 font-medium">Carregando painel de mensagens...</p>
         </div>
       }

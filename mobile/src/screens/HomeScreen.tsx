@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -13,8 +13,8 @@ import { Search, MapPin, User as UserIcon, X, Gavel, Repeat, Tag } from 'lucide-
 import { AdCard } from '../components/AdCard';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { buscarAnuncios } from '@olx-clone/shared';
-import type { AnuncioCard } from '@olx-clone/shared';
+import { buscarAnuncios } from '@troqja/shared';
+import type { AnuncioCard } from '@troqja/shared';
 
 const SAMPLE_ADS: AnuncioCard[] = [
   {

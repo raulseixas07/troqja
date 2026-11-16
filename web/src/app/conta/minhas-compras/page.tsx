@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ import {
   User,
   X,
 } from 'lucide-react';
-import { formatCurrencyBRL } from '@olx-clone/shared';
+import { formatCurrencyBRL } from '@troqja/shared';
 import {
   carregarComprasComprador,
   solicitarReembolsoCompra,
@@ -307,7 +307,7 @@ function MinhasComprasContent() {
             {/* 2. CABEÇALHO DO VENDEDOR */}
             <div className="p-4 sm:p-5 rounded-3xl bg-white border border-gray-200 shadow-xs flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-purple-100 text-olx-purple flex items-center justify-center font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-purple-100 text-troqja-purple flex items-center justify-center font-bold text-sm">
                   {pedidoSelecionado.vendedorNome.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -324,7 +324,7 @@ function MinhasComprasContent() {
                 href={`/chat`}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-gray-300 hover:border-gray-400 text-xs font-bold text-gray-700 hover:bg-gray-50 transition"
               >
-                <MessageSquare className="w-3.5 h-3.5 text-olx-purple" />
+                <MessageSquare className="w-3.5 h-3.5 text-troqja-purple" />
                 <span>Ver perfil / Chat &gt;</span>
               </Link>
             </div>
@@ -474,7 +474,7 @@ function MinhasComprasContent() {
                     <button
                       type="button"
                       onClick={() => handleCopiarId(pedidoSelecionado.id)}
-                      className="text-[11px] font-bold text-olx-purple hover:underline"
+                      className="text-[11px] font-bold text-troqja-purple hover:underline"
                     >
                       {copiadoId ? 'Copiado!' : '[Copiar]'}
                     </button>

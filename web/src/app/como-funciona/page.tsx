@@ -112,11 +112,11 @@ export default function ComoFuncionaPage() {
           {/* Card 1: Venda Direta */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-5">
             <div className="space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-olx-purple flex items-center justify-center font-black shadow-2xs">
+              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-troqja-purple flex items-center justify-center font-black shadow-2xs">
                 <ShoppingBag className="w-7 h-7" />
               </div>
               <div className="space-y-1">
-                <span className="bg-purple-100 text-olx-purple text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="bg-purple-100 text-troqja-purple text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Preço Fixo
                 </span>
                 <h3 className="text-xl font-black text-gray-900 pt-1">
@@ -146,7 +146,7 @@ export default function ComoFuncionaPage() {
 
             <Link
               href="/busca?tipo=venda"
-              className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-olx-purple font-bold text-xs transition"
+              className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-troqja-purple font-bold text-xs transition"
             >
               <span>Ver anúncios de venda direta</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -267,7 +267,7 @@ export default function ComoFuncionaPage() {
       <section className="bg-white border-y border-gray-200 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-black uppercase tracking-wider text-olx-purple">
+            <span className="text-xs font-black uppercase tracking-wider text-troqja-purple">
               Tabela de Preços e Serviços
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">
@@ -523,8 +523,8 @@ export default function ComoFuncionaPage() {
       {/* 4. SEÇÃO 3: PROTOCOLO DE SEGURANÇA, REPUTAÇÃO E ENTREGA CNPJ (ID=seguranca) */}
       <section id="seguranca" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-1.5 bg-purple-100 text-olx-purple px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-olx-purple" />
+          <div className="inline-flex items-center gap-1.5 bg-purple-100 text-troqja-purple px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-troqja-purple" />
             <span>Blindagem & Reputação</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">

@@ -48,7 +48,7 @@ import {
   type ModalidadeAnuncio,
   type CondicaoTroca,
   type StatusAnuncio,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 
 interface FotoItem {
   id: string;
@@ -718,7 +718,7 @@ export default function AnuncioDetalhePage() {
   if (carregando) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+        <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
         <p className="text-sm text-gray-500 font-medium">Carregando detalhes do anúncio...</p>
       </div>
     );
@@ -736,7 +736,7 @@ export default function AnuncioDetalhePage() {
         </p>
         <Link
           href="/"
-          className="inline-block bg-olx-purple hover:bg-olx-purple-hover text-white text-sm font-bold px-6 py-2.5 rounded-full transition shadow"
+          className="inline-block bg-troqja-purple hover:bg-troqja-purple-hover text-white text-sm font-bold px-6 py-2.5 rounded-full transition shadow"
         >
           Voltar para a página inicial
         </Link>
@@ -759,14 +759,14 @@ export default function AnuncioDetalhePage() {
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-olx-purple transition"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-troqja-purple transition"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Voltar para anúncios</span>
         </Link>
         <div className="flex items-center gap-2">
           {isDono && (
-            <span className="bg-purple-100 text-olx-purple text-xs font-bold px-3 py-1 rounded-full">
+            <span className="bg-purple-100 text-troqja-purple text-xs font-bold px-3 py-1 rounded-full">
               Seu Anúncio
             </span>
           )}
@@ -883,7 +883,7 @@ export default function AnuncioDetalhePage() {
                   onClick={() => setFotoAtivaIndex(idx)}
                   className={`w-20 h-20 shrink-0 rounded-xl overflow-hidden border-2 transition ${
                     fotoAtivaIndex === idx
-                      ? 'border-olx-orange shadow-md scale-102'
+                      ? 'border-troqja-orange shadow-md scale-102'
                       : 'border-gray-200 hover:border-gray-400 opacity-75'
                   }`}
                 >
@@ -1000,7 +1000,7 @@ export default function AnuncioDetalhePage() {
           <div className="bg-white p-6 rounded-2xl border border-gray-200 space-y-3 shadow-xs">
             <h2 className="text-lg font-bold text-gray-900">Localização</h2>
             <div className="flex items-center gap-2 text-sm text-gray-700">
-              <MapPin className="w-5 h-5 text-olx-orange shrink-0" />
+              <MapPin className="w-5 h-5 text-troqja-orange shrink-0" />
               <span>
                 {anuncio.bairro ? `${anuncio.bairro}, ` : ''}{anuncio.cidade} - {anuncio.estado}
               </span>
@@ -1029,7 +1029,7 @@ export default function AnuncioDetalhePage() {
                     <span>Publicado {formatRelativeDate(anuncio.created_at)}</span>
                     <span>•</span>
                     <span className="flex items-center gap-1 font-medium text-gray-600 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
-                      <Eye className="w-3.5 h-3.5 text-olx-purple" />
+                      <Eye className="w-3.5 h-3.5 text-troqja-purple" />
                       <span>
                         {anuncio.visualizacoes} {anuncio.visualizacoes === 1 ? 'visita' : 'visitas'}
                       </span>
@@ -1224,7 +1224,7 @@ export default function AnuncioDetalhePage() {
                   <span>Publicado {formatRelativeDate(anuncio.created_at)}</span>
                   <span>•</span>
                   <span className="flex items-center gap-1 font-medium text-gray-600 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
-                    <Eye className="w-3.5 h-3.5 text-olx-purple" />
+                    <Eye className="w-3.5 h-3.5 text-troqja-purple" />
                     <span>
                       {anuncio.visualizacoes} {anuncio.visualizacoes === 1 ? 'visita' : 'visitas'}
                     </span>
@@ -1283,7 +1283,7 @@ export default function AnuncioDetalhePage() {
                 type="button"
                 onClick={() => handleAbrirChat(false)}
                 disabled={iniciandoChat || isDono}
-                className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white font-bold py-3.5 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white font-bold py-3.5 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {iniciandoChat ? (
                   <>
@@ -1302,7 +1302,7 @@ export default function AnuncioDetalhePage() {
                 <button
                   type="button"
                   onClick={() => setMostrarTelefone(!mostrarTelefone)}
-                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple font-bold py-3 rounded-xl transition"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-troqja-purple font-bold py-3 rounded-xl transition"
                 >
                   <Phone className="w-4 h-4" />
                   <span>
@@ -1318,7 +1318,7 @@ export default function AnuncioDetalhePage() {
             <div className="pt-4 border-t border-gray-100 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-olx-purple text-white flex items-center justify-center font-black text-lg shadow-xs">
+                  <div className="w-12 h-12 rounded-full bg-troqja-purple text-white flex items-center justify-center font-black text-lg shadow-xs">
                     {anuncio.anunciante?.nome ? anuncio.anunciante.nome.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div>
@@ -1352,7 +1352,7 @@ export default function AnuncioDetalhePage() {
                 <button
                   type="button"
                   onClick={() => setModalAvaliacaoAberta(true)}
-                  className="w-full text-center text-xs font-bold text-olx-purple hover:underline pt-1 block"
+                  className="w-full text-center text-xs font-bold text-troqja-purple hover:underline pt-1 block"
                 >
                   ★ Avaliar este vendedor
                 </button>
@@ -1361,7 +1361,7 @@ export default function AnuncioDetalhePage() {
 
             {/* Dicas de Segurança */}
             <div className="p-3 bg-gray-50 rounded-xl flex items-start gap-2.5 text-xs text-gray-500">
-              <ShieldCheck className="w-4 h-4 text-olx-purple shrink-0 mt-0.5" />
+              <ShieldCheck className="w-4 h-4 text-troqja-purple shrink-0 mt-0.5" />
               <span>Negociação protegida pelo TroqJá. Combine locais movimentados e teste o produto.</span>
             </div>
           </div>
@@ -1425,7 +1425,7 @@ export default function AnuncioDetalhePage() {
                   value={comentarioAvaliacao}
                   onChange={(e) => setComentarioAvaliacao(e.target.value)}
                   placeholder="Ex: Vendedor pontual, produto idêntico à descrição. Negociação nota 10!"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:border-olx-purple focus:ring-1 focus:ring-purple-200 outline-none"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:border-troqja-purple focus:ring-1 focus:ring-purple-200 outline-none"
                 />
               </div>
 
@@ -1450,7 +1450,7 @@ export default function AnuncioDetalhePage() {
                 <button
                   type="submit"
                   disabled={enviandoAvaliacao}
-                  className="px-5 py-2 text-xs font-bold bg-olx-purple hover:bg-olx-purple-hover text-white rounded-xl shadow-md transition disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-5 py-2 text-xs font-bold bg-troqja-purple hover:bg-troqja-purple-hover text-white rounded-xl shadow-md transition disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {enviandoAvaliacao && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>Enviar Avaliação</span>

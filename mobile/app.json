@@ -13,14 +13,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.olxclone.app"
+      "bundleIdentifier": "com.troqja.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#6E0AD6"
       },
-      "package": "com.olxclone.app"
+      "package": "com.troqja.app"
     },
     "plugins": [
       [

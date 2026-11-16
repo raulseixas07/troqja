@@ -1,10 +1,10 @@
-'use client';
+﻿'use client';
 
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { getAuthErrorMessage } from '@olx-clone/shared';
+import { getAuthErrorMessage } from '@troqja/shared';
 import { Mail, Lock, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 
 function LoginForm() {
@@ -54,9 +54,9 @@ function LoginForm() {
       <div className="text-center">
         <Link href="/" className="inline-flex items-center gap-1 group" title="TroqJá - Anunciou, trocou, fechou!">
           <span className="text-4xl font-black tracking-tight text-gray-900">
-            Troq<span className="text-olx-orange">Já</span>
+            Troq<span className="text-troqja-orange">Já</span>
           </span>
-          <span className="w-3 h-3 rounded-full bg-olx-orange self-baseline mt-5 -ml-0.5" />
+          <span className="w-3 h-3 rounded-full bg-troqja-orange self-baseline mt-5 -ml-0.5" />
         </Link>
         <h1 className="mt-4 text-2xl font-bold tracking-tight text-gray-900">
           Acesse sua conta no TroqJá
@@ -91,7 +91,7 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seuemail@exemplo.com"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
           </div>
         </div>
@@ -104,7 +104,7 @@ function LoginForm() {
             </label>
             <Link
               href="/auth/recuperar-senha"
-              className="text-xs font-semibold text-olx-purple hover:underline"
+              className="text-xs font-semibold text-troqja-purple hover:underline"
             >
               Esqueceu a senha?
             </Link>
@@ -120,7 +120,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-2 focus:ring-purple-100 outline-none transition"
             />
             <button
               type="button"
@@ -137,7 +137,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-2"
+          className="w-full flex items-center justify-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white font-bold py-3 rounded-xl shadow-md transition transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-2"
         >
           {isLoading ? (
             <>
@@ -156,7 +156,7 @@ function LoginForm() {
           Ainda não tem uma conta no TroqJá?{' '}
           <Link
             href={redirectPath !== '/' ? `/auth/register?redirect=${encodeURIComponent(redirectPath)}` : '/auth/register'}
-            className="font-bold text-olx-purple hover:underline"
+            className="font-bold text-troqja-purple hover:underline"
           >
             Cadastre-se grátis
           </Link>
@@ -169,7 +169,7 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-140px)] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-      <Suspense fallback={<Loader2 className="w-8 h-8 text-olx-purple animate-spin" />}>
+      <Suspense fallback={<Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />}>
         <LoginForm />
       </Suspense>
     </div>

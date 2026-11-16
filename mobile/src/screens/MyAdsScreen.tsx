@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -20,8 +20,8 @@ import {
   formatBRL,
   formatRelativeDate,
   SUPABASE_TABLES,
-} from '@olx-clone/shared';
-import type { MeuAnuncioItem, StatusAnuncio } from '@olx-clone/shared';
+} from '@troqja/shared';
+import type { MeuAnuncioItem, StatusAnuncio } from '@troqja/shared';
 import {
   ArrowLeft,
   Package,

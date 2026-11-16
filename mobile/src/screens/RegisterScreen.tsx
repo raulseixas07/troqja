@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-import { getAuthErrorMessage, formatPhoneNumber } from '@olx-clone/shared';
+import { getAuthErrorMessage, formatPhoneNumber } from '@troqja/shared';
 import { User, Mail, Lock, Phone, Eye, EyeOff, X, AlertCircle } from 'lucide-react-native';
 
 interface RegisterScreenProps {

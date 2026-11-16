@@ -1,6 +1,6 @@
 # Documentação da Base de Dados (Supabase / PostgreSQL)
 
-Este diretório contém a modelagem completa e o script SQL para inicialização do back-end do **Clone OLX** utilizando Supabase.
+Este diretório contém a modelagem completa e o script SQL para inicialização do back-end do **Clone troqja** utilizando Supabase.
 
 ---
 

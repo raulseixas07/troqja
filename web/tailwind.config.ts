@@ -25,7 +25,7 @@ const config: Config = {
           purple: '#6E0AD6',
           'purple-hover': '#5906B3',
         },
-        olx: {
+        troqja: {
           orange: '#FF6B00',
           'orange-hover': '#E65A00',
           green: '#00C853',

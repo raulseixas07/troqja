@@ -1,10 +1,10 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { buscarAnuncios, buscarDestaquesVitrine, SUPABASE_TABLES, formatBRL } from '@olx-clone/shared';
-import type { AnuncioCard, Categoria } from '@olx-clone/shared';
+import { buscarAnuncios, buscarDestaquesVitrine, SUPABASE_TABLES, formatBRL } from '@troqja/shared';
+import type { AnuncioCard, Categoria } from '@troqja/shared';
 import { AdCard } from '@/components/AdCard';
 import { FeaturedCarousel } from '@/components/FeaturedCarousel';
 import {
@@ -204,7 +204,7 @@ function BuscaContent() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="O que você está procurando? Ex: iPhone, Sofá, Corolla..."
-              className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:bg-white focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none transition"
+              className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:bg-white focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none transition"
             />
             {searchTerm && (
               <button
@@ -221,7 +221,7 @@ function BuscaContent() {
           </div>
           <button
             type="submit"
-            className="bg-olx-purple hover:bg-olx-purple-hover text-white text-sm font-bold px-6 py-3 rounded-xl transition shadow-xs shrink-0 flex items-center gap-2"
+            className="bg-troqja-purple hover:bg-troqja-purple-hover text-white text-sm font-bold px-6 py-3 rounded-xl transition shadow-xs shrink-0 flex items-center gap-2"
           >
             <Search className="w-4 h-4" />
             <span className="hidden sm:inline">Buscar</span>
@@ -246,8 +246,8 @@ function BuscaContent() {
             onClick={() => aplicarFiltros({ tipo: 'venda' })}
             className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
               tipo === 'venda'
-                ? 'bg-olx-purple text-white shadow-xs'
-                : 'bg-purple-50 text-olx-purple hover:bg-purple-100 border border-purple-200'
+                ? 'bg-troqja-purple text-white shadow-xs'
+                : 'bg-purple-50 text-troqja-purple hover:bg-purple-100 border border-purple-200'
             }`}
           >
             <Tag className="w-3.5 h-3.5" />
@@ -298,7 +298,7 @@ function BuscaContent() {
               onClick={() => setMobileFiltersOpen(true)}
               className="lg:hidden inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-gray-300 text-xs font-bold text-gray-700 bg-white hover:bg-gray-50 transition"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-olx-purple" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-troqja-purple" />
               <span>Filtros</span>
             </button>
 
@@ -313,7 +313,7 @@ function BuscaContent() {
                   setOrdem(val);
                   aplicarFiltros({ ordem: val });
                 }}
-                className="bg-gray-50 border border-gray-200 text-xs font-bold text-gray-800 rounded-lg px-2.5 py-1.5 outline-none focus:border-olx-purple"
+                className="bg-gray-50 border border-gray-200 text-xs font-bold text-gray-800 rounded-lg px-2.5 py-1.5 outline-none focus:border-troqja-purple"
               >
                 <option value="recentes">Mais recentes</option>
                 <option value="menor_preco">Menor preço</option>
@@ -331,7 +331,7 @@ function BuscaContent() {
             </span>
 
             {tipoParam && tipoParam !== 'todos' && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>
                   Tipo: {tipoParam === 'venda' ? 'Venda Direta' : tipoParam === 'leilao' ? 'Leilões' : 'Aceita Troca'}
                 </span>
@@ -346,7 +346,7 @@ function BuscaContent() {
             )}
 
             {queryParam && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>Termo: &ldquo;{queryParam}&rdquo;</span>
                 <button
                   type="button"
@@ -359,7 +359,7 @@ function BuscaContent() {
             )}
 
             {categoriaAtiva && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>Categoria: {categoriaAtiva.nome}</span>
                 <button
                   type="button"
@@ -372,7 +372,7 @@ function BuscaContent() {
             )}
 
             {estadoParam && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>Estado: {estadoParam}</span>
                 <button
                   type="button"
@@ -385,7 +385,7 @@ function BuscaContent() {
             )}
 
             {cidadeParam && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>Cidade: {cidadeParam}</span>
                 <button
                   type="button"
@@ -398,7 +398,7 @@ function BuscaContent() {
             )}
 
             {(precoMinParam || precoMaxParam) && (
-              <span className="inline-flex items-center gap-1 bg-purple-50 text-olx-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-troqja-purple border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <span>
                   Preço: {precoMinParam ? formatBRL(Number(precoMinParam)) : 'R$ 0'} até{' '}
                   {precoMaxParam ? formatBRL(Number(precoMaxParam)) : 'Sem limite'}
@@ -430,13 +430,13 @@ function BuscaContent() {
         <aside className="hidden lg:block bg-white rounded-2xl border border-gray-200 p-5 shadow-2xs space-y-6 sticky top-24">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100">
             <h2 className="text-sm font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
-              <Filter className="w-4 h-4 text-olx-purple" />
+              <Filter className="w-4 h-4 text-troqja-purple" />
               <span>Filtros</span>
             </h2>
             <button
               type="button"
               onClick={limparTodosFiltros}
-              className="text-xs font-semibold text-gray-500 hover:text-olx-purple"
+              className="text-xs font-semibold text-gray-500 hover:text-troqja-purple"
             >
               Limpar
             </button>
@@ -454,12 +454,12 @@ function BuscaContent() {
                 onClick={() => aplicarFiltros({ categoria: '' })}
                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition flex items-center justify-between ${
                   !selectedCategoria
-                    ? 'bg-purple-50 text-olx-purple font-bold'
+                    ? 'bg-purple-50 text-troqja-purple font-bold'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
                 <span>Todas as categorias</span>
-                {!selectedCategoria && <ChevronRight className="w-3 h-3 text-olx-purple" />}
+                {!selectedCategoria && <ChevronRight className="w-3 h-3 text-troqja-purple" />}
               </button>
               {categorias.map((cat) => {
                 const isSelected = selectedCategoria === cat.slug || selectedCategoria === cat.id;
@@ -470,12 +470,12 @@ function BuscaContent() {
                     onClick={() => aplicarFiltros({ categoria: cat.slug })}
                     className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition flex items-center justify-between ${
                       isSelected
-                        ? 'bg-purple-50 text-olx-purple font-bold'
+                        ? 'bg-purple-50 text-troqja-purple font-bold'
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
                     <span className="truncate">{cat.nome}</span>
-                    {isSelected && <ChevronRight className="w-3 h-3 text-olx-purple" />}
+                    {isSelected && <ChevronRight className="w-3 h-3 text-troqja-purple" />}
                   </button>
                 );
               })}
@@ -499,7 +499,7 @@ function BuscaContent() {
                   setSelectedEstado(e.target.value);
                   aplicarFiltros({ estado: e.target.value });
                 }}
-                className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-olx-purple"
+                className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-troqja-purple"
               >
                 <option value="">Todo o Brasil</option>
                 {ESTADOS_BRASIL.map((uf) => (
@@ -526,7 +526,7 @@ function BuscaContent() {
                     }
                   }}
                   placeholder="Ex: São Paulo"
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-troqja-purple"
                 />
                 <button
                   type="button"
@@ -553,7 +553,7 @@ function BuscaContent() {
                   value={precoMin}
                   onChange={(e) => setPrecoMin(e.target.value)}
                   placeholder="Mínimo"
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-troqja-purple"
                 />
               </div>
               <div>
@@ -562,7 +562,7 @@ function BuscaContent() {
                   value={precoMax}
                   onChange={(e) => setPrecoMax(e.target.value)}
                   placeholder="Máximo"
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-troqja-purple"
                 />
               </div>
             </div>
@@ -570,7 +570,7 @@ function BuscaContent() {
             <button
               type="button"
               onClick={() => aplicarFiltros({ preco_min: precoMin, preco_max: precoMax })}
-              className="w-full bg-purple-50 hover:bg-purple-100 text-olx-purple border border-purple-200 text-xs font-bold py-2 rounded-lg transition"
+              className="w-full bg-purple-50 hover:bg-purple-100 text-troqja-purple border border-purple-200 text-xs font-bold py-2 rounded-lg transition"
             >
               Aplicar Preço
             </button>
@@ -583,7 +583,7 @@ function BuscaContent() {
             <div className="w-full max-w-xs bg-white h-full p-5 overflow-y-auto space-y-5 shadow-2xl">
               <div className="flex items-center justify-between pb-3 border-b border-gray-200">
                 <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                  <SlidersHorizontal className="w-4 h-4 text-olx-purple" />
+                  <SlidersHorizontal className="w-4 h-4 text-troqja-purple" />
                   <span>Filtros de Busca</span>
                 </h2>
                 <button
@@ -601,7 +601,7 @@ function BuscaContent() {
                 <select
                   value={selectedCategoria}
                   onChange={(e) => setSelectedCategoria(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-troqja-purple"
                 >
                   <option value="">Todas as categorias</option>
                   {categorias.map((cat) => (
@@ -618,7 +618,7 @@ function BuscaContent() {
                 <select
                   value={selectedEstado}
                   onChange={(e) => setSelectedEstado(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-troqja-purple"
                 >
                   <option value="">Todo o Brasil</option>
                   {ESTADOS_BRASIL.map((uf) => (
@@ -633,7 +633,7 @@ function BuscaContent() {
                   value={cidadeInput}
                   onChange={(e) => setCidadeInput(e.target.value)}
                   placeholder="Cidade"
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-olx-purple"
+                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-3 py-2 outline-none focus:border-troqja-purple"
                 />
               </div>
 
@@ -646,14 +646,14 @@ function BuscaContent() {
                     value={precoMin}
                     onChange={(e) => setPrecoMin(e.target.value)}
                     placeholder="Mínimo"
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-olx-purple"
+                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-troqja-purple"
                   />
                   <input
                     type="number"
                     value={precoMax}
                     onChange={(e) => setPrecoMax(e.target.value)}
                     placeholder="Máximo"
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-olx-purple"
+                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-2 outline-none focus:border-troqja-purple"
                   />
                 </div>
               </div>
@@ -663,7 +663,7 @@ function BuscaContent() {
                 <button
                   type="button"
                   onClick={() => aplicarFiltros()}
-                  className="w-full bg-olx-purple hover:bg-olx-purple-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
+                  className="w-full bg-troqja-purple hover:bg-troqja-purple-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
                 >
                   Aplicar Filtros
                 </button>
@@ -700,12 +700,12 @@ function BuscaContent() {
 
           {loading ? (
             <div className="min-h-[40vh] bg-white rounded-2xl border border-gray-200 p-12 flex flex-col items-center justify-center gap-3">
-              <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+              <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
               <p className="text-sm text-gray-500 font-medium">Buscando anúncios...</p>
             </div>
           ) : anuncios.length === 0 ? (
             <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center space-y-4">
-              <div className="w-16 h-16 bg-purple-50 text-olx-purple rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-purple-50 text-troqja-purple rounded-full flex items-center justify-center mx-auto">
                 <PackageSearch className="w-8 h-8" />
               </div>
               <div className="max-w-md mx-auto space-y-1">
@@ -717,7 +717,7 @@ function BuscaContent() {
               <button
                 type="button"
                 onClick={limparTodosFiltros}
-                className="inline-flex items-center gap-2 bg-olx-purple hover:bg-olx-purple-hover text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-xs transition"
+                className="inline-flex items-center gap-2 bg-troqja-purple hover:bg-troqja-purple-hover text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-xs transition"
               >
                 <span>Limpar filtros e ver todos</span>
               </button>
@@ -740,7 +740,7 @@ export default function BuscaPage() {
     <Suspense
       fallback={
         <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+          <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
           <p className="text-sm text-gray-500">Carregando anúncios...</p>
         </div>
       }

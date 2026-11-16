@@ -1,10 +1,10 @@
-import React from 'react';
+﻿import React from 'react';
 import { CategoryGrid } from '@/components/CategoryGrid';
 import { AdCard } from '@/components/AdCard';
 import { FeaturedCarousel } from '@/components/FeaturedCarousel';
-import type { AnuncioCard } from '@olx-clone/shared';
+import type { AnuncioCard } from '@troqja/shared';
 import { supabase } from '@/lib/supabase';
-import { SUPABASE_TABLES } from '@olx-clone/shared';
+import { SUPABASE_TABLES } from '@troqja/shared';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, Gavel, ArrowLeftRight, ShoppingBag } from 'lucide-react';
 
@@ -400,12 +400,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Banner Promocional TroqJá */}
       <div className="rounded-2xl bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 border border-gray-800 p-6 sm:p-10 text-white relative overflow-hidden shadow-md">
         <div className="relative z-10 max-w-xl space-y-3">
-          <div className="inline-flex items-center gap-1.5 bg-olx-orange/15 border border-olx-orange/30 px-3 py-1 rounded-full text-xs font-bold text-olx-orange backdrop-blur-xs">
+          <div className="inline-flex items-center gap-1.5 bg-troqja-orange/15 border border-troqja-orange/30 px-3 py-1 rounded-full text-xs font-bold text-troqja-orange backdrop-blur-xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>TroqJá • Anunciou, trocou, fechou!</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-            Compre, venda ou troque no <span className="text-olx-orange">TroqJá</span>!
+            Compre, venda ou troque no <span className="text-troqja-orange">TroqJá</span>!
           </h1>
           <p className="text-sm sm:text-base text-gray-300">
             A forma mais rápida, segura e transparente de negociar o que você não usa mais. Anuncie grátis e feche negócio hoje mesmo.
@@ -413,7 +413,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           <div className="pt-2 flex items-center gap-3 flex-wrap">
             <Link
               href="/anunciar"
-              className="inline-flex items-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white font-extrabold px-6 py-3 rounded-full shadow-md transition transform active:scale-95 text-sm"
+              className="inline-flex items-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white font-extrabold px-6 py-3 rounded-full shadow-md transition transform active:scale-95 text-sm"
             >
               <span>Inserir anúncio grátis</span>
               <ArrowRight className="w-4 h-4" />
@@ -533,7 +533,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <section className="space-y-4 pt-2">
           <div className="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-purple-100">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-olx-purple text-white flex items-center justify-center font-black shadow-xs">
+              <div className="w-9 h-9 rounded-xl bg-troqja-purple text-white flex items-center justify-center font-black shadow-xs">
                 <ShoppingBag className="w-5 h-5" />
               </div>
               <div>
@@ -541,7 +541,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   <h2 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight">
                     🏷️ Venda Direta & Recentes
                   </h2>
-                  <span className="bg-purple-100 text-olx-purple text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <span className="bg-purple-100 text-troqja-purple text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Preço Fixo
                   </span>
                 </div>
@@ -553,7 +553,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
             <Link
               href="/busca?tipo=venda"
-              className="text-xs font-bold text-olx-purple hover:underline flex items-center gap-1 group bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-full transition border border-purple-200"
+              className="text-xs font-bold text-troqja-purple hover:underline flex items-center gap-1 group bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-full transition border border-purple-200"
             >
               <span>Ver todas as vendas</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

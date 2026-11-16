@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   formatCurrencyBRL,
   formatRelativeDate,
   formatCountdown,
   type AnuncioCard,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 import { MapPin, Gavel, Repeat, Clock } from 'lucide-react-native';
 
 interface AdCardProps {

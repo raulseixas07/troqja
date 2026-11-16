@@ -1,5 +1,5 @@
 {
-  "name": "@olx-clone/shared",
+  "name": "@troqja/shared",
   "version": "1.0.0",
   "description": "Tipos, configurações Supabase e utilitários compartilhados entre Web e Mobile",
   "main": "./src/index.ts",

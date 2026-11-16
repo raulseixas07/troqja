@@ -1,6 +1,6 @@
-# Clone OLX - Plataforma Completa de Classificados (Web + Mobile + Supabase)
+# Clone troqja - Plataforma Completa de Classificados (Web + Mobile + Supabase)
 
-Monorepo contendo a solução full-stack para a plataforma de classificados estilo OLX, construída com **Next.js (App Router)**, **React Native com Expo**, **Supabase (PostgreSQL, Storage e Realtime)** e **Tailwind CSS**.
+Monorepo contendo a solução full-stack para a plataforma de classificados estilo troqja, construída com **Next.js (App Router)**, **React Native com Expo**, **Supabase (PostgreSQL, Storage e Realtime)** e **Tailwind CSS**.
 
 ---
 
@@ -31,7 +31,7 @@ MEU APP/
 │   │   ├── screens/             # HomeScreen, CreateAdScreen, AdDetailScreen
 │   │   ├── lib/                 # Cliente Supabase com AsyncStorage
 │   │   └── services/            # Processamento de imagem via Expo ImageManipulator (WebP)
-│   ├── App.tsx                  # Navegação e TabBar estilo OLX
+│   ├── App.tsx                  # Navegação e TabBar estilo troqja
 │   ├── app.json
 │   └── package.json
 ├── supabase/                    # Infraestrutura e Banco de Dados
@@ -47,7 +47,7 @@ MEU APP/
 
 O arquivo [`supabase/schema.sql`](file:///c:/Users/raul.melo/Downloads/MEU%20APP/supabase/schema.sql) implementa a estrutura com:
 1. **`profiles`:** Conectada a `auth.users` via trigger automático de cadastro.
-2. **`categorias`:** Categorias oficiais estilo OLX (Autos, Imóveis, Eletrônicos, etc.).
+2. **`categorias`:** Categorias oficiais estilo troqja (Autos, Imóveis, Eletrônicos, etc.).
 3. **`anuncios`:** Classificados com status (`ativo`, `pausado`, `vendido`, `excluido`), coordenadas/localização e índice GIN para busca textual.
 4. **`fotos_anuncio`:** Registro das imagens convertidas em **WebP** e armazenadas no bucket.
 5. **`conversas`:** Canais de negociação entre comprador e vendedor vinculados ao anúncio.

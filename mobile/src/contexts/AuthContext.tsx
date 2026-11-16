@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+﻿import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
-import type { Profile } from '@olx-clone/shared';
+import type { Profile } from '@troqja/shared';
 import { supabase } from '../lib/supabase';
 import {
   SUPABASE_TABLES,
   obterTotalMensagensNaoLidas,
   obterTotalNotificacoesDesejosNaoLidas,
-} from '@olx-clone/shared';
+} from '@troqja/shared';
 
 interface SignUpParams {
   nome: string;

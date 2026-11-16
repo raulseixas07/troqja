@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { formatCurrencyBRL } from '@olx-clone/shared';
+import { formatCurrencyBRL } from '@troqja/shared';
 import {
   carregarPedidosVendedor,
   calcularTotaisCarteira,
@@ -302,7 +302,7 @@ export default function PainelReceitaVendedorPage() {
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 bg-purple-100 text-olx-purple text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="inline-flex items-center gap-1 bg-purple-100 text-troqja-purple text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   <Wallet className="w-3 h-3" /> Finanças TroqJá
                 </span>
                 <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
@@ -327,7 +327,7 @@ export default function PainelReceitaVendedorPage() {
             <button
               type="button"
               onClick={() => setModalRegrasAberto(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-50 text-olx-purple hover:bg-purple-100 text-xs font-bold transition border border-purple-200"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-50 text-troqja-purple hover:bg-purple-100 text-xs font-bold transition border border-purple-200"
             >
               <Info className="w-4 h-4" />
               <span>Regras de Comissão</span>
@@ -497,7 +497,7 @@ export default function PainelReceitaVendedorPage() {
                   setFiltroSomentePin(true);
                   handleScrollExtrato();
                 }}
-                className="font-bold text-olx-purple hover:underline"
+                className="font-bold text-troqja-purple hover:underline"
               >
                 Filtrar no extrato →
               </button>
@@ -539,7 +539,7 @@ export default function PainelReceitaVendedorPage() {
                 : 'bg-white border-gray-200 hover:border-gray-400'
             }`}
           >
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-olx-purple flex items-center justify-center group-hover:scale-105 transition">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-troqja-purple flex items-center justify-center group-hover:scale-105 transition">
               <ShoppingBag className="w-5 h-5" />
             </div>
             <div>
@@ -660,7 +660,7 @@ export default function PainelReceitaVendedorPage() {
                   type="checkbox"
                   checked={apenasPagos}
                   onChange={(e) => setApenasPagos(e.target.checked)}
-                  className="rounded text-olx-purple focus:ring-purple-400 w-4 h-4 cursor-pointer"
+                  className="rounded text-troqja-purple focus:ring-purple-400 w-4 h-4 cursor-pointer"
                 />
                 <span>Apenas pedidos pagos</span>
               </label>
@@ -970,7 +970,7 @@ export default function PainelReceitaVendedorPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-100">
             <div>
               <h2 className="text-base font-black text-gray-950 flex items-center gap-2">
-                <History className="w-5 h-5 text-olx-purple" />
+                <History className="w-5 h-5 text-troqja-purple" />
                 Extrato Detalhado de Vendas
               </h2>
               <p className="text-xs text-gray-500">
@@ -986,7 +986,7 @@ export default function PainelReceitaVendedorPage() {
                 value={buscaTermo}
                 onChange={(e) => setBuscaTermo(e.target.value)}
                 placeholder="Buscar produto ou comprador..."
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
               />
             </div>
           </div>
@@ -1004,7 +1004,7 @@ export default function PainelReceitaVendedorPage() {
                   setFiltroSomentePin(false);
                   setBuscaTermo('');
                 }}
-                className="text-xs font-bold text-olx-purple hover:underline"
+                className="text-xs font-bold text-troqja-purple hover:underline"
               >
                 Limpar filtros e ver todas as vendas
               </button>
@@ -1124,7 +1124,7 @@ export default function PainelReceitaVendedorPage() {
               {/* Regra 1: Taxas */}
               <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-2">
                 <h4 className="font-black text-purple-950 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-olx-purple" />
+                  <ShieldCheck className="w-4 h-4 text-troqja-purple" />
                   Taxas Transparentes da Plataforma (5% e 7%)
                 </h4>
                 <p className="text-purple-900 text-xs">

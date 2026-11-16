@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-import { getAuthErrorMessage } from '@olx-clone/shared';
+import { getAuthErrorMessage } from '@troqja/shared';
 import { Mail, Lock, Eye, EyeOff, X, AlertCircle } from 'lucide-react-native';
 
 interface LoginScreenProps {

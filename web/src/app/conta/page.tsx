@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
-import { SUPABASE_TABLES, formatPhoneNumber } from '@olx-clone/shared';
+import { SUPABASE_TABLES, formatPhoneNumber } from '@troqja/shared';
 import {
   User,
   Mail,
@@ -64,7 +64,7 @@ export default function ContaPage() {
   if (isLoading) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-olx-purple animate-spin" />
+        <Loader2 className="w-8 h-8 text-troqja-purple animate-spin" />
       </div>
     );
   }
@@ -72,7 +72,7 @@ export default function ContaPage() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto my-16 px-4 text-center space-y-4">
-        <div className="w-16 h-16 bg-purple-100 text-olx-purple rounded-full flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 bg-purple-100 text-troqja-purple rounded-full flex items-center justify-center mx-auto">
           <User className="w-8 h-8" />
         </div>
         <h1 className="text-xl font-bold text-gray-900">Você não está conectado</h1>
@@ -82,13 +82,13 @@ export default function ContaPage() {
         <div className="pt-2 flex justify-center gap-3">
           <Link
             href="/auth/login?redirect=/conta"
-            className="bg-olx-orange hover:bg-olx-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
+            className="bg-troqja-orange hover:bg-troqja-orange-hover text-white text-sm font-bold px-6 py-2.5 rounded-full shadow transition"
           >
             Entrar
           </Link>
           <Link
             href="/auth/register?redirect=/conta"
-            className="border border-olx-purple text-olx-purple hover:bg-purple-50 text-sm font-bold px-6 py-2.5 rounded-full transition"
+            className="border border-troqja-purple text-troqja-purple hover:bg-purple-50 text-sm font-bold px-6 py-2.5 rounded-full transition"
           >
             Criar conta
           </Link>
@@ -139,7 +139,7 @@ export default function ContaPage() {
         <div>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-olx-purple transition mb-2"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-troqja-purple transition mb-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Voltar para anúncios</span>
@@ -179,7 +179,7 @@ export default function ContaPage() {
         {/* Cartão de Resumo do Usuário */}
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-4 h-fit">
           <div className="flex flex-col items-center text-center">
-            <div className="w-20 h-20 rounded-full bg-purple-100 text-olx-purple font-black text-2xl flex items-center justify-center border-2 border-purple-200 shadow-xs mb-3">
+            <div className="w-20 h-20 rounded-full bg-purple-100 text-troqja-purple font-black text-2xl flex items-center justify-center border-2 border-purple-200 shadow-xs mb-3">
               {profile?.nome ? profile.nome.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
             </div>
             <h2 className="text-lg font-bold text-gray-900">{profile?.nome || 'Usuário TroqJá'}</h2>
@@ -232,7 +232,7 @@ export default function ContaPage() {
 
                 <Link
                   href="/conta/meus-anuncios"
-                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-troqja-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
                 >
                   <Layers className="w-4 h-4" />
                   <span>Gerenciar Meus Anúncios</span>
@@ -240,7 +240,7 @@ export default function ContaPage() {
 
                 <Link
                   href="/anunciar"
-                  className="w-full flex items-center justify-center gap-2 bg-olx-orange hover:bg-olx-orange-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
+                  className="w-full flex items-center justify-center gap-2 bg-troqja-orange hover:bg-troqja-orange-hover text-white text-xs font-bold py-2.5 rounded-xl shadow-xs transition"
                 >
                   <Package className="w-4 h-4" />
                   <span>Criar Novo Anúncio</span>
@@ -267,7 +267,7 @@ export default function ContaPage() {
 
                 <Link
                   href="/conta/meus-anuncios"
-                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-troqja-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
                 >
                   <Layers className="w-4 h-4" />
                   <span>Gerenciar Meus Anúncios</span>
@@ -275,7 +275,7 @@ export default function ContaPage() {
 
                 <Link
                   href="/anunciar"
-                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-olx-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
+                  className="w-full flex items-center justify-center gap-2 bg-purple-50 hover:bg-purple-100 text-troqja-purple text-xs font-bold py-2.5 rounded-xl border border-purple-200 transition"
                 >
                   <Package className="w-4 h-4" />
                   <span>Criar Novo Anúncio</span>
@@ -301,7 +301,7 @@ export default function ContaPage() {
                 required
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
               />
             </div>
 
@@ -315,7 +315,7 @@ export default function ContaPage() {
                   value={telefone}
                   onChange={(e) => setTelefone(formatPhoneNumber(e.target.value))}
                   placeholder="(11) 98765-4321"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
                 />
               </div>
 
@@ -328,7 +328,7 @@ export default function ContaPage() {
                   value={cep}
                   onChange={(e) => setCep(e.target.value)}
                   placeholder="01001-000"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
                 />
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function ContaPage() {
                   value={cidade}
                   onChange={(e) => setCidade(e.target.value)}
                   placeholder="São Paulo"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
                 />
               </div>
 
@@ -357,7 +357,7 @@ export default function ContaPage() {
                   value={estado}
                   onChange={(e) => setEstado(e.target.value.toUpperCase())}
                   placeholder="SP"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-olx-purple focus:ring-1 focus:ring-olx-purple outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:border-troqja-purple focus:ring-1 focus:ring-troqja-purple outline-none"
                 />
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function ContaPage() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="flex items-center gap-2 bg-olx-purple hover:bg-olx-purple-hover text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-xs transition disabled:opacity-50"
+                className="flex items-center gap-2 bg-troqja-purple hover:bg-troqja-purple-hover text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-xs transition disabled:opacity-50"
               >
                 {isSaving ? (
                   <>

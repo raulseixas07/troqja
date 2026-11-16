@@ -1,8 +1,8 @@
 {
-  "name": "olx-clone-monorepo",
+  "name": "troqja-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "Plataforma de Classificados Estilo OLX - Monorepo (Next.js + React Native/Expo + Supabase)",
+  "description": "Plataforma de Classificados e Trocas TroqJá - Monorepo (Next.js + React Native/Expo + Supabase)",
   "workspaces": [
     "packages/*",
     "web",
@@ -12,7 +12,7 @@
     "dev:web": "npm run dev --workspace=web",
     "dev:mobile": "npm run start --workspace=mobile",
     "build:web": "npm run build --workspace=web",
-    "build:shared": "npm run build --workspace=@olx-clone/shared",
+    "build:shared": "npm run build --workspace=@troqja/shared",
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
@@ -23,7 +23,7 @@
     "supabase",
     "tailwind",
     "typescript",
-    "olx-clone"
+    "troqja"
   ],
   "author": "",
   "license": "MIT"

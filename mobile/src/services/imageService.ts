@@ -1,12 +1,12 @@
-import * as ImageManipulator from 'expo-image-manipulator';
+﻿import * as ImageManipulator from 'expo-image-manipulator';
 import {
   calculateAspectRatioFit,
   generateStoragePath,
   DEFAULT_WEBP_CONFIG,
   STORAGE_BUCKETS,
   type ImageResizeConfig,
-} from '@olx-clone/shared';
-import type { TypedSupabaseClient } from '@olx-clone/shared';
+} from '@troqja/shared';
+import type { TypedSupabaseClient } from '@troqja/shared';
 
 export interface MobileProcessedWebP {
   uri: string;

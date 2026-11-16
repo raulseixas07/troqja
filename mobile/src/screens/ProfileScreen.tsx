@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { SUPABASE_TABLES, formatPhoneNumber } from '@olx-clone/shared';
+import { SUPABASE_TABLES, formatPhoneNumber } from '@troqja/shared';
 import { Mail, Phone, MapPin, LogOut, Package, Check, Layers } from 'lucide-react-native';
 
 interface ProfileScreenProps {
